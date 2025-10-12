@@ -1,0 +1,20 @@
+{
+  "name": "nsnodes-events",
+  "version": "1.0.0",
+  "description": "Event aggregation platform - scraping and normalizing events from multiple sources",
+  "type": "module",
+  "scripts": {
+    "probe": "node tools/probes/run-all-tests.js",
+    "probe:luma": "node tools/probes/luma-probe.js",
+    "probe:sola": "node tools/probes/sola-probe.js",
+    "extract:luma-cities": "node tools/city-extraction/extract-all-luma-cities.js"
+  },
+  "keywords": ["events", "scraping", "playwright", "luma", "sola", "aggregation"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "playwright": "^1.48.0",
+    "playwright-extra": "^4.3.6",
+    "puppeteer-extra-plugin-stealth": "^2.11.2"
+  }
+}

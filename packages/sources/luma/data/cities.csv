@@ -1,0 +1,73 @@
+slug,city,region,event_count,url
+amsterdam,"Amsterdam","Europe",39,https://luma.com/amsterdam
+atlanta,"Atlanta","North America",13,https://luma.com/atlanta
+austin,"Austin","North America",12,https://luma.com/austin
+bangkok,"Bangkok","Asia & Pacific",10,https://luma.com/bangkok
+barcelona,"Barcelona","Europe",17,https://luma.com/barcelona
+bengaluru,"Bengaluru","Asia & Pacific",7,https://luma.com/bengaluru
+berlin,"Berlin","Europe",27,https://luma.com/berlin
+bogota,"Bogotá","South America",7,https://luma.com/bogota
+boston,"Boston","North America",23,https://luma.com/boston
+brisbane,"Brisbane","Asia & Pacific",5,https://luma.com/brisbane
+brussels,"Brussels","Europe",7,https://luma.com/brussels
+budapest,"Budapest","Europe",8,https://luma.com/budapest
+buenos-aires,"Buenos Aires","South America",16,https://luma.com/buenos-aires
+calgary,"Calgary","North America",5,https://luma.com/calgary
+chicago,"Chicago","North America",15,https://luma.com/chicago
+copenhagen,"Copenhagen","Europe",8,https://luma.com/copenhagen
+dallas,"Dallas","North America",6,https://luma.com/dallas
+denver,"Denver","North America",6,https://luma.com/denver
+dubai,"Dubai","Asia & Pacific",17,https://luma.com/dubai
+dublin,"Dublin","Europe",8,https://luma.com/dublin
+geneva,"Geneva","Europe",5,https://luma.com/geneva
+helsinki,"Helsinki","Europe",17,https://luma.com/helsinki
+ho-chi-minh-city,"Ho Chi Minh City","Asia & Pacific",7,https://luma.com/ho-chi-minh-city
+hongkong,"Hong Kong","Asia & Pacific",8,https://luma.com/hongkong
+honolulu,"Honolulu","Asia & Pacific",5,https://luma.com/honolulu
+houston,"Houston","North America",8,https://luma.com/houston
+istanbul,"Istanbul","Europe",7,https://luma.com/istanbul
+jakarta,"Jakarta","Asia & Pacific",13,https://luma.com/jakarta
+kuala-lumpur,"Kuala Lumpur","Asia & Pacific",11,https://luma.com/kuala-lumpur
+lagos,"Lagos","Africa",12,https://luma.com/lagos
+las-vegas,"Las Vegas","North America",19,https://luma.com/las-vegas
+lausanne,"Lausanne","Europe",7,https://luma.com/lausanne
+lisbon,"Lisbon","Europe",19,https://luma.com/lisbon
+london,"London","Europe",45,https://luma.com/london
+la,"Los Angeles","North America",50,https://luma.com/la
+madrid,"Madrid","Europe",13,https://luma.com/madrid
+manila,"Manila","Asia & Pacific",11,https://luma.com/manila
+medellin,"Medellín","South America",6,https://luma.com/medellin
+melbourne,"Melbourne","Asia & Pacific",19,https://luma.com/melbourne
+mexico-city,"Mexico City","North America",22,https://luma.com/mexico-city
+miami,"Miami","North America",13,https://luma.com/miami
+milan,"Milan","Europe",11,https://luma.com/milan
+montreal,"Montréal","North America",18,https://luma.com/montreal
+mumbai,"Mumbai","Asia & Pacific",4,https://luma.com/mumbai
+munich,"Munich","Europe",15,https://luma.com/munich
+nairobi,"Nairobi","Africa",11,https://luma.com/nairobi
+new-delhi,"New Delhi","Asia & Pacific",4,https://luma.com/new-delhi
+nyc,"New York","North America",55,https://luma.com/nyc
+paris,"Paris","Europe",29,https://luma.com/paris
+philadelphia,"Philadelphia","North America",15,https://luma.com/philadelphia
+phoenix,"Phoenix","North America",6,https://luma.com/phoenix
+portland,"Portland","North America",6,https://luma.com/portland
+prague,"Prague","Europe",10,https://luma.com/prague
+rio,"Rio de Janeiro","South America",5,https://luma.com/rio
+rome,"Rome","Europe",9,https://luma.com/rome
+salt-lake-city,"Salt Lake City","North America",6,https://luma.com/salt-lake-city
+sd,"San Diego","North America",6,https://luma.com/sd
+sf,"San Francisco","North America",46,https://luma.com/sf
+saopaulo,"São Paulo","South America",12,https://luma.com/saopaulo
+seattle,"Seattle","North America",19,https://luma.com/seattle
+seoul,"Seoul","Asia & Pacific",4,https://luma.com/seoul
+singapore,"Singapore","Asia & Pacific",26,https://luma.com/singapore
+stockholm,"Stockholm","Europe",15,https://luma.com/stockholm
+sydney,"Sydney","Asia & Pacific",20,https://luma.com/sydney
+taipei,"Taipei","Asia & Pacific",9,https://luma.com/taipei
+tel-aviv,"Tel Aviv-Yafo","Asia & Pacific",19,https://luma.com/tel-aviv
+tokyo,"Tokyo","Asia & Pacific",22,https://luma.com/tokyo
+toronto,"Toronto","North America",27,https://luma.com/toronto
+vancouver,"Vancouver","North America",16,https://luma.com/vancouver
+dc,"Washington, DC","North America",21,https://luma.com/dc
+waterloo_ca,"Waterloo","North America",8,https://luma.com/waterloo_ca
+zurich,"Zurich","Europe",12,https://luma.com/zurich

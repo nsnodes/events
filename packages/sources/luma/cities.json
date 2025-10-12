@@ -1,0 +1,30 @@
+{
+  "cities": [
+    {
+      "slug": "amsterdam",
+      "name": "Amsterdam",
+      "country": "NL",
+      "icalUrl": "https://api2.luma.com/ics/get?entity=discover&id=discplace-e7EG0Ef6S2aQnvN"
+    },
+    {
+      "slug": "san-francisco",
+      "name": "San Francisco",
+      "country": "US"
+    },
+    {
+      "slug": "new-york",
+      "name": "New York",
+      "country": "US"
+    },
+    {
+      "slug": "london",
+      "name": "London",
+      "country": "GB"
+    },
+    {
+      "slug": "berlin",
+      "name": "Berlin",
+      "country": "DE"
+    }
+  ]
+}
