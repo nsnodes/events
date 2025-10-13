@@ -7,12 +7,20 @@
     "probe": "node tools/probes/run-all-tests.js",
     "probe:luma": "node tools/probes/luma-probe.js",
     "probe:sola": "node tools/probes/sola-probe.js",
-    "extract:luma-cities": "node tools/city-extraction/extract-all-luma-cities.js"
+    "luma:cities": "node packages/sources/luma/scripts/run-cities.js",
+    "luma:ical-urls": "node packages/sources/luma/scripts/run-ical-urls.js",
+    "luma:events": "node packages/sources/luma/scripts/run-events.js",
+    "schedule:daily": "node apps/cli/run.js schedule:daily",
+    "schedule:weekly": "node apps/cli/run.js schedule:weekly",
+    "schedule:sync": "node apps/cli/run.js schedule:sync",
+    "task": "node apps/cli/run.js task",
+    "list": "node apps/cli/run.js list"
   },
   "keywords": ["events", "scraping", "playwright", "luma", "sola", "aggregation"],
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "glob": "^11.0.0",
     "playwright": "^1.48.0",
     "playwright-extra": "^4.3.6",
     "puppeteer-extra-plugin-stealth": "^2.11.2"
