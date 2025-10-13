@@ -11,6 +11,7 @@ on:
 jobs:
   daily:
     runs-on: ubuntu-latest
+    timeout-minutes: 30  # City discovery shouldn't take long
     permissions:
       contents: write
 
