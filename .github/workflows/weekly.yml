@@ -1,15 +1,15 @@
-name: Sync Events
+name: Weekly Tasks
 
 on:
   schedule:
-    # Run every 10 minutes
-    - cron: '*/10 * * * *'
+    # Run weekly on Sunday at midnight UTC
+    - cron: '0 0 * * 0'
 
   # Allow manual trigger
   workflow_dispatch:
 
 jobs:
-  sync:
+  weekly:
     runs-on: ubuntu-latest
 
     steps:
@@ -25,10 +25,11 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      # Note: No Playwright needed for event sync (HTTP only)
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
 
-      - name: Sync events
-        run: npm run schedule:sync
+      - name: Run weekly tasks
+        run: npm run schedule:weekly
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
@@ -37,7 +38,7 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: sync-logs-${{ github.run_number }}
+          name: weekly-logs
           path: |
             *.log
-          retention-days: 3
+          retention-days: 7
