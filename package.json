@@ -10,6 +10,7 @@
     "luma:cities": "node packages/sources/luma/scripts/run-cities.js",
     "luma:ical-urls": "node packages/sources/luma/scripts/run-ical-urls.js",
     "luma:events": "node packages/sources/luma/scripts/run-events.js",
+    "sola:events": "node packages/sources/sola/scripts/run-events.js",
     "schedule:daily": "node apps/cli/run.js schedule:daily",
     "schedule:weekly": "node apps/cli/run.js schedule:weekly",
     "schedule:sync": "node apps/cli/run.js schedule:sync",
