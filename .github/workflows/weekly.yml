@@ -12,6 +12,7 @@ jobs:
   weekly:
     runs-on: ubuntu-latest
     timeout-minutes: 45  # iCal URL extraction with Playwright
+    environment: prod
     permissions:
       contents: write
 
