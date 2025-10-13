@@ -165,7 +165,7 @@ npm install
 
 # Set environment variables
 export SUPABASE_URL=your_url
-export SUPABASE_KEY=your_key
+export SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
 
 # Run sync
 npm run sync

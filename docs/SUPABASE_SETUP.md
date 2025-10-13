@@ -72,7 +72,7 @@ Create `.env` file in project root:
 
 ```bash
 SUPABASE_URL=https://xxxxx.supabase.co
-SUPABASE_KEY=your-service-role-key-here
+SUPABASE_SERVICE_ROLE_KEY=your-service-role-key-here
 ```
 
 ### GitHub Actions
@@ -80,7 +80,7 @@ SUPABASE_KEY=your-service-role-key-here
 1. Go to your GitHub repo → **Settings** → **Secrets and variables** → **Actions**
 2. Add two secrets:
    - `SUPABASE_URL`: Your project URL
-   - `SUPABASE_KEY`: Your service role key
+   - `SUPABASE_SERVICE_ROLE_KEY`: Your service role key
 
 ## 6. Test Connection
 
@@ -154,9 +154,9 @@ The following indexes are created for performance:
 
 ## Troubleshooting
 
-### "Missing SUPABASE_URL or SUPABASE_KEY"
+### "Missing SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY"
 
-Ensure environment variables are set correctly. For local development, use a `.env` file.
+Ensure environment variables are set correctly. For local development, use a `.env` file. Make sure you're using the service role key (not the anon key) as this is server-side code that needs to bypass RLS.
 
 ### "Failed to upsert event"
 
