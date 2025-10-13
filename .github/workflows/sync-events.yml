@@ -25,7 +25,8 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      # Note: No Playwright needed for event sync (HTTP only)
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
 
       - name: Sync events
         run: npm run schedule:sync
