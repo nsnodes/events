@@ -39,7 +39,7 @@ async function loadAllTasks() {
 
 /**
  * Run all tasks matching a specific cron schedule
- * @param {string} cronPattern - Cron pattern to match (e.g., '*/10 * * * *')
+ * @param {string} cronPattern - Cron pattern to match
  * @returns {Promise<Object>} Execution summary
  */
 export async function runSchedule(cronPattern) {

@@ -61,18 +61,51 @@ export async function extractIcalUrl(city, options = {}) {
     }
 
     // Wait for modal to appear
-    await page.waitForTimeout(1000);
+    await page.waitForTimeout(1500);
 
     // Extract iCal URL from modal
     const icalUrl = await page.evaluate(() => {
-      // Look for iCal URL in the page
-      const text = document.body.innerText;
-      const icalMatch = text.match(/(https?:\/\/[^\s]+\.ics[^\s]*)/);
-      if (icalMatch) return icalMatch[1];
+      // Strategy 1: Look for webcal:// links (Apple/System Calendar)
+      const allLinks = Array.from(document.querySelectorAll('a'));
+      for (const link of allLinks) {
+        if (link.href.startsWith('webcal://')) {
+          // Convert webcal:// to https://
+          return link.href.replace('webcal://', 'https://');
+        }
+      }
 
-      // Also check for any api/ics URLs
-      const apiMatch = text.match(/(https?:\/\/[^\s]*(?:api|ics)[^\s]+)/);
-      if (apiMatch) return apiMatch[1];
+      // Strategy 2: Decode from Google Calendar wrapper
+      // Format: https://www.google.com/calendar/render?cid=http%3A%2F%2Fapi.sola.day%2F...
+      for (const link of allLinks) {
+        if (link.href.includes('google.com/calendar') && link.href.includes('cid=')) {
+          try {
+            const url = new URL(link.href);
+            const cid = url.searchParams.get('cid');
+            if (cid) {
+              // The cid is URL-encoded, so decode it
+              const decoded = decodeURIComponent(cid);
+              if (decoded.includes('api.sola.day')) {
+                // Convert http to https if needed
+                return decoded.replace('http://', 'https://');
+              }
+            }
+          } catch (e) {}
+        }
+      }
+
+      // Strategy 3: Decode from Outlook wrapper
+      // Format: https://outlook.live.com/calendar/0/addcalendar?url=https%3A%2F%2Fapi.sola.day%2F...
+      for (const link of allLinks) {
+        if (link.href.includes('outlook.live.com/calendar') && link.href.includes('url=')) {
+          try {
+            const url = new URL(link.href);
+            const icalUrl = url.searchParams.get('url');
+            if (icalUrl && icalUrl.includes('api.sola.day')) {
+              return decodeURIComponent(icalUrl);
+            }
+          } catch (e) {}
+        }
+      }
 
       return null;
     });
