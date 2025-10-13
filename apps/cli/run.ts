@@ -10,6 +10,7 @@
  *   node apps/cli/run.js list
  */
 
+import 'dotenv/config'
 import { runSchedule, runTask, listTasks } from '../../packages/orchestrator/runner.js'
 
 const command = process.argv[2]
