@@ -116,7 +116,8 @@ async function executeTask(task) {
     let eventsProcessed = 0
     const db = createDatabase()
 
-    for await (const eventBatch of task.extractStream()) {
+    // Pass database to task for optimization
+    for await (const eventBatch of task.extractStream(db)) {
       // eventBatch is an array of normalized events
       if (Array.isArray(eventBatch) && eventBatch.length > 0) {
         await db.upsertEvents(eventBatch)

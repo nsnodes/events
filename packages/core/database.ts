@@ -10,6 +10,7 @@ export interface Database {
   upsertEvent(event: Event): Promise<void>
   upsertEvents(events: Event[]): Promise<void>
   getEventByUid(uid: string): Promise<Event | null>
+  getEventsByUids(uids: string[]): Promise<Event[]>
 }
 
 /**
@@ -102,6 +103,12 @@ export class SupabaseDatabase implements Database {
   async upsertEvent(event: Event): Promise<void> {
     const row = eventToRow(event)
 
+    // Check if event exists to preserve first_seen
+    const existing = await this.getEventByUid(event.uid)
+    if (existing) {
+      row.first_seen = existing.firstSeen.toISOString()
+    }
+
     const { error } = await this.client
       .from('events')
       .upsert(row, {
@@ -119,6 +126,24 @@ export class SupabaseDatabase implements Database {
     }
 
     const rows = events.map(eventToRow)
+
+    // Get existing events to preserve first_seen timestamps
+    const uids = events.map(e => e.uid)
+    const { data: existingRows } = await this.client
+      .from('events')
+      .select('uid, first_seen')
+      .in('uid', uids)
+
+    const existingMap = new Map(
+      (existingRows || []).map(row => [row.uid, row.first_seen])
+    )
+
+    // Preserve first_seen for existing events
+    rows.forEach(row => {
+      if (existingMap.has(row.uid)) {
+        row.first_seen = existingMap.get(row.uid)
+      }
+    })
 
     // Supabase has a limit on batch size, so chunk if needed
     const BATCH_SIZE = 500
@@ -153,6 +178,30 @@ export class SupabaseDatabase implements Database {
     }
 
     return data ? rowToEvent(data) : null
+  }
+
+  async getEventsByUids(uids: string[]): Promise<Event[]> {
+    if (uids.length === 0) {
+      return []
+    }
+
+    // Fetch only uid, sequence, city, country for optimization
+    const { data, error } = await this.client
+      .from('events')
+      .select('uid, sequence, city, country')
+      .in('uid', uids)
+
+    if (error) {
+      throw new Error(`Failed to fetch events: ${error.message}`)
+    }
+
+    // Return partial Event objects (only fields needed for optimization)
+    return (data || []).map(row => ({
+      uid: row.uid,
+      sequence: row.sequence,
+      city: row.city,
+      country: row.country
+    } as any))
   }
 }
 
