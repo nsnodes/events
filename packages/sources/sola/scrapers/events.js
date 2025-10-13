@@ -176,7 +176,10 @@ async function parseIcal(icalData) {
  * @private
  */
 function parseVEvent(veventBlock) {
-  const lines = veventBlock.split('\n').map(l => l.trim()).filter(Boolean);
+  // Handle iCal line folding (RFC 5545): lines are folded by inserting CRLF followed by space
+  // Unfold by removing CRLF + space sequences
+  const unfoldedBlock = veventBlock.replace(/\r?\n[ \t]/g, '');
+  const lines = unfoldedBlock.split('\n').map(l => l.trim()).filter(Boolean);
   const event = {};
 
   for (const line of lines) {

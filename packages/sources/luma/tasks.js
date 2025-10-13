@@ -110,7 +110,7 @@ export default [
     cron: '*/10 * * * *',
     description: 'Fetch events from all city iCal feeds',
 
-    async *extractStream() {
+    async *extractStream(db) {
       console.log('[luma:events] Starting event sync (streaming)...')
 
       const icalUrls = scrapers.getIcalUrls()
@@ -125,7 +125,7 @@ export default [
         processedCities++
 
         if (cityResult.success) {
-          const normalized = normalizeCityEvents(cityResult)
+          const normalized = await normalizeCityEvents(cityResult, db)
           totalEvents += normalized.length
 
           console.log(

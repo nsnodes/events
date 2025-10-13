@@ -5,19 +5,43 @@
  */
 
 import { generateFingerprint } from '../../core/fingerprint.js'
+import { reverseGeocode } from '../../core/geocoding.js'
 
 /**
  * Normalize a single Luma event to common Event schema
  * @param {Object} rawEvent - Raw event from Luma iCal
  * @param {string} citySlug - City slug for context
- * @returns {Object} Normalized event
+ * @param {Object} options - Normalization options
+ * @param {boolean} options.skipGeocoding - Skip geocoding (reuse existing data)
+ * @param {Object} options.reuseLocation - Location data to reuse {city, country}
+ * @returns {Promise<Object>} Normalized event
  */
-export function normalizeEvent(rawEvent, citySlug = null) {
+export async function normalizeEvent(rawEvent, citySlug = null, options = {}) {
   const startAt = new Date(rawEvent.startDate)
   const endAt = rawEvent.endDate ? new Date(rawEvent.endDate) : null
 
-  // Extract city from location or use citySlug
-  const city = extractCity(rawEvent.location) || citySlug
+  let city = null
+  let country = null
+
+  // Option 1: Reuse existing location data (for unchanged events)
+  if (options.skipGeocoding && options.reuseLocation) {
+    city = options.reuseLocation.city
+    country = options.reuseLocation.country
+  }
+  // Option 2: Use reverse geocoding if we have coordinates
+  else if (rawEvent.geo?.lat && rawEvent.geo?.lon) {
+    const geocoded = await reverseGeocode(rawEvent.geo.lat, rawEvent.geo.lon)
+    city = geocoded.city
+    country = geocoded.country
+  }
+
+  // Fallback to parsing if geocoding didn't work or no coordinates
+  if (!city) {
+    city = extractCity(rawEvent.location) || citySlug
+  }
+  if (!country) {
+    country = extractCountry(rawEvent.location)
+  }
 
   const normalized = {
     // Identifiers
@@ -48,7 +72,7 @@ export function normalizeEvent(rawEvent, citySlug = null) {
     lat: rawEvent.geo?.lat,
     lng: rawEvent.geo?.lon,
     city,
-    country: extractCountry(rawEvent.location),
+    country,
 
     // Additional metadata
     organizers: rawEvent.organizer ? [{ name: rawEvent.organizer }] : [],
@@ -72,17 +96,62 @@ export function normalizeEvent(rawEvent, citySlug = null) {
 
 /**
  * Normalize batch of events from a city result
+ * Optimized: Only geocodes new or updated events
+ *
  * @param {Object} cityResult - Result from fetchEvents()
- * @returns {Array} Array of normalized events
+ * @param {Object} db - Database instance (optional, for optimization)
+ * @returns {Promise<Array>} Array of normalized events
  */
-export function normalizeCityEvents(cityResult) {
+export async function normalizeCityEvents(cityResult, db = null) {
   if (!cityResult.success || !cityResult.events) {
     return []
   }
 
-  return cityResult.events.map(event =>
-    normalizeEvent(event, cityResult.citySlug)
-  )
+  // Optimization: Check which events already exist in DB
+  let existingEventsMap = new Map()
+  if (db) {
+    try {
+      const uids = cityResult.events.map(e => e.uid)
+      const existingEvents = await db.getEventsByUids(uids)
+      existingEventsMap = new Map(existingEvents.map(e => [e.uid, e]))
+    } catch (error) {
+      console.warn('Could not fetch existing events for optimization:', error.message)
+    }
+  }
+
+  // Process events sequentially to respect geocoding rate limits
+  const normalized = []
+  let geocodingCount = 0
+  let reusedCount = 0
+
+  for (const event of cityResult.events) {
+    const existing = existingEventsMap.get(event.uid)
+
+    // Skip geocoding if event exists and hasn't changed
+    if (existing && existing.sequence === (event.sequence || 0)) {
+      // Reuse existing geocoded data
+      const normalizedEvent = await normalizeEvent(event, cityResult.citySlug, {
+        skipGeocoding: true,
+        reuseLocation: {
+          city: existing.city,
+          country: existing.country
+        }
+      })
+      normalized.push(normalizedEvent)
+      reusedCount++
+    } else {
+      // New or updated event - perform geocoding
+      const normalizedEvent = await normalizeEvent(event, cityResult.citySlug)
+      normalized.push(normalizedEvent)
+      geocodingCount++
+    }
+  }
+
+  if (db && cityResult.events.length > 0) {
+    console.log(`  [geocoding] ${geocodingCount} geocoded, ${reusedCount} reused`)
+  }
+
+  return normalized
 }
 
 // Helper functions
