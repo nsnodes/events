@@ -1,0 +1,373 @@
+{
+  "success": true,
+  "timestamp": "2025-10-13T13:38:16.165Z",
+  "totalCities": 61,
+  "cities": [
+    {
+      "slug": "ethsafari",
+      "url": "https://app.sola.day/event/ethsafari",
+      "text": "Sep 07-Sep 14ETH SafariKenyaby ETH SafariView events",
+      "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2F2p6lz77k_VN34I97zl&w=640&q=75&dpl=dpl_9DPTbvHhdSEJezGBXHEA7WFa6YJp"
+    },
+    {
+      "slug": "prospera",
+      "url": "https://app.sola.day/event/prospera",
+      "text": "Aug 28-Aug 27PrósperaPróspera, Roatánby PrósperaView events",
+      "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2Fdugphxxe_C_tVHAdr-&w=640&q=75&dpl=dpl_9DPTbvHhdSEJezGBXHEA7WFa6YJp"
+    },
+    {
+      "slug": "edgepatagonia",
+      "url": "https://app.sola.day/event/edgepatagonia",
+      "text": "Oct 18-Nov 15Edge City Patagonia 2025San Martin, Argentinaby Edge City PatagoniaView events",
+      "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2Frv2s5yu5_qjNyQUwC5&w=640&q=75&dpl=dpl_9DPTbvHhdSEJezGBXHEA7WFa6YJp"
+    },
+    {
+      "slug": "invisiblegardenar",
+      "url": "https://app.sola.day/event/invisiblegardenar",
+      "text": "Oct 27-Nov 23Invisible Garden ArgentinaInvisible Garden Argentinaby Invisible Garden ArgentinaView events",
+      "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2F5co00orw_n6ztnuUe1&w=640&q=75&dpl=dpl_9DPTbvHhdSEJezGBXHEA7WFa6YJp"
+    },
+    {
+      "slug": "woosingapore",
+      "url": "https://app.sola.day/event/woosingapore",
+      "text": "Sep 02-Oct 01ShanhaiWoo SingaporeSingaporeby ShanhaiWoo · SingaporeView events",
+      "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2Fskn8lv86_9x1IMzJdP&w=640&q=75&dpl=dpl_9DPTbvHhdSEJezGBXHEA7WFa6YJp"
+    },
+    {
+      "slug": "east2046festival",
+      "url": "https://app.sola.day/event/east2046festival",
+      "text": "Aug 16-Aug 24salmontomatoEAST2046 Festival I: WE, 2046by east2046festivalView events",
+      "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2Fqlktszjx_IXnUBAhfO&w=640&q=75&dpl=dpl_9DPTbvHhdSEJezGBXHEA7WFa6YJp"
+    },
+    {
+      "slug": "zanzalu",
+      "url": "https://app.sola.day/event/zanzalu",
+      "text": "Jul 19-Aug 01Zanzalu 2Zanzaluby zanzaluView events",
+      "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2Fr8xpmuas_nOkri8XYL&w=640&q=75&dpl=dpl_9DPTbvHhdSEJezGBXHEA7WFa6YJp"
+    },
+    {
+      "slug": "keymap",
+      "url": "https://app.sola.day/event/keymap",
+      "text": "Jul 07-Jul 13ETH Huangshan｜infinite GameHuangshanby KeyMapView events",
+      "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2Fy4t15yq4_5Y9u_qhC-&w=640&q=75&dpl=dpl_9DPTbvHhdSEJezGBXHEA7WFa6YJp"
+    },
+    {
+      "slug": "zuzalukas",
+      "url": "https://app.sola.day/event/zuzalukas",
+      "text": "Sep 05-Sep 19ZuKasAntalya,Kasby Web3 META HubView events",
+      "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2Fm87lxlb9_w9qCHRdlS&w=640&q=75&dpl=dpl_9DPTbvHhdSEJezGBXHEA7WFa6YJp"
+    },
+    {
+      "slug": "vitalistbayca",
+      "url": "https://app.sola.day/event/vitalistbayca",
+      "text": "Apr 04-May 29Vitalist BayVitalist Bayby Vitalist Bay CommunityView events",
+      "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2F1gsstbdr_rtfs1adzf&w=640&q=75&dpl=dpl_9DPTbvHhdSEJezGBXHEA7WFa6YJp"
+    },
+    {
+      "slug": "viva-frontier-tower",
+      "url": "https://app.sola.day/event/viva-frontier-tower",
+      "text": "Jun 20-Aug 03Viva Frontier TowerViva Frontier Towerby Viva Frontier TowerView events",
+      "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2Fpyfes3r5_fpoxq4w5Eg&w=640&q=75&dpl=dpl_9DPTbvHhdSEJezGBXHEA7WFa6YJp"
+    },
+    {
+      "slug": "hangzhou-house",
+      "url": "https://app.sola.day/event/hangzhou-house",
+      "text": "Mar 26-Apr 25Hangzhou HouseHangzhou, Chinaby hangzhou-houseView events",
+      "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2Fdybmrdvm_aKKdONrKb&w=640&q=75&dpl=dpl_9DPTbvHhdSEJezGBXHEA7WFa6YJp"
+    },
+    {
+      "slug": "edge-esmeralda-2025",
+      "url": "https://app.sola.day/event/edge-esmeralda-2025",
+      "text": "May 24-Jun 21Edge Esmeralda 2025Edge Esmeralda 2025by Edge Esmeralda 2025View events",
+      "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2F2mo8u09t_y5FBV-b7y&w=640&q=75&dpl=dpl_9DPTbvHhdSEJezGBXHEA7WFa6YJp"
+    },
+    {
+      "slug": "liberlandspace",
+      "url": "https://app.sola.day/event/liberlandspace",
+      "text": "Apr 14-May 11Liberland deSci & deSpaceLiberlandby Liberland popup cityView events",
+      "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2Frztdd29s_FhuFIm3GSn&w=640&q=75&dpl=dpl_9DPTbvHhdSEJezGBXHEA7WFa6YJp"
+    },
+    {
+      "slug": "ethiopiapopup",
+      "url": "https://app.sola.day/event/ethiopiapopup",
+      "text": "Jan 21-Feb 21ETHiopia Pop-upAddis Abababy ETHiopiaView events",
+      "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2F5qasfbse_tfTbTgZWy%3Ftr%3Dw-624&w=640&q=75&dpl=dpl_9DPTbvHhdSEJezGBXHEA7WFa6YJp"
+    },
+    {
+      "slug": "infinitacity",
+      "url": "https://app.sola.day/event/infinitacity",
+      "text": "Jan 09-Dec 31INFINITAPróspera ZEDEby Infinita City | Community ActivitesView events",
+      "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2Feo3xff8m_hoP8ZIwK_v%3Ftr%3Dw-624&w=640&q=75&dpl=dpl_9DPTbvHhdSEJezGBXHEA7WFa6YJp"
+    },
+    {
+      "slug": "protopian",
+      "url": "https://app.sola.day/event/protopian",
+      "text": "Feb 26-Mar 05Protopian ConvergenceCosta Ricaby protopianView events",
+      "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2F5wrdgcma_x0R8W93Ih&w=640&q=75&dpl=dpl_9DPTbvHhdSEJezGBXHEA7WFa6YJp"
+    },
+    {
+      "slug": "popupfest",
+      "url": "https://app.sola.day/event/popupfest",
+      "text": "Nov 09-Nov 09Pop-Up Fest4Seas MountainView, Chiangmai, Thailandby Pop Up FestView events",
+      "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2Fm4hwpvum_4GOdBDOTM&w=640&q=75&dpl=dpl_9DPTbvHhdSEJezGBXHEA7WFa6YJp"
+    },
+    {
+      "slug": "herstoryweb3",
+      "url": "https://app.sola.day/event/herstoryweb3",
+      "text": "Nov 01-Nov 18FemitopiaBankokk, Thailandby HerstoryView events",
+      "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2Ftr%3An-ik_ml_thumbnail%2F7ytfj6ip_Qe3oeVgS4&w=640&q=75&dpl=dpl_9DPTbvHhdSEJezGBXHEA7WFa6YJp"
+    },
+    {
+      "slug": "4seas",
+      "url": "https://app.sola.day/event/4seas",
+      "text": "Nov 01-Dec 314SeasChiangmai, Thailandby 4Seas CommunityView events",
+      "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2Fvtwl67b4_x3q6PJJ3r&w=640&q=75&dpl=dpl_9DPTbvHhdSEJezGBXHEA7WFa6YJp"
+    },
+    {
+      "slug": "seapunk",
+      "url": "https://app.sola.day/event/seapunk",
+      "text": "Nov 01-Nov 03SeapunkChiangmai,Thailandby SeapunkView events",
+      "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2F1u9w3gok_MaFf5Dj-o&w=640&q=75&dpl=dpl_9DPTbvHhdSEJezGBXHEA7WFa6YJp"
+    },
+    {
+      "slug": "web3villages",
+      "url": "https://app.sola.day/event/web3villages",
+      "text": "Nov 10-Nov 17Web3 VillageChiangmai, Thailandby Web3VillageView events",
+      "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2Fvcf9imhy_JPqCZILdB&w=640&q=75&dpl=dpl_9DPTbvHhdSEJezGBXHEA7WFa6YJp"
+    },
+    {
+      "slug": "ckbweek",
+      "url": "https://app.sola.day/event/ckbweek",
+      "text": "Nov 04-Nov 11CKB WeekChiangmai, Thailandby ckbweekView events",
+      "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2Faukzc8yl_L7YujgoaO&w=640&q=75&dpl=dpl_9DPTbvHhdSEJezGBXHEA7WFa6YJp"
+    },
+    {
+      "slug": "lovepunkschiangmai",
+      "url": "https://app.sola.day/event/lovepunkschiangmai",
+      "text": "Oct 12-Nov 10Lovepunks ChiangmaiChiangmai, Thailandby Lovepunks Residency - Chiang Mai EditionView events",
+      "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2Ff1xcvatw_s7-GqLK2W&w=640&q=75&dpl=dpl_9DPTbvHhdSEJezGBXHEA7WFa6YJp"
+    },
+    {
+      "slug": "popoutclub",
+      "url": "https://app.sola.day/event/popoutclub",
+      "text": "Oct 12-Nov 10Pop Out ClubChiangmai, Thailandby Pop Out ClubView events",
+      "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2F4kqmmf48_1FlASFvA3&w=640&q=75&dpl=dpl_9DPTbvHhdSEJezGBXHEA7WFa6YJp"
+    },
+    {
+      "slug": "dhuncollege",
+      "url": "https://app.sola.day/event/dhuncollege",
+      "text": "Oct 10-Nov 07UnCollege and Cosmo-local Chiang MaiChiang Mai, Thailandby digi-cnx Digital Humanities Un-CollegeView events",
+      "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2Fqjhn2o1m_ZkG_XUAF4K&w=640&q=75&dpl=dpl_9DPTbvHhdSEJezGBXHEA7WFa6YJp"
+    },
+    {
+      "slug": "devcon7",
+      "url": "https://app.sola.day/event/devcon7",
+      "text": "Nov 01-Nov 03Wundervei RetreatChiang Mai, Thailandby DevconView events",
+      "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2F9upooulz__YLDp6Fb4&w=640&q=75&dpl=dpl_9DPTbvHhdSEJezGBXHEA7WFa6YJp"
+    },
+    {
+      "slug": "herdao",
+      "url": "https://app.sola.day/event/herdao",
+      "text": "Oct 07-Nov 04H.E.R. DAO Coworking SpaceChiang Mai, Thailandby H.E.R. DAOView events",
+      "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2Fcw8mzo1m_zF3aEWV79&w=640&q=75&dpl=dpl_9DPTbvHhdSEJezGBXHEA7WFa6YJp"
+    },
+    {
+      "slug": "zuthailand",
+      "url": "https://app.sola.day/event/zuthailand",
+      "text": "Nov 18-Dec 18ZuThailandBangkok, Thailandby zuthailandView events",
+      "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2F4p0ki237_VDwTPeD2-&w=640&q=75&dpl=dpl_9DPTbvHhdSEJezGBXHEA7WFa6YJp"
+    },
+    {
+      "slug": "zugarden",
+      "url": "https://app.sola.day/event/zugarden",
+      "text": "Nov 10-Nov 30ZuGardenBangkok, Thailandby zugardenView events",
+      "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2Fty98e1tr_x3DgK5mzz&w=640&q=75&dpl=dpl_9DPTbvHhdSEJezGBXHEA7WFa6YJp"
+    },
+    {
+      "slug": "themu",
+      "url": "https://app.sola.day/event/themu",
+      "text": "Oct 10-Nov 04MuChiangmai Again!Punspace Tha Phae Gateby muChiangMaiView events",
+      "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2Fzmeo0ppt_79RQ78mV4&w=640&q=75&dpl=dpl_9DPTbvHhdSEJezGBXHEA7WFa6YJp"
+    },
+    {
+      "slug": "ftccnx",
+      "url": "https://app.sola.day/event/ftccnx",
+      "text": "Oct 07-Oct 31Funding the Commons Builders Residency Chiangmai4seas Mountainview, Chiang Mai, Thailandby FtC Builders Residency ChiangmaiView events",
+      "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2Fnf8bcfdy_Y2uRVqXKo&w=640&q=75&dpl=dpl_9DPTbvHhdSEJezGBXHEA7WFa6YJp"
+    },
+    {
+      "slug": "megazu",
+      "url": "https://app.sola.day/event/megazu",
+      "text": "Oct 07-Nov 07MegazuPunspace Tha Phae Gate, Chiang Mai, Thailandby MegaZuzalu HQView events",
+      "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2Fime09n9t_jgmLjAnW_&w=640&q=75&dpl=dpl_9DPTbvHhdSEJezGBXHEA7WFa6YJp"
+    },
+    {
+      "slug": "invisiblegarden",
+      "url": "https://app.sola.day/event/invisiblegarden",
+      "text": "Oct 01-Nov 10Invisible GardenChiang Mai, Thailandby Invisible GardenView events",
+      "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2Fsjh3x3ur_cJHd3nbY1&w=640&q=75&dpl=dpl_9DPTbvHhdSEJezGBXHEA7WFa6YJp"
+    },
+    {
+      "slug": "zelarcity",
+      "url": "https://app.sola.day/event/zelarcity",
+      "text": "Oct 05-Nov 17Zelar CityBerlin, Germanyby Zelar CityView events",
+      "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2Fiy4ez48n_G34fOs4a_&w=640&q=75&dpl=dpl_9DPTbvHhdSEJezGBXHEA7WFa6YJp"
+    },
+    {
+      "slug": "auraverse",
+      "url": "https://app.sola.day/event/auraverse",
+      "text": "Oct 12-Nov 10AuraVerse Chiang MaiChiang Mai, Thailandby AuraverseView events",
+      "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2Fsve6danp_wHwddRUUg&w=640&q=75&dpl=dpl_9DPTbvHhdSEJezGBXHEA7WFa6YJp"
+    },
+    {
+      "slug": "sopsymposium",
+      "url": "https://app.sola.day/event/sopsymposium",
+      "text": "Sep 17-Sep 28Protocol SymposiumZoomby Protocol SymposiumView events",
+      "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2Ficpdinri_nsuB2RYl1&w=640&q=75&dpl=dpl_9DPTbvHhdSEJezGBXHEA7WFa6YJp"
+    },
+    {
+      "slug": "edgecitylanna",
+      "url": "https://app.sola.day/event/edgecitylanna",
+      "text": "Oct 10-Nov 10Edge City LannaChiang Mai, Thailandby Edge City LannaView events",
+      "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2Flr41pfh8_FP7pwjaoe%3Ftr%3Dw-624&w=640&q=75&dpl=dpl_9DPTbvHhdSEJezGBXHEA7WFa6YJp"
+    },
+    {
+      "slug": "woochiangmai",
+      "url": "https://app.sola.day/event/woochiangmai",
+      "text": "Sep 30-Nov 10ShanhaiWoo · Chiangmai 山海坞·清迈Chiang Maiby ShanhaiWoo · Chiangmai 山海坞·清迈View events",
+      "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2Fte1oj5mn_DIUAoBlmq%3Ftr%3Dw-624&w=640&q=75&dpl=dpl_9DPTbvHhdSEJezGBXHEA7WFa6YJp"
+    },
+    {
+      "slug": "buildermonastery",
+      "url": "https://app.sola.day/event/buildermonastery",
+      "text": "Sep 16-Oct 07Builders MonasteryEriceira, Portugalby Builder MonasteryView events",
+      "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2F8gubx5kc__DyD1B55v%3Ftr%3Dw-624&w=640&q=75&dpl=dpl_9DPTbvHhdSEJezGBXHEA7WFa6YJp"
+    },
+    {
+      "slug": "aleph",
+      "url": "https://app.sola.day/event/aleph",
+      "text": "Aug 05-Sep 01AlephArgentinaby AlephView events",
+      "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2F9ubqv0yq_oEW7NL9GWr&w=640&q=75&dpl=dpl_9DPTbvHhdSEJezGBXHEA7WFa6YJp"
+    },
+    {
+      "slug": "edgeesmeralda",
+      "url": "https://app.sola.day/event/edgeesmeralda",
+      "text": "Jun 02-Jun 29Edge EsmeraldaHealdsburg, California, United Statesby Edge EsmeraldaView events",
+      "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2Fse6oymdh_nd-ema6R6&w=640&q=75&dpl=dpl_9DPTbvHhdSEJezGBXHEA7WFa6YJp"
+    },
+    {
+      "slug": "campcontact",
+      "url": "https://app.sola.day/event/campcontact",
+      "text": "Aug 24-Sep 01Camp Contact at Burning ManCamp Contact at Burning Manby campcontactView events",
+      "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2Fs6xhaoei_zSfPlT9mh&w=640&q=75&dpl=dpl_9DPTbvHhdSEJezGBXHEA7WFa6YJp"
+    },
+    {
+      "slug": "nomadword",
+      "url": "https://app.sola.day/event/nomadword",
+      "text": "Sep 26-Sep 28goddubaiby nomadwordView events",
+      "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2F87wt68w2_Y1T-b73S7&w=640&q=75&dpl=dpl_9DPTbvHhdSEJezGBXHEA7WFa6YJp"
+    },
+    {
+      "slug": "ipecity",
+      "url": "https://app.sola.day/event/ipecity",
+      "text": "Feb 28-Mar 29Ipe Village 2026Florianopolisby ipecityView events",
+      "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2F6uw8n8ao_iAqD6B1QTV&w=640&q=75&dpl=dpl_9DPTbvHhdSEJezGBXHEA7WFa6YJp"
+    },
+    {
+      "slug": "web3confenugu",
+      "url": "https://app.sola.day/event/web3confenugu",
+      "text": "Sep 20-Sep 24Web3Conf Enugu 2.0BuidlUp by Web3Conf Enuguby Web3Conf EnuguView events",
+      "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2Fb24mmbhp_M0IZ2khHjn&w=640&q=75&dpl=dpl_9DPTbvHhdSEJezGBXHEA7WFa6YJp"
+    },
+    {
+      "slug": "greenpillkenya",
+      "url": "https://app.sola.day/event/greenpillkenya",
+      "text": "Sep 07-Sep 08Mortech ReGen HubNairobi, Kenyaby greenpillkenyaView events",
+      "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2Fbxfvxreo_53p3JrCavi&w=640&q=75&dpl=dpl_9DPTbvHhdSEJezGBXHEA7WFa6YJp"
+    },
+    {
+      "slug": "meeting",
+      "url": "https://app.sola.day/event/meeting",
+      "text": "Sep 04-Sep 05Meeting Shanghai by meetingView events",
+      "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2Fzj1h4o1h_Y_2iVD0b4&w=640&q=75&dpl=dpl_9DPTbvHhdSEJezGBXHEA7WFa6YJp"
+    },
+    {
+      "slug": "wcbgroup",
+      "url": "https://app.sola.day/event/wcbgroup",
+      "text": "Sep 09-Sep 12Accra Greater Ghanaby wcbgroupView events",
+      "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2Fwd6wahpf_QSFftW-Bvs&w=640&q=75&dpl=dpl_9DPTbvHhdSEJezGBXHEA7WFa6YJp"
+    },
+    {
+      "slug": "stemzy",
+      "url": "https://app.sola.day/event/stemzy",
+      "text": "Aug 26-Aug 28stem stormNairobiby stemzyView events",
+      "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2Fsohw846h_XzrCGOgvJP&w=640&q=75&dpl=dpl_9DPTbvHhdSEJezGBXHEA7WFa6YJp"
+    },
+    {
+      "slug": "shangri-la",
+      "url": "https://app.sola.day/event/shangri-la",
+      "text": "Sep 13-Sep 14Official M&A Ceremony Shangri-laby shangri-laView events",
+      "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2F7sdm49ii_Ixnwy1vj9&w=640&q=75&dpl=dpl_9DPTbvHhdSEJezGBXHEA7WFa6YJp"
+    },
+    {
+      "slug": "w3hub-berlin",
+      "url": "https://app.sola.day/event/w3hub-berlin",
+      "text": "Jul 31-Dec 31w3.hub, BerlinBerlinby w3hub-berlinView events",
+      "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2Fzrse4pkb_qfk6xwAnU&w=640&q=75&dpl=dpl_9DPTbvHhdSEJezGBXHEA7WFa6YJp"
+    },
+    {
+      "slug": "xopenspace",
+      "url": "https://app.sola.day/event/xopenspace",
+      "text": "Jul 12-Jul 13创友会如皋by xopenspaceView events",
+      "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2Fzh3l4yil_ETZk7W-sKp&w=640&q=75&dpl=dpl_9DPTbvHhdSEJezGBXHEA7WFa6YJp"
+    },
+    {
+      "slug": "eth-drcongo",
+      "url": "https://app.sola.day/event/eth-drcongo",
+      "text": "Jun 26-Jul 26RDC/Eth_NyiragongoNyiragongoby eth-drcongoView events",
+      "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2Fuc6i5rlj_NtV5V-yJHb&w=640&q=75&dpl=dpl_9DPTbvHhdSEJezGBXHEA7WFa6YJp"
+    },
+    {
+      "slug": "buildersweekistanbul",
+      "url": "https://app.sola.day/event/buildersweekistanbul",
+      "text": "Sep 01-Sep 02CryptIstCryptIst by buildersweekistanbulView events",
+      "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2F22oadzrd_uEqQy3BJr&w=640&q=75&dpl=dpl_9DPTbvHhdSEJezGBXHEA7WFa6YJp"
+    },
+    {
+      "slug": "curiousnessdesign",
+      "url": "https://app.sola.day/event/curiousnessdesign",
+      "text": "May 22-May 22Haoqisheshanghaiby Curiousness DesignView events",
+      "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2Fcz3pz2d5_hYozDRM06&w=640&q=75&dpl=dpl_9DPTbvHhdSEJezGBXHEA7WFa6YJp"
+    },
+    {
+      "slug": "flow-phangan",
+      "url": "https://app.sola.day/event/flow-phangan",
+      "text": "Apr 18-May 18Flow PhanganFlow Phanganby Flow PhanganView events",
+      "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2F31fno5u4_s_4MRgSgu&w=640&q=75&dpl=dpl_9DPTbvHhdSEJezGBXHEA7WFa6YJp"
+    },
+    {
+      "slug": "the-gathering",
+      "url": "https://app.sola.day/event/the-gathering",
+      "text": "Sep 11-Sep 16Gathering of TribesPortugalby The GatheringView events",
+      "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2Faxzncgvw_POzI-1KDv%3Ftr%3Dw-624&w=640&q=75&dpl=dpl_9DPTbvHhdSEJezGBXHEA7WFa6YJp"
+    },
+    {
+      "slug": "vitalia",
+      "url": "https://app.sola.day/event/vitalia",
+      "text": "Jul 02-Jul 31Vitalia Summer ProgramRoatan, Hondurasby VitaliaCityView events",
+      "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2Fmcxfd2xs_jyz6jYrrk%3Ftr%3Dw-624&w=640&q=75&dpl=dpl_9DPTbvHhdSEJezGBXHEA7WFa6YJp"
+    },
+    {
+      "slug": "wamotopia",
+      "url": "https://app.sola.day/event/wamotopia",
+      "text": "Dec 16-Jan 01WamotopiaChiangmai, Thailandby WAMOTOPIAView events",
+      "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2Fb7m6n17n_tsntg5DtA&w=640&q=75&dpl=dpl_9DPTbvHhdSEJezGBXHEA7WFa6YJp"
+    },
+    {
+      "slug": "shanhaiwoo",
+      "url": "https://app.sola.day/event/shanhaiwoo",
+      "text": "Aug 05-Aug 31ShanhaiwooJilin, Chinaby 山海坞ShanhaiWooView events",
+      "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2F53wlve53_B8UConxWg&w=640&q=75&dpl=dpl_9DPTbvHhdSEJezGBXHEA7WFa6YJp"
+    }
+  ]
+}

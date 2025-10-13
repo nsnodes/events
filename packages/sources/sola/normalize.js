@@ -1,61 +1,64 @@
 /**
  * Sola.day Event Normalization
  *
- * Transforms raw Sola.day scraped data into normalized Event schema
+ * Transforms raw Sola.day event data (from iCal) into normalized Event schema
  */
 
 import { generateFingerprint } from '../../core/fingerprint.js'
 
 /**
  * Normalize a single Sola.day event to common Event schema
- * @param {Object} rawEvent - Raw event from Sola.day scraper
+ * @param {Object} rawEvent - Raw event from Sola.day iCal
+ * @param {string} citySlug - City slug for context
  * @returns {Object} Normalized event
  */
-export function normalizeEvent(rawEvent) {
-  // Parse date range (e.g., "Dec 10 - 15, 2025" or "Jan 5, 2025")
-  const { startAt, endAt } = parseDateRange(rawEvent.dateRange, rawEvent.timeRange)
+export function normalizeEvent(rawEvent, citySlug = null) {
+  const startAt = new Date(rawEvent.startDate)
+  const endAt = rawEvent.endDate ? new Date(rawEvent.endDate) : null
 
-  // Extract city/country from location
-  const { city, country } = parseLocation(rawEvent.location)
+  // Extract city from location or use citySlug
+  const city = extractCity(rawEvent.location) || citySlug
 
   const normalized = {
     // Identifiers
-    uid: `sola-${rawEvent.id}`,
+    uid: rawEvent.uid,
     fingerprint: generateFingerprint(
       rawEvent.title,
       startAt,
-      city
+      city,
+      rawEvent.geo?.lat,
+      rawEvent.geo?.lon
     ),
 
     // Source metadata
     source: 'soladay',
-    sourceUrl: rawEvent.url,
-    sourceEventId: rawEvent.id,
+    sourceUrl: rawEvent.solaUrl || rawEvent.url || `https://app.sola.day/event/detail/${rawEvent.uid}`,
+    sourceEventId: rawEvent.uid,
 
     // Core event data
     title: rawEvent.title,
-    description: rawEvent.description,
+    description: cleanDescription(rawEvent.description),
     startAt,
     endAt,
-    timezone: null, // Not provided by Sola.day
+    timezone: null, // iCal dates are UTC, timezone not provided
 
     // Location
-    venueName: null,
-    address: rawEvent.fullAddress || rawEvent.location,
-    lat: null, // Would need geocoding
-    lng: null,
+    venueName: extractVenueName(rawEvent.location),
+    address: rawEvent.location,
+    lat: rawEvent.geo?.lat,
+    lng: rawEvent.geo?.lon,
     city,
-    country,
+    country: extractCountry(rawEvent.location),
 
     // Additional metadata
     organizers: rawEvent.organizer ? [{ name: rawEvent.organizer }] : [],
-    tags: rawEvent.tags || [],
-    imageUrl: rawEvent.image,
+    tags: [],
+    imageUrl: null, // Would need to be extracted from description or separate fetch
     status: mapStatus(rawEvent.status),
 
     // Tracking
-    sequence: 0, // Sola.day doesn't provide version tracking
-    confidence: 0.85, // Medium-high confidence (DOM scraping, dates need parsing)
+    sequence: rawEvent.sequence || 0,
+    confidence: 0.98, // High confidence - official iCal data
     raw: rawEvent,
 
     // Timestamps
@@ -68,124 +71,87 @@ export function normalizeEvent(rawEvent) {
 }
 
 /**
- * Normalize batch of events from scraper
- * @param {Object} scrapedEvent - Result from scrapeEventDetail()
- * @returns {Object|null} Normalized event or null if failed
+ * Normalize batch of events from a city result
+ * @param {Object} cityResult - Result from fetchEvents()
+ * @returns {Array} Array of normalized events
  */
-export function normalizeScrapedEvent(scrapedEvent) {
-  if (!scrapedEvent.success || !scrapedEvent.title) {
-    return null
+export function normalizeCityEvents(cityResult) {
+  if (!cityResult.success || !cityResult.events) {
+    return []
   }
 
-  return normalizeEvent(scrapedEvent)
+  return cityResult.events.map(event =>
+    normalizeEvent(event, cityResult.citySlug)
+  )
 }
 
 // Helper functions
 
-/**
- * Parse Sola.day date range strings
- * Examples: "Dec 10 - 15, 2025", "Jan 5, 2025", "Dec 31, 2024 - Jan 2, 2025"
- */
-function parseDateRange(dateRange, timeRange) {
-  const now = new Date()
-  const currentYear = now.getFullYear()
+function extractCity(location) {
+  if (!location) return null
 
-  try {
-    // Simple heuristic: try to parse the date string
-    // This is a naive implementation - may need refinement based on actual data
-
-    // Default to upcoming date if parsing fails
-    const defaultStart = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000) // 1 week from now
-
-    if (!dateRange) {
-      return {
-        startAt: defaultStart,
-        endAt: null
-      }
-    }
-
-    // Very basic parsing - just extract first date we can find
-    // TODO: Improve this with proper date parsing library
-    const months = {
-      'Jan': 0, 'Feb': 1, 'Mar': 2, 'Apr': 3, 'May': 4, 'Jun': 5,
-      'Jul': 6, 'Aug': 7, 'Sep': 8, 'Oct': 9, 'Nov': 10, 'Dec': 11
-    }
-
-    // Try to match "Month Day" pattern
-    const match = dateRange.match(/(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+(\d+)/)
-
-    if (match) {
-      const month = months[match[1]]
-      const day = parseInt(match[2])
-
-      // Guess year (if month has passed this year, assume next year)
-      let year = currentYear
-      if (month < now.getMonth() || (month === now.getMonth() && day < now.getDate())) {
-        year = currentYear + 1
-      }
-
-      const startAt = new Date(year, month, day, 12, 0, 0) // Noon as default
-
-      return {
-        startAt,
-        endAt: null // TODO: Parse end date from range
-      }
-    }
-
-    return {
-      startAt: defaultStart,
-      endAt: null
-    }
-
-  } catch (error) {
-    console.warn('Failed to parse date:', dateRange, error.message)
-    return {
-      startAt: new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000),
-      endAt: null
-    }
-  }
-}
-
-/**
- * Parse location string to extract city/country
- */
-function parseLocation(location) {
-  if (!location) {
-    return { city: null, country: null }
-  }
+  // Skip URLs
+  if (location.startsWith('http')) return null
 
   // Handle "Online" events
-  if (location.toLowerCase().includes('online')) {
-    return { city: 'Online', country: null }
-  }
+  if (location.toLowerCase().includes('online')) return 'Online'
 
-  // Try to parse "City, Country" format
+  // Try to extract city from address (naive approach)
+  // Example: "Venue Name, Amsterdam, Netherlands" -> "Amsterdam"
   const parts = location.split(',').map(p => p.trim())
 
   if (parts.length >= 2) {
-    return {
-      city: parts[0],
-      country: parts[parts.length - 1]
-    }
+    // Assume second-to-last part is city
+    return parts[parts.length - 2]
   }
 
-  return {
-    city: location,
-    country: null
-  }
+  return null
 }
 
-/**
- * Map Sola.day status to normalized status
- */
+function extractVenueName(location) {
+  if (!location) return null
+
+  // Skip URLs
+  if (location.startsWith('http')) return null
+
+  // Get first part before comma
+  const firstPart = location.split(',')[0].trim()
+  return firstPart || null
+}
+
+function extractCountry(location) {
+  if (!location) return null
+
+  // Skip URLs
+  if (location.startsWith('http')) return null
+
+  // Try to get last part (usually country)
+  const parts = location.split(',').map(p => p.trim())
+
+  if (parts.length > 1) {
+    return parts[parts.length - 1]
+  }
+
+  return null
+}
+
+function cleanDescription(description) {
+  if (!description) return null
+
+  // Remove common iCal artifacts
+  return description
+    .replace(/Get up to date information at:.*$/gm, '')
+    .trim()
+}
+
 function mapStatus(status) {
   if (!status) return 'scheduled'
 
-  const normalized = status.toLowerCase()
+  const normalized = status.toUpperCase()
 
-  if (normalized === 'ongoing') return 'scheduled' // Treat ongoing as scheduled
-  if (normalized === 'past') return 'cancelled' // Past events marked as cancelled for filtering
-  if (normalized === 'upcoming') return 'scheduled'
+  if (normalized === 'CONFIRMED') return 'scheduled'
+  if (normalized === 'TENTATIVE') return 'tentative'
+  if (normalized === 'CANCELLED') return 'cancelled'
 
   return 'scheduled'
 }

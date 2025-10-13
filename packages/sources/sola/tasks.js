@@ -1,74 +1,143 @@
 /**
  * Sola.day Task Definitions
  *
- * Defines all tasks for the Sola.day (Social Layer) event source.
- * Unlike Luma, Sola.day has no iCal feeds - everything requires Playwright scraping.
+ * Three-tier task system for Sola.day (matching Luma's architecture)
  */
 
 import * as scrapers from './scrapers/index.js'
-import { normalizeScrapedEvent } from './normalize.js'
+import { normalizeCityEvents } from './normalize.js'
 
 export default [
   /**
+   * Task: Discover popup cities
+   * Frequency: Daily
+   * Method: Playwright scraping
+   */
+  {
+    id: 'sola:cities',
+    cron: '0 0 * * *',
+    description: 'Discover all popup cities on Sola.day',
+
+    async run() {
+      console.log('[sola:cities] Starting city discovery...')
+
+      const data = await scrapers.scrapePopupCities({ headless: true })
+
+      // Check for changes
+      try {
+        const oldData = scrapers.getCities()
+        const diff = scrapers.compareCities(oldData, data)
+
+        if (diff.hasChanges) {
+          console.log(`[sola:cities] Changes detected: ${diff.summary}`)
+          console.log(`  Added: ${diff.added.map(c => c.slug).join(', ')}`)
+          console.log(`  Removed: ${diff.removed.map(c => c.slug).join(', ')}`)
+        } else {
+          console.log('[sola:cities] No changes detected')
+        }
+      } catch (error) {
+        console.log('[sola:cities] First run - no previous data to compare')
+      }
+
+      scrapers.saveCities(data)
+
+      console.log(`[sola:cities] Saved ${data.totalCities} cities`)
+
+      return {
+        totalCities: data.totalCities
+      }
+    }
+  },
+
+  /**
+   * Task: Extract iCal URLs
+   * Frequency: Weekly
+   * Method: Playwright scraping (clicks subscribe buttons)
+   */
+  {
+    id: 'sola:ical-urls',
+    cron: '0 0 * * 0',
+    description: 'Extract iCal subscription URLs for all popup cities',
+
+    async run() {
+      console.log('[sola:ical-urls] Starting iCal URL extraction...')
+
+      const cities = scrapers.getCities()
+      const data = await scrapers.scrapeIcalUrls(cities.cities, { headless: true })
+
+      // Check for changes
+      try {
+        const oldUrls = scrapers.getIcalUrls()
+        const diff = scrapers.compareIcalUrls(oldUrls, data)
+
+        if (diff.hasChanges) {
+          console.log(`[sola:ical-urls] Changes detected:`)
+          console.log(`  Changed: ${diff.changed.length} URLs`)
+          console.log(`  Added: ${diff.added.length} URLs`)
+          console.log(`  Removed: ${diff.removed.length} URLs`)
+        } else {
+          console.log('[sola:ical-urls] No changes detected')
+        }
+      } catch (error) {
+        console.log('[sola:ical-urls] First run - no previous data to compare')
+      }
+
+      scrapers.saveIcalUrls(data)
+
+      console.log(`[sola:ical-urls] Saved ${data.withIcalUrl} iCal URLs`)
+
+      return {
+        totalCities: data.totalCities,
+        withIcalUrl: data.withIcalUrl,
+        withoutIcalUrl: data.withoutIcalUrl
+      }
+    }
+  },
+
+  /**
    * Task: Sync events (streaming)
-   * Frequency: Every 10 minutes (or 30 minutes - adjust as needed)
-   * Method: Playwright scraping (3-tier: discover → groups → events)
-   *
-   * Note: This is slower than Luma's HTTP-based sync due to Playwright overhead
+   * Frequency: Every 10 minutes
+   * Method: HTTP fetch from iCal feeds
+   * Returns: Async generator yielding normalized events
    */
   {
     id: 'sola:events',
     cron: '*/10 * * * *',
-    description: 'Scrape all events from Sola.day using Playwright',
+    description: 'Fetch events from all popup city iCal feeds',
 
     async *extractStream() {
-      console.log('[sola:events] Starting event scrape (streaming)...')
+      console.log('[sola:events] Starting event sync (streaming)...')
 
-      let processedEvents = 0
-      let successfulEvents = 0
-      let failedEvents = 0
+      const icalUrls = scrapers.getIcalUrls()
+      const cityCount = Object.keys(icalUrls).length
 
-      try {
-        for await (const rawEvent of scrapers.scrapeAllEvents({
-          headless: true,
-          concurrency: 3,
-          includePast: false // Skip past events
-        })) {
-          processedEvents++
+      console.log(`[sola:events] Fetching events from ${cityCount} cities...`)
 
-          if (rawEvent.success && rawEvent.title) {
-            const normalized = normalizeScrapedEvent(rawEvent)
+      let processedCities = 0
+      let totalEvents = 0
 
-            if (normalized) {
-              successfulEvents++
-              console.log(
-                `[sola:events] ${normalized.title.substring(0, 50)} - ` +
-                `${normalized.city || 'Unknown'} (${processedEvents} processed)`
-              )
+      for await (const cityResult of scrapers.fetchAllCityEventsStreaming(icalUrls)) {
+        processedCities++
 
-              // Yield as single-item array (batch of 1)
-              yield [normalized]
-            } else {
-              failedEvents++
-            }
-          } else {
-            failedEvents++
-            console.error(
-              `[sola:events] Failed to scrape event: ${rawEvent.error || 'Unknown error'} ` +
-              `(${processedEvents} processed)`
-            )
-          }
+        if (cityResult.success) {
+          const normalized = normalizeCityEvents(cityResult)
+          totalEvents += normalized.length
+
+          console.log(
+            `[sola:events] ${cityResult.citySlug}: ${normalized.length} events ` +
+            `(${processedCities}/${cityCount})`
+          )
+
+          yield normalized
+        } else {
+          console.error(
+            `[sola:events] ${cityResult.citySlug}: FAILED - ${cityResult.error} ` +
+            `(${processedCities}/${cityCount})`
+          )
         }
-
-        console.log(
-          `[sola:events] Complete: ${successfulEvents} events, ` +
-          `${failedEvents} failures (${processedEvents} total processed)`
-        )
-
-      } catch (error) {
-        console.error(`[sola:events] Fatal error: ${error.message}`)
-        throw error
       }
+
+      console.log(`[sola:events] Complete: ${totalEvents} events from ${cityCount} cities`)
     }
   }
 ]
