@@ -3,6 +3,7 @@
  * Can be swapped out for other databases without changing core logic
  */
 
+import { createClient, SupabaseClient } from '@supabase/supabase-js'
 import type { Event } from './types.js'
 
 export interface Database {
@@ -11,27 +12,147 @@ export interface Database {
   getEventByUid(uid: string): Promise<Event | null>
 }
 
-// Placeholder - will be implemented with actual Supabase client
+/**
+ * Transform Event object to database row format
+ */
+function eventToRow(event: Event): any {
+  return {
+    uid: event.uid,
+    fingerprint: event.fingerprint || null,
+
+    source: event.source,
+    source_url: event.sourceUrl,
+    source_event_id: event.sourceEventId || null,
+
+    title: event.title,
+    description: event.description || null,
+    start_at: event.startAt.toISOString(),
+    end_at: event.endAt ? event.endAt.toISOString() : null,
+    timezone: event.timezone || null,
+
+    venue_name: event.venueName || null,
+    address: event.address || null,
+    lat: event.lat || null,
+    lng: event.lng || null,
+    city: event.city || null,
+    country: event.country || null,
+
+    organizers: event.organizers || [],
+    tags: event.tags || [],
+    image_url: event.imageUrl || null,
+    status: event.status,
+
+    sequence: event.sequence || 0,
+    confidence: event.confidence,
+    raw: event.raw || null,
+
+    first_seen: event.firstSeen.toISOString(),
+    last_seen: event.lastSeen.toISOString(),
+    last_checked: event.lastChecked.toISOString()
+  }
+}
+
+/**
+ * Transform database row to Event object
+ */
+function rowToEvent(row: any): Event {
+  return {
+    uid: row.uid,
+    fingerprint: row.fingerprint,
+
+    source: row.source,
+    sourceUrl: row.source_url,
+    sourceEventId: row.source_event_id,
+
+    title: row.title,
+    description: row.description,
+    startAt: new Date(row.start_at),
+    endAt: row.end_at ? new Date(row.end_at) : undefined,
+    timezone: row.timezone,
+
+    venueName: row.venue_name,
+    address: row.address,
+    lat: row.lat,
+    lng: row.lng,
+    city: row.city,
+    country: row.country,
+
+    organizers: row.organizers || [],
+    tags: row.tags || [],
+    imageUrl: row.image_url,
+    status: row.status,
+
+    sequence: row.sequence,
+    confidence: row.confidence,
+    raw: row.raw,
+
+    firstSeen: new Date(row.first_seen),
+    lastSeen: new Date(row.last_seen),
+    lastChecked: new Date(row.last_checked)
+  }
+}
+
 export class SupabaseDatabase implements Database {
-  constructor(
-    private url: string,
-    private key: string
-  ) {}
+  private client: SupabaseClient
+
+  constructor(url: string, key: string) {
+    this.client = createClient(url, key)
+  }
 
   async upsertEvent(event: Event): Promise<void> {
-    // TODO: Implement Supabase upsert
-    throw new Error('Not implemented')
+    const row = eventToRow(event)
+
+    const { error } = await this.client
+      .from('events')
+      .upsert(row, {
+        onConflict: 'uid'
+      })
+
+    if (error) {
+      throw new Error(`Failed to upsert event: ${error.message}`)
+    }
   }
 
   async upsertEvents(events: Event[]): Promise<void> {
-    // TODO: Batch upsert
-    throw new Error('Not implemented')
+    if (events.length === 0) {
+      return
+    }
+
+    const rows = events.map(eventToRow)
+
+    // Supabase has a limit on batch size, so chunk if needed
+    const BATCH_SIZE = 500
+    for (let i = 0; i < rows.length; i += BATCH_SIZE) {
+      const batch = rows.slice(i, i + BATCH_SIZE)
+
+      const { error } = await this.client
+        .from('events')
+        .upsert(batch, {
+          onConflict: 'uid'
+        })
+
+      if (error) {
+        throw new Error(`Failed to upsert events batch: ${error.message}`)
+      }
+    }
   }
 
   async getEventByUid(uid: string): Promise<Event | null> {
-    // TODO: Query by UID
-    throw new Error('Not implemented')
-    return null
+    const { data, error } = await this.client
+      .from('events')
+      .select('*')
+      .eq('uid', uid)
+      .single()
+
+    if (error) {
+      if (error.code === 'PGRST116') {
+        // Not found
+        return null
+      }
+      throw new Error(`Failed to fetch event: ${error.message}`)
+    }
+
+    return data ? rowToEvent(data) : null
   }
 }
 

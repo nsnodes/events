@@ -10,6 +10,8 @@
     "luma:cities": "node packages/sources/luma/scripts/run-cities.js",
     "luma:ical-urls": "node packages/sources/luma/scripts/run-ical-urls.js",
     "luma:events": "node packages/sources/luma/scripts/run-events.js",
+    "sola:cities": "node packages/sources/sola/scripts/run-cities.js",
+    "sola:ical-urls": "node packages/sources/sola/scripts/run-ical-urls.js",
     "sola:events": "node packages/sources/sola/scripts/run-events.js",
     "schedule:daily": "node apps/cli/run.js schedule:daily",
     "schedule:weekly": "node apps/cli/run.js schedule:weekly",
@@ -21,6 +23,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "@supabase/supabase-js": "^2.39.0",
     "glob": "^11.0.0",
     "playwright": "^1.48.0",
     "playwright-extra": "^4.3.6",
