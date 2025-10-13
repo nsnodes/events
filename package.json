@@ -32,11 +32,17 @@
   "dependencies": {
     "@supabase/supabase-js": "^2.39.0",
     "glob": "^11.0.0",
+    "node-geocoder": "^4.4.1",
     "playwright": "^1.48.0",
     "playwright-extra": "^4.3.6",
     "puppeteer-extra-plugin-stealth": "^2.11.2"
   },
   "devDependencies": {
+    "dotenv": "^17.2.3",
+    "supabase": "^1.226.4",
     "tsx": "^4.20.6"
+  },
+  "scripts-notes": {
+    "db:migrate": "Run after 'supabase link': supabase db push"
   }
 }
