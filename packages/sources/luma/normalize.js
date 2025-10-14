@@ -6,17 +6,29 @@
 
 import { generateFingerprint } from '../../core/fingerprint.js'
 import { reverseGeocode } from '../../core/geocoding.js'
+import fs from 'fs'
+import path from 'path'
+
+// Load handle location cache
+const HANDLE_LOCATIONS_FILE = path.join(process.cwd(), 'packages/sources/luma/data/handle-locations.json')
+let handleLocations = {}
+try {
+  handleLocations = JSON.parse(fs.readFileSync(HANDLE_LOCATIONS_FILE, 'utf8'))
+} catch (error) {
+  // File doesn't exist yet, that's okay
+}
 
 /**
  * Normalize a single Luma event to common Event schema
  * @param {Object} rawEvent - Raw event from Luma iCal
- * @param {string} citySlug - City slug for context
+ * @param {string} entitySlug - Entity slug for context (city or handle)
  * @param {Object} options - Normalization options
  * @param {boolean} options.skipGeocoding - Skip geocoding (reuse existing data)
  * @param {Object} options.reuseLocation - Location data to reuse {city, country}
+ * @param {string} options.entityType - Type of entity ('city' or 'handle')
  * @returns {Promise<Object>} Normalized event
  */
-export async function normalizeEvent(rawEvent, citySlug = null, options = {}) {
+export async function normalizeEvent(rawEvent, entitySlug = null, options = {}) {
   const startAt = new Date(rawEvent.startDate)
   const endAt = rawEvent.endDate ? new Date(rawEvent.endDate) : null
 
@@ -40,10 +52,23 @@ export async function normalizeEvent(rawEvent, citySlug = null, options = {}) {
 
   // Fallback to parsing if geocoding didn't work or no coordinates
   if (!city) {
-    city = extractCity(rawEvent.location) || citySlug
+    city = extractCity(rawEvent.location) || entitySlug
   }
   if (!country) {
     country = extractCountry(rawEvent.location)
+  }
+
+  // Handle-specific fallback: Use cached location for internal room references
+  if (options.entityType === 'handle' && handleLocations[entitySlug]) {
+    const isInternalRoom = isInternalRoomReference(rawEvent.location)
+
+    if (isInternalRoom) {
+      // Apply handle's default location for internal rooms
+      const defaultLocation = handleLocations[entitySlug]
+      city = defaultLocation.city
+      country = defaultLocation.country
+      timezone = defaultLocation.timezone
+    }
   }
 
   // Extract the actual Luma URL from description before cleaning
@@ -101,23 +126,30 @@ export async function normalizeEvent(rawEvent, citySlug = null, options = {}) {
 }
 
 /**
- * Normalize batch of events from a city result
+ * Normalize batch of events from an entity result (city or handle)
  * Optimized: Only geocodes new or updated events
  *
- * @param {Object} cityResult - Result from fetchEvents()
+ * @param {Object} entityResult - Result from fetchEvents()
  * @param {Object} db - Database instance (optional, for optimization)
+ * @param {string} entityType - Type of entity ('city' or 'handle')
  * @returns {Promise<Array>} Array of normalized events
  */
-export async function normalizeCityEvents(cityResult, db = null) {
-  if (!cityResult.success || !cityResult.events) {
+export async function normalizeCityEvents(entityResult, db = null, entityType = 'city') {
+  if (!entityResult.success || !entityResult.events) {
     return []
+  }
+
+  // Detect entity type from slug if not provided
+  // (handles are typically in handleLocations, cities are not)
+  if (!entityType && handleLocations[entityResult.citySlug]) {
+    entityType = 'handle'
   }
 
   // Optimization: Check which events already exist in DB
   let existingEventsMap = new Map()
   if (db) {
     try {
-      const uids = cityResult.events.map(e => e.uid)
+      const uids = entityResult.events.map(e => e.uid)
       const existingEvents = await db.getEventsByUids(uids)
       existingEventsMap = new Map(existingEvents.map(e => [e.uid, e]))
     } catch (error) {
@@ -130,14 +162,14 @@ export async function normalizeCityEvents(cityResult, db = null) {
   let geocodingCount = 0
   let reusedCount = 0
 
-  for (const event of cityResult.events) {
+  for (const event of entityResult.events) {
     const existing = existingEventsMap.get(event.uid)
 
     // Generate fingerprint for this event to detect real changes
     // Fingerprint is based on: title, startAt, city, coordinates
     const startAt = new Date(event.startDate)
     const tempCity = event.geo?.lat && event.geo?.lon ?
-      (existing?.city || cityResult.citySlug) : cityResult.citySlug
+      (existing?.city || entityResult.citySlug) : entityResult.citySlug
 
     const eventFingerprint = generateFingerprint(
       event.title,
@@ -151,25 +183,28 @@ export async function normalizeCityEvents(cityResult, db = null) {
     // (Luma uses global sequence numbers, so we can't rely on those)
     if (existing && existing.fingerprint === eventFingerprint) {
       // Reuse existing geocoded data - event hasn't actually changed
-      const normalizedEvent = await normalizeEvent(event, cityResult.citySlug, {
+      const normalizedEvent = await normalizeEvent(event, entityResult.citySlug, {
         skipGeocoding: true,
         reuseLocation: {
           city: existing.city,
           country: existing.country,
           timezone: existing.timezone
-        }
+        },
+        entityType
       })
       normalized.push(normalizedEvent)
       reusedCount++
     } else {
       // New or updated event - perform geocoding
-      const normalizedEvent = await normalizeEvent(event, cityResult.citySlug)
+      const normalizedEvent = await normalizeEvent(event, entityResult.citySlug, {
+        entityType
+      })
       normalized.push(normalizedEvent)
       geocodingCount++
     }
   }
 
-  if (db && cityResult.events.length > 0) {
+  if (db && entityResult.events.length > 0) {
     console.log(`  [geocoding] ${geocodingCount} geocoded, ${reusedCount} reused`)
   }
 
@@ -221,6 +256,64 @@ function extractCountry(location) {
   }
 
   return null
+}
+
+/**
+ * Detect if a location string is an internal room reference (not a real address)
+ * Examples: "NS Club 13", "13th Floor", "VIP room at the end"
+ * @private
+ */
+function isInternalRoomReference(location) {
+  if (!location) return false
+
+  const loc = location.toLowerCase()
+
+  // Patterns that indicate internal rooms
+  const internalPatterns = [
+    /^ns /i,                    // Starts with "NS"
+    /\d+(st|nd|rd|th) floor/i,  // Floor numbers
+    /room \d+/i,                // Room numbers
+    /^room /i,                  // Starts with "Room"
+    /^vip room/i,               // VIP rooms
+    /^pool$/i,                  // Just "Pool"
+    /^library/i,                // Library
+    /^coworking/i,              // Coworking
+    /tent$/i,                   // Workout tent, etc.
+    /^gym/i,                    // Gym
+    /^yoga/i,                   // Yoga room
+    /^ping pong/i,              // Ping pong room
+  ]
+
+  // Check if it matches any internal pattern
+  const hasInternalPattern = internalPatterns.some(pattern => pattern.test(loc))
+
+  // If it has a comma and multiple parts, it's likely a real address
+  // (unless it's something like "13th Floor, Corner Room")
+  const parts = location.split(',').map(p => p.trim())
+  const hasMultipleParts = parts.length > 1
+
+  // Real addresses typically have country names or coordinates
+  const hasCountryName = /\b(malaysia|singapore|united states|usa|uk|germany|france)\b/i.test(loc)
+
+  if (hasCountryName) {
+    return false // Definitely a real address
+  }
+
+  if (hasInternalPattern && !hasMultipleParts) {
+    return true // Single-part internal reference
+  }
+
+  if (hasInternalPattern && hasMultipleParts) {
+    // "13th Floor, Corner Room" is still internal
+    // "Forest City Marina Hotel, Malaysia" is not
+    // If all parts look internal, it's internal
+    const allPartsInternal = parts.every(part =>
+      internalPatterns.some(pattern => pattern.test(part))
+    )
+    return allPartsInternal
+  }
+
+  return false
 }
 
 function extractLumaUrl(description) {
