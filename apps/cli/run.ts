@@ -22,9 +22,9 @@ async function main() {
       console.error('Usage: node apps/cli/run.js <command> [args]')
       console.error('')
       console.error('Commands:')
-      console.error('  schedule:daily   - Run daily schedule (0 0 * * *)')
-      console.error('  schedule:weekly  - Run weekly schedule (0 0 * * 0)')
-      console.error('  schedule:sync    - Run sync schedule (*/10 * * * *)')
+      console.error('  schedule:daily   - Run daily tasks (discover cities)')
+      console.error('  schedule:weekly  - Run weekly tasks (update iCal URLs)')
+      console.error('  schedule:polling - Run polling tasks (fetch events every 10 min)')
       console.error('  task <id>        - Run specific task by ID')
       console.error('  list             - List all available tasks')
       process.exit(1)
@@ -32,11 +32,11 @@ async function main() {
 
     // Schedule commands
     if (command === 'schedule:daily') {
-      await runSchedule('0 0 * * *')
+      await runSchedule('daily')
     } else if (command === 'schedule:weekly') {
-      await runSchedule('0 0 * * 0')
-    } else if (command === 'schedule:sync') {
-      await runSchedule('*/10 * * * *')
+      await runSchedule('weekly')
+    } else if (command === 'schedule:polling') {
+      await runSchedule('polling')
     }
 
     // Task command
@@ -57,7 +57,7 @@ async function main() {
 
       tasks.forEach(task => {
         console.log(`  ${task.id}`)
-        console.log(`    Cron: ${task.cron}`)
+        console.log(`    Schedule: ${task.schedule}`)
         console.log(`    ${task.description}`)
         console.log()
       })

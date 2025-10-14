@@ -61,7 +61,7 @@ npm run list:events
 
 Each event source defines tasks in a `tasks.js` file with:
 - **Task ID**: Unique identifier (e.g., `luma:cities`, `luma:events`)
-- **Cron field**: Category label for grouping tasks by frequency (`*/10 * * * *`, `0 0 * * *`, `0 0 * * 0`)
+- **Schedule**: Frequency label (`polling`, `daily`, `weekly`)
 - **Execution logic**: `run()` or `extractStream()` function
 
 Example task definition:
@@ -69,7 +69,7 @@ Example task definition:
 export default [
   {
     id: 'luma:cities',
-    cron: '0 0 * * *',  // Category: daily tasks
+    schedule: 'daily',
     description: 'Discover all cities available on Luma',
     async run() {
       // Task implementation
@@ -78,13 +78,13 @@ export default [
 ]
 ```
 
-The orchestrator discovers all `tasks.js` files and filters tasks by their cron field. The cron value is used as a category label, not for actual scheduling:
+The orchestrator discovers all `tasks.js` files and groups tasks by their schedule:
 
-- `schedule:sync` runs tasks with cron `*/10 * * * *`
-- `schedule:daily` runs tasks with cron `0 0 * * *`
-- `schedule:weekly` runs tasks with cron `0 0 * * 0`
+- **polling**: High-frequency tasks (every 10 minutes) - fetch events from iCal feeds
+- **daily**: Once per day - discover new cities/communities
+- **weekly**: Once per week - update iCal URLs
 
-GitHub Actions handles the actual scheduling by calling these commands on a schedule.
+GitHub Actions workflows call these schedules at the appropriate intervals.
 
 ## Features
 

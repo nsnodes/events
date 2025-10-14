@@ -38,23 +38,23 @@ async function loadAllTasks() {
 }
 
 /**
- * Run all tasks matching a specific cron schedule
- * @param {string} cronPattern - Cron pattern to match
+ * Run all tasks matching a specific schedule
+ * @param {string} schedule - Schedule name ('polling', 'daily', 'weekly')
  * @returns {Promise<Object>} Execution summary
  */
-export async function runSchedule(cronPattern) {
-  console.log(`\n🚀 Running schedule: ${cronPattern}\n`)
+export async function runSchedule(schedule) {
+  console.log(`\n🚀 Running schedule: ${schedule}\n`)
 
   const startTime = Date.now()
   const allTasks = await loadAllTasks()
 
-  // Filter tasks matching this cron pattern
-  const matchingTasks = allTasks.filter(task => task.cron === cronPattern)
+  // Filter tasks matching this schedule
+  const matchingTasks = allTasks.filter(task => task.schedule === schedule)
 
   if (matchingTasks.length === 0) {
-    console.log(`⚠️  No tasks found for schedule: ${cronPattern}`)
+    console.log(`⚠️  No tasks found for schedule: ${schedule}`)
     return {
-      schedule: cronPattern,
+      schedule: schedule,
       tasksRun: 0,
       eventsProcessed: 0,
       duration: Date.now() - startTime
@@ -175,7 +175,7 @@ export async function listTasks() {
 
   return allTasks.map(task => ({
     id: task.id,
-    cron: task.cron,
+    schedule: task.schedule,
     description: task.description || 'No description',
     hasExtractStream: !!task.extractStream,
     hasRun: !!task.run

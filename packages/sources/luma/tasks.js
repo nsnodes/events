@@ -16,7 +16,7 @@ export default [
    */
   {
     id: 'luma:cities',
-    cron: '0 0 * * *',
+    schedule: 'daily',
     description: 'Discover all cities available on Luma',
 
     async run() {
@@ -60,7 +60,7 @@ export default [
    */
   {
     id: 'luma:ical-urls',
-    cron: '0 0 * * 0',
+    schedule: 'weekly',
     description: 'Extract iCal subscription URLs for all cities',
 
     async run() {
@@ -101,13 +101,13 @@ export default [
 
   /**
    * Task: Sync events (streaming)
-   * Frequency: Every 10 minutes (high-frequency polling)
+   * Frequency: Polling (every 10 minutes)
    * Method: HTTP fetch from iCal feeds
    * Returns: Async generator yielding normalized events
    */
   {
     id: 'luma:events',
-    cron: '*/10 * * * *',
+    schedule: 'polling',
     description: 'Fetch events from all city iCal feeds',
 
     async *extractStream(db) {

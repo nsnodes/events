@@ -15,7 +15,7 @@ export default [
    */
   {
     id: 'sola:cities',
-    cron: '0 0 * * *',
+    schedule: 'daily',
     description: 'Discover all popup cities on Sola.day',
 
     async run() {
@@ -56,7 +56,7 @@ export default [
    */
   {
     id: 'sola:ical-urls',
-    cron: '0 0 * * 0',
+    schedule: 'weekly',
     description: 'Extract iCal subscription URLs for all popup cities',
 
     async run() {
@@ -96,13 +96,13 @@ export default [
 
   /**
    * Task: Sync events (streaming)
-   * Frequency: Every 10 minutes
+   * Frequency: Polling (every 10 minutes)
    * Method: HTTP fetch from iCal feeds
    * Returns: Async generator yielding normalized events
    */
   {
     id: 'sola:events',
-    cron: '*/10 * * * *',
+    schedule: 'polling',
     description: 'Fetch events from all popup city iCal feeds',
 
     async *extractStream(db) {

@@ -31,7 +31,7 @@ jobs:
         run: npx playwright install --with-deps chromium
 
       - name: Sync events
-        run: npm run schedule:sync
+        run: npm run schedule:polling
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}

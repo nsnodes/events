@@ -15,7 +15,7 @@
     "sola:events": "node packages/sources/sola/scripts/run-events.js",
     "schedule:daily": "tsx apps/cli/run.ts schedule:daily",
     "schedule:weekly": "tsx apps/cli/run.ts schedule:weekly",
-    "schedule:sync": "tsx apps/cli/run.ts schedule:sync",
+    "schedule:polling": "tsx apps/cli/run.ts schedule:polling",
     "task": "tsx apps/cli/run.ts task",
     "list": "tsx apps/cli/run.ts list"
   },
