@@ -74,6 +74,20 @@ export async function normalizeEvent(rawEvent, entitySlug = null, options = {}) 
   // Extract the actual Luma URL from description before cleaning
   const extractedUrl = extractLumaUrl(rawEvent.description)
 
+  // Build organizers array
+  const organizers = []
+  if (rawEvent.organizer) {
+    organizers.push({ name: rawEvent.organizer })
+  }
+  // Add handle organization if this is from a handle
+  if (options.entityType === 'handle' && handleLocations[entitySlug]?.name) {
+    const handleName = handleLocations[entitySlug].name
+    // Only add if not already in organizers
+    if (!organizers.some(o => o.name === handleName)) {
+      organizers.push({ name: handleName })
+    }
+  }
+
   const normalized = {
     // Identifiers
     uid: rawEvent.uid,
@@ -106,7 +120,7 @@ export async function normalizeEvent(rawEvent, entitySlug = null, options = {}) 
     country,
 
     // Additional metadata
-    organizers: rawEvent.organizer ? [{ name: rawEvent.organizer }] : [],
+    organizers,
     tags: [],
     imageUrl: null, // Would need to be extracted from description URL
     status: mapStatus(rawEvent.status),
@@ -260,58 +274,38 @@ function extractCountry(location) {
 
 /**
  * Detect if a location string is an internal room reference (not a real address)
- * Examples: "NS Club 13", "13th Floor", "VIP room at the end"
+ * Uses structural characteristics rather than hardcoded room names
  * @private
  */
 function isInternalRoomReference(location) {
   if (!location) return false
 
-  const loc = location.toLowerCase()
-
-  // Patterns that indicate internal rooms
-  const internalPatterns = [
-    /^ns /i,                    // Starts with "NS"
-    /\d+(st|nd|rd|th) floor/i,  // Floor numbers
-    /room \d+/i,                // Room numbers
-    /^room /i,                  // Starts with "Room"
-    /^vip room/i,               // VIP rooms
-    /^pool$/i,                  // Just "Pool"
-    /^library/i,                // Library
-    /^coworking/i,              // Coworking
-    /tent$/i,                   // Workout tent, etc.
-    /^gym/i,                    // Gym
-    /^yoga/i,                   // Yoga room
-    /^ping pong/i,              // Ping pong room
-  ]
-
-  // Check if it matches any internal pattern
-  const hasInternalPattern = internalPatterns.some(pattern => pattern.test(loc))
-
-  // If it has a comma and multiple parts, it's likely a real address
-  // (unless it's something like "13th Floor, Corner Room")
   const parts = location.split(',').map(p => p.trim())
-  const hasMultipleParts = parts.length > 1
 
-  // Real addresses typically have country names or coordinates
-  const hasCountryName = /\b(malaysia|singapore|united states|usa|uk|germany|france)\b/i.test(loc)
+  // Real addresses typically have 3+ parts (street, city, region/country)
+  if (parts.length >= 3) return false
 
-  if (hasCountryName) {
-    return false // Definitely a real address
+  // Check for postal codes (various formats)
+  // US: 12345 or 12345-6789
+  // Canada: A1A 1A1
+  // UK: SW1A 1AA
+  if (/\b\d{5}(-\d{4})?\b|\b[A-Z]\d[A-Z]\s?\d[A-Z]\d\b|\b[A-Z]{1,2}\d{1,2}\s?\d[A-Z]{2}\b/i.test(location)) {
+    return false // Has postal code = real address
   }
 
-  if (hasInternalPattern && !hasMultipleParts) {
-    return true // Single-part internal reference
-  }
+  // Check for street address indicators
+  const streetIndicators = /\b(street|st|avenue|ave|road|rd|drive|dr|boulevard|blvd|lane|ln|jalan|jln)\b/i
+  if (streetIndicators.test(location)) return false
 
-  if (hasInternalPattern && hasMultipleParts) {
-    // "13th Floor, Corner Room" is still internal
-    // "Forest City Marina Hotel, Malaysia" is not
-    // If all parts look internal, it's internal
-    const allPartsInternal = parts.every(part =>
-      internalPatterns.some(pattern => pattern.test(part))
-    )
-    return allPartsInternal
-  }
+  // Check for hotel/building indicators (these are real addresses)
+  const buildingIndicators = /\b(hotel|resort|mall|center|centre|plaza|tower|building)\b/i
+  if (buildingIndicators.test(location)) return false
+
+  // If short and single-part, likely internal
+  if (parts.length === 1 && location.length < 30) return true
+
+  // Default to internal for 2-part short strings without geographic keywords
+  if (parts.length <= 2 && location.length < 40) return true
 
   return false
 }

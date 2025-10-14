@@ -6,7 +6,8 @@
       "handle": "ns",
       "slug": "ns",
       "url": "https://luma.com/ns",
-      "type": "user"
+      "type": "user",
+      "name": "Network School"
     }
   ]
 }
