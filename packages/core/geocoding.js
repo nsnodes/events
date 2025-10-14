@@ -71,11 +71,19 @@ function scheduleCacheSave() {
   if (saveTimeout) clearTimeout(saveTimeout)
   saveTimeout = setTimeout(() => {
     saveCache()
+    saveTimeout = null
   }, 5000) // Save 5 seconds after last change
+
+  // Don't keep process alive waiting for save
+  saveTimeout.unref()
 }
 
-process.on('exit', () => saveCache())
+process.on('exit', () => {
+  if (saveTimeout) clearTimeout(saveTimeout)
+  saveCache()
+})
 process.on('SIGINT', () => {
+  if (saveTimeout) clearTimeout(saveTimeout)
   saveCache()
   process.exit(0)
 })
