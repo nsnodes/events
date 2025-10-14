@@ -96,7 +96,7 @@ export async function runSchedule(schedule) {
   console.log(`   Events processed: ${totalEventsProcessed}`)
 
   return {
-    schedule: cronPattern,
+    schedule,
     tasksRun: matchingTasks.length,
     eventsProcessed: totalEventsProcessed,
     duration,
