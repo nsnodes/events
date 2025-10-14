@@ -48,8 +48,21 @@ export async function runSchedule(schedule) {
   const startTime = Date.now()
   const allTasks = await loadAllTasks()
 
-  // Filter tasks matching this schedule
-  const matchingTasks = allTasks.filter(task => task.schedule === schedule)
+  // Filter tasks matching this schedule and check if enabled
+  const matchingTasks = allTasks.filter(task => {
+    if (task.schedule !== schedule) return false
+
+    // Check if task is enabled (if enabled property exists)
+    if (task.enabled !== undefined) {
+      const isEnabled = typeof task.enabled === 'function' ? task.enabled() : task.enabled
+      if (!isEnabled) {
+        console.log(`⏭️  Skipping disabled task: ${task.id}`)
+        return false
+      }
+    }
+
+    return true
+  })
 
   if (matchingTasks.length === 0) {
     console.log(`⚠️  No tasks found for schedule: ${schedule}`)
@@ -161,6 +174,20 @@ export async function runTask(taskId) {
 
   if (!task) {
     throw new Error(`Task not found: ${taskId}`)
+  }
+
+  // Check if task is enabled
+  if (task.enabled !== undefined) {
+    const isEnabled = typeof task.enabled === 'function' ? task.enabled() : task.enabled
+    if (!isEnabled) {
+      console.log(`⏭️  Task is disabled: ${task.id}`)
+      return {
+        taskId: task.id,
+        success: false,
+        skipped: true,
+        reason: 'Task is disabled via config'
+      }
+    }
   }
 
   return await executeTask(task)
