@@ -1,10 +1,12 @@
 /**
  * Sola.day Event Normalization
  *
- * Transforms raw Sola.day event data (from iCal) into normalized Event schema
+ * Transforms raw Sola.day data into normalized Event schema:
+ * - Popup cities (from city-details scraper) -> events
+ * - Events within cities (from iCal feeds) -> events
  */
 
-import { generateFingerprint } from '../../core/fingerprint.js'
+import { generateFingerprint } from '../../core/fingerprint.ts'
 import { reverseGeocode } from '../../core/geocoding.js'
 
 /**
@@ -241,4 +243,102 @@ function mapStatus(status) {
   if (normalized === 'CANCELLED') return 'cancelled'
 
   return 'scheduled'
+}
+
+/**
+ * Normalize a popup city to common Event schema
+ * @param {Object} cityDetail - City detail from scrapeCityDetail()
+ * @param {Object} options - Normalization options
+ * @returns {Promise<Object>} Normalized event
+ */
+export async function normalizePopupCity(cityDetail, options = {}) {
+  if (!cityDetail.success) return null
+
+  const startAt = cityDetail.startDate ? new Date(cityDetail.startDate) : null
+  const endAt = cityDetail.endDate ? new Date(cityDetail.endDate) : null
+
+  if (!startAt) {
+    console.warn(`[normalize] Skipping city ${cityDetail.citySlug} - missing start date`)
+    return null
+  }
+
+  // Don't parse location/country from inconsistent text - leave as null
+  const city = null
+  const country = null
+  const timezone = cityDetail.timezone || null
+
+  const normalized = {
+    // Identifiers
+    uid: `soladay-city-${cityDetail.id || cityDetail.citySlug}`,
+    fingerprint: generateFingerprint(
+      cityDetail.title,
+      startAt,
+      city,
+      null, // No coordinates for cities typically
+      null
+    ),
+
+    // Source metadata
+    source: 'soladay',
+    sourceUrl: `https://app.sola.day/event/${cityDetail.citySlug}`,
+    sourceEventId: cityDetail.id?.toString() || cityDetail.citySlug,
+
+    // Core event data
+    title: cityDetail.title,
+    description: cityDetail.description || null,
+    startAt,
+    endAt,
+    timezone,
+
+    // Location
+    venueName: null,
+    address: cityDetail.location || null,
+    lat: null,
+    lng: null,
+    city,
+    country,
+
+    // Additional metadata
+    organizers: [],
+    tags: ['popup-city'], // Tag to distinguish popup cities from regular events
+    imageUrl: cityDetail.imageUrl || null,
+    status: 'scheduled',
+    website: cityDetail.website || null,
+
+    // Tracking
+    sequence: 0,
+    confidence: 0.95, // High confidence - official API data
+    raw: cityDetail,
+
+    // Timestamps
+    firstSeen: new Date(),
+    lastSeen: new Date(),
+    lastChecked: new Date()
+  }
+
+  return normalized
+}
+
+/**
+ * Normalize batch of popup cities from city details result
+ * @param {Object} cityDetailsResult - Result from scrapeCityDetails()
+ * @returns {Promise<Array>} Array of normalized events
+ */
+export async function normalizePopupCities(cityDetailsResult) {
+  if (!cityDetailsResult.success || !cityDetailsResult.cities) {
+    return []
+  }
+
+  const normalized = []
+
+  for (const cityDetail of cityDetailsResult.cities) {
+    const normalizedCity = await normalizePopupCity(cityDetail)
+    if (normalizedCity) {
+      normalized.push(normalizedCity)
+    }
+  }
+
+  console.log(`[normalize] Normalized ${normalized.length}/${cityDetailsResult.cities.length} popup cities`)
+
+  return normalized
 }

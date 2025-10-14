@@ -17,7 +17,10 @@ export default {
 
   // Sola configuration
   sola: {
-    // Enable/disable city scraping
+    // Enable/disable popup city tracking (cities as events)
     cities_enabled: true,
+
+    // Enable/disable city events scraping (events within cities)
+    cities_events_enabled: false,
   }
 }

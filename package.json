@@ -11,6 +11,7 @@
     "luma:ical-urls": "node packages/sources/luma/scripts/run-ical-urls.js",
     "luma:events": "node packages/sources/luma/scripts/run-events.js",
     "sola:cities": "node packages/sources/sola/scripts/run-cities.js",
+    "sola:city-details": "node packages/sources/sola/scripts/run-city-details.js",
     "sola:ical-urls": "node packages/sources/sola/scripts/run-ical-urls.js",
     "sola:events": "node packages/sources/sola/scripts/run-events.js",
     "schedule:daily": "tsx apps/cli/run.ts schedule:daily",

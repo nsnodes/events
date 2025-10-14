@@ -34,7 +34,8 @@ export async function scrapePopupCities(options = {}) {
 
   try {
     console.log('Loading popup city list...');
-    await page.goto('https://app.sola.day/popup-city', { waitUntil: 'networkidle', timeout: 30000 });
+    // Use main page instead of /popup-city because it includes years in dates
+    await page.goto('https://app.sola.day/', { waitUntil: 'networkidle', timeout: 30000 });
     await page.waitForTimeout(2000);
 
     const cities = await page.evaluate(() => {
