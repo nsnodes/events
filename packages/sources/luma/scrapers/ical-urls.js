@@ -252,14 +252,19 @@ async function findAndExtractIcal(page) {
 /**
  * Save iCal URLs to disk
  * @param {Object} icalData - iCal URL data with entities array
+ * @param {string} entityType - Type of entities ('cities' or 'handles')
  */
-export function saveIcalUrls(icalData) {
+export function saveIcalUrls(icalData, entityType = 'cities') {
   if (!fs.existsSync(DATA_DIR)) {
     fs.mkdirSync(DATA_DIR, { recursive: true });
   }
 
-  // Save full data
-  fs.writeFileSync(ICAL_FULL_FILE, JSON.stringify(icalData, null, 2));
+  // Save full data with entity type metadata
+  const fullData = {
+    ...icalData,
+    entityType
+  };
+  fs.writeFileSync(ICAL_FULL_FILE, JSON.stringify(fullData, null, 2));
 
   // Save URL mapping (slug -> url) - works for any entity type
   const urlMap = {};
@@ -281,6 +286,17 @@ export function getIcalUrls() {
     throw new Error('iCal URLs not found. Run scrapeIcalUrls() first.');
   }
   return JSON.parse(fs.readFileSync(ICAL_URLS_FILE, 'utf8'));
+}
+
+/**
+ * Load full iCal data with metadata
+ * @returns {Object} Full iCal data including entityType
+ */
+export function getIcalData() {
+  if (!fs.existsSync(ICAL_FULL_FILE)) {
+    throw new Error('iCal data not found. Run scrapeIcalUrls() first.');
+  }
+  return JSON.parse(fs.readFileSync(ICAL_FULL_FILE, 'utf8'));
 }
 
 /**

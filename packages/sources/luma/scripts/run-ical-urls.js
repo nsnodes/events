@@ -30,5 +30,5 @@ if (!config.luma.cities_enabled && config.luma.handles.length > 0) {
 }
 
 const data = await scrapeIcalUrls(entities, { headless: false });
-saveIcalUrls(data);
+saveIcalUrls(data, entityType);
 console.log(`Saved ${data.withIcalUrl} iCal URLs for ${entityType}`);

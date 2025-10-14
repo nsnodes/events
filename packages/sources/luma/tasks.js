@@ -121,7 +121,7 @@ export default [
         console.log('[luma:ical-urls] First run - no previous data to compare')
       }
 
-      scrapers.saveIcalUrls(data)
+      scrapers.saveIcalUrls(data, entityType)
 
       console.log(`[luma:ical-urls] Saved ${data.withIcalUrl} iCal URLs for ${entityType}`)
 
@@ -149,38 +149,41 @@ export default [
     async *extractStream(db) {
       console.log('[luma:events] Starting event sync (streaming)...')
 
+      // Get full iCal data with entity type metadata
+      const icalData = scrapers.getIcalData()
       const icalUrls = scrapers.getIcalUrls()
-      const cityCount = Object.keys(icalUrls).length
+      const entityCount = Object.keys(icalUrls).length
+      const entityType = icalData.entityType === 'handles' ? 'handle' : 'city'
 
-      console.log(`[luma:events] Fetching events from ${cityCount} cities...`)
+      console.log(`[luma:events] Fetching events from ${entityCount} ${icalData.entityType}...`)
 
-      let processedCities = 0
+      let processedEntities = 0
       let totalEvents = 0
 
-      for await (const cityResult of scrapers.fetchAllCityEventsStreaming(icalUrls)) {
-        processedCities++
-        console.log(`[luma:events] Processing ${cityResult.citySlug}...`)
+      for await (const entityResult of scrapers.fetchAllCityEventsStreaming(icalUrls)) {
+        processedEntities++
+        console.log(`[luma:events] Processing ${entityResult.citySlug}...`)
 
-        if (cityResult.success) {
-          console.log(`[luma:events]   Fetched ${cityResult.eventCount} events, normalizing...`)
-          const normalized = await normalizeCityEvents(cityResult, db)
+        if (entityResult.success) {
+          console.log(`[luma:events]   Fetched ${entityResult.eventCount} events, normalizing...`)
+          const normalized = await normalizeCityEvents(entityResult, db, entityType)
           totalEvents += normalized.length
 
           console.log(
-            `[luma:events] ${cityResult.citySlug}: ${normalized.length} events ` +
-            `(${processedCities}/${cityCount})`
+            `[luma:events] ${entityResult.citySlug}: ${normalized.length} events ` +
+            `(${processedEntities}/${entityCount})`
           )
 
           yield normalized
         } else {
           console.error(
-            `[luma:events] ${cityResult.citySlug}: FAILED - ${cityResult.error} ` +
-            `(${processedCities}/${cityCount})`
+            `[luma:events] ${entityResult.citySlug}: FAILED - ${entityResult.error} ` +
+            `(${processedEntities}/${entityCount})`
           )
         }
       }
 
-      console.log(`[luma:events] Complete: ${totalEvents} events from ${cityCount} cities`)
+      console.log(`[luma:events] Complete: ${totalEvents} events from ${entityCount} ${icalData.entityType}`)
     }
   }
 ]
