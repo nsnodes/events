@@ -71,6 +71,10 @@ async function main() {
       process.exit(1)
     }
 
+    // Force exit after successful completion
+    // (Supabase client keeps connections open)
+    process.exit(0)
+
   } catch (error) {
     console.error('\n❌ Error:', error.message)
     console.error(error.stack)
