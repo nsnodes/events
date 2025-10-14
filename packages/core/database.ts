@@ -185,10 +185,10 @@ export class SupabaseDatabase implements Database {
       return []
     }
 
-    // Fetch only uid, sequence, city, country for optimization
+    // Fetch only uid, sequence, city, country, timezone for optimization
     const { data, error } = await this.client
       .from('events')
-      .select('uid, sequence, city, country')
+      .select('uid, sequence, city, country, timezone')
       .in('uid', uids)
 
     if (error) {
@@ -200,7 +200,8 @@ export class SupabaseDatabase implements Database {
       uid: row.uid,
       sequence: row.sequence,
       city: row.city,
-      country: row.country
+      country: row.country,
+      timezone: row.timezone
     } as any))
   }
 }
