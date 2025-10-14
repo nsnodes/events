@@ -22,17 +22,20 @@ export async function normalizeEvent(rawEvent, citySlug = null, options = {}) {
 
   let city = null
   let country = null
+  let timezone = null
 
   // Option 1: Reuse existing location data (for unchanged events)
   if (options.skipGeocoding && options.reuseLocation) {
     city = options.reuseLocation.city
     country = options.reuseLocation.country
+    timezone = options.reuseLocation.timezone
   }
   // Option 2: Use reverse geocoding if we have coordinates
   else if (rawEvent.geo?.lat && rawEvent.geo?.lon) {
     const geocoded = await reverseGeocode(rawEvent.geo.lat, rawEvent.geo.lon)
     city = geocoded.city
     country = geocoded.country
+    timezone = geocoded.timezone
   }
 
   // Fallback to parsing if geocoding didn't work or no coordinates
@@ -64,7 +67,7 @@ export async function normalizeEvent(rawEvent, citySlug = null, options = {}) {
     description: cleanDescription(rawEvent.description),
     startAt,
     endAt,
-    timezone: null, // iCal dates are UTC, timezone not provided
+    timezone, // From geocoding or null
 
     // Location
     venueName: extractVenueName(rawEvent.location),
@@ -134,7 +137,8 @@ export async function normalizeCityEvents(cityResult, db = null) {
         skipGeocoding: true,
         reuseLocation: {
           city: existing.city,
-          country: existing.country
+          country: existing.country,
+          timezone: existing.timezone
         }
       })
       normalized.push(normalizedEvent)

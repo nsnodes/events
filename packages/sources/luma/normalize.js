@@ -22,17 +22,20 @@ export async function normalizeEvent(rawEvent, citySlug = null, options = {}) {
 
   let city = null
   let country = null
+  let timezone = null
 
   // Option 1: Reuse existing location data (for unchanged events)
   if (options.skipGeocoding && options.reuseLocation) {
     city = options.reuseLocation.city
     country = options.reuseLocation.country
+    timezone = options.reuseLocation.timezone
   }
   // Option 2: Use reverse geocoding if we have coordinates
   else if (rawEvent.geo?.lat && rawEvent.geo?.lon) {
     const geocoded = await reverseGeocode(rawEvent.geo.lat, rawEvent.geo.lon)
     city = geocoded.city
     country = geocoded.country
+    timezone = geocoded.timezone
   }
 
   // Fallback to parsing if geocoding didn't work or no coordinates
@@ -42,6 +45,9 @@ export async function normalizeEvent(rawEvent, citySlug = null, options = {}) {
   if (!country) {
     country = extractCountry(rawEvent.location)
   }
+
+  // Extract the actual Luma URL from description before cleaning
+  const extractedUrl = extractLumaUrl(rawEvent.description)
 
   const normalized = {
     // Identifiers
@@ -56,7 +62,7 @@ export async function normalizeEvent(rawEvent, citySlug = null, options = {}) {
 
     // Source metadata
     source: 'luma',
-    sourceUrl: rawEvent.lumaUrl || rawEvent.url || `https://lu.ma/event/${rawEvent.uid}`,
+    sourceUrl: extractedUrl || rawEvent.lumaUrl || rawEvent.url || `https://lu.ma/event/${rawEvent.uid}`,
     sourceEventId: rawEvent.uid,
 
     // Core event data
@@ -64,7 +70,7 @@ export async function normalizeEvent(rawEvent, citySlug = null, options = {}) {
     description: cleanDescription(rawEvent.description),
     startAt,
     endAt,
-    timezone: null, // iCal dates are UTC, timezone not provided
+    timezone, // From geocoding or null
 
     // Location
     venueName: extractVenueName(rawEvent.location),
@@ -134,7 +140,8 @@ export async function normalizeCityEvents(cityResult, db = null) {
         skipGeocoding: true,
         reuseLocation: {
           city: existing.city,
-          country: existing.country
+          country: existing.country,
+          timezone: existing.timezone
         }
       })
       normalized.push(normalizedEvent)
@@ -199,6 +206,14 @@ function extractCountry(location) {
   }
 
   return null
+}
+
+function extractLumaUrl(description) {
+  if (!description) return null
+
+  // Extract URL from "Get up to date information at: https://lu.ma/..." line
+  const match = description.match(/Get up to date information at:\s*(https?:\/\/[^\s]+)/i)
+  return match ? match[1] : null
 }
 
 function cleanDescription(description) {
