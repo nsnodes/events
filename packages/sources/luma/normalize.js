@@ -211,18 +211,44 @@ function extractCountry(location) {
 function extractLumaUrl(description) {
   if (!description) return null
 
-  // Extract URL from "Get up to date information at: https://lu.ma/..." line
-  const match = description.match(/Get up to date information at:\s*(https?:\/\/[^\s]+)/i)
+  // Extract URL from "Get up-to-date information at: https://luma.com/..." line
+  const match = description.match(/Get up-to-date information at:\s*(https?:\/\/[^\s\\]+)/i)
   return match ? match[1] : null
 }
 
 function cleanDescription(description) {
   if (!description) return null
 
-  // Remove "Get up to date information at: ..." line
-  return description
-    .replace(/Get up to date information at:.*$/gm, '')
-    .trim()
+  // Remove Luma boilerplate:
+  // 1. "Get up-to-date information at: ..." (first line)
+  // 2. "Address:\n..." section (until first blank line)
+
+  let cleaned = description
+
+  // Remove first line if it starts with "Get up-to-date information at:"
+  if (cleaned.match(/^Get up-to-date information at:/i)) {
+    const firstLineEnd = cleaned.indexOf('\\n')
+    if (firstLineEnd !== -1) {
+      cleaned = cleaned.substring(firstLineEnd)
+      cleaned = cleaned.replace(/^(\\n)+/, '') // Remove leading newlines
+    } else {
+      return null // Entire description is just the URL line
+    }
+  }
+
+  // Remove "Address:\n..." section (everything until first double newline)
+  if (cleaned.match(/^Address:/i)) {
+    const doubleNewline = cleaned.indexOf('\\n\\n')
+    if (doubleNewline !== -1) {
+      cleaned = cleaned.substring(doubleNewline)
+      cleaned = cleaned.replace(/^(\\n)+/, '') // Remove leading newlines
+    } else {
+      // No content after Address section
+      return null
+    }
+  }
+
+  return cleaned.trim() || null
 }
 
 function mapStatus(status) {
