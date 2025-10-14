@@ -1,0 +1,12 @@
+{
+  "timestamp": "2025-10-14T00:00:00.000Z",
+  "totalHandles": 1,
+  "handles": [
+    {
+      "handle": "ns",
+      "slug": "ns",
+      "url": "https://luma.com/ns",
+      "type": "user"
+    }
+  ]
+}
