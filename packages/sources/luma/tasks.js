@@ -7,19 +7,28 @@
 
 import * as scrapers from './scrapers/index.js'
 import { normalizeCityEvents } from './normalize.js'
+import config from '../../../config.js'
+import fs from 'fs'
+import path from 'path'
 
 export default [
   /**
    * Task: Discover cities
    * Frequency: Daily (detect new cities being added)
    * Method: Playwright scraping
+   * Note: Disabled by default - check config.js to enable
    */
   {
     id: 'luma:cities',
     schedule: 'daily',
-    description: 'Discover all cities available on Luma',
+    description: 'Discover all cities available on Luma (disabled by default)',
 
     async run() {
+      if (!config.luma.cities_enabled) {
+        console.log('[luma:cities] Skipping - cities_enabled=false in config.js')
+        return { skipped: true, reason: 'cities_enabled=false' }
+      }
+
       console.log('[luma:cities] Starting city discovery...')
 
       const data = await scrapers.scrapeCities({ headless: true })
@@ -57,17 +66,42 @@ export default [
    * Task: Update iCal URLs
    * Frequency: Weekly (iCal endpoints rarely change)
    * Method: Playwright scraping (clicks subscribe buttons)
+   * Note: Uses either cities or handles based on config.js
    */
   {
     id: 'luma:ical-urls',
     schedule: 'weekly',
-    description: 'Extract iCal subscription URLs for all cities',
+    description: 'Extract iCal subscription URLs for configured entities (handles or cities)',
 
     async run() {
       console.log('[luma:ical-urls] Starting iCal URL extraction...')
 
-      const cities = scrapers.getCities()
-      const data = await scrapers.scrapeIcalUrls(cities.cities, { headless: true })
+      let entities
+      let entityType
+
+      // Use handles if cities are disabled
+      if (!config.luma.cities_enabled && config.luma.handles.length > 0) {
+        console.log('[luma:ical-urls] Using user handles from config')
+        entityType = 'handles'
+
+        // Load handles from data file
+        const handlesPath = path.join(process.cwd(), 'packages/sources/luma/data/handles.json')
+        const handlesData = JSON.parse(fs.readFileSync(handlesPath, 'utf8'))
+        entities = handlesData.handles
+
+        console.log(`[luma:ical-urls] Loaded ${entities.length} handles: ${entities.map(h => h.slug).join(', ')}`)
+      } else if (config.luma.cities_enabled) {
+        console.log('[luma:ical-urls] Using cities from data file')
+        entityType = 'cities'
+        const cities = scrapers.getCities()
+        entities = cities.cities
+        console.log(`[luma:ical-urls] Loaded ${entities.length} cities`)
+      } else {
+        console.log('[luma:ical-urls] No entities configured - skipping')
+        return { skipped: true, reason: 'No cities or handles enabled in config' }
+      }
+
+      const data = await scrapers.scrapeIcalUrls(entities, { headless: true })
 
       // Check for changes
       try {
@@ -89,10 +123,11 @@ export default [
 
       scrapers.saveIcalUrls(data)
 
-      console.log(`[luma:ical-urls] Saved ${data.withIcalUrl} iCal URLs`)
+      console.log(`[luma:ical-urls] Saved ${data.withIcalUrl} iCal URLs for ${entityType}`)
 
       return {
-        totalCities: data.totalCities,
+        entityType,
+        totalEntities: data.totalEntities,
         withIcalUrl: data.withIcalUrl,
         withoutIcalUrl: data.withoutIcalUrl
       }
@@ -104,11 +139,12 @@ export default [
    * Frequency: Polling (every 10 minutes)
    * Method: HTTP fetch from iCal feeds
    * Returns: Async generator yielding normalized events
+   * Note: Uses iCal URLs from whatever entities are configured (handles or cities)
    */
   {
     id: 'luma:events',
     schedule: 'polling',
-    description: 'Fetch events from all city iCal feeds',
+    description: 'Fetch events from all configured entity iCal feeds (handles or cities)',
 
     async *extractStream(db) {
       console.log('[luma:events] Starting event sync (streaming)...')
