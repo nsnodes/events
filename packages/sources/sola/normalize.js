@@ -130,9 +130,23 @@ export async function normalizeCityEvents(cityResult, db = null) {
   for (const event of cityResult.events) {
     const existing = existingEventsMap.get(event.uid)
 
-    // Skip geocoding if event exists and hasn't changed
-    if (existing && existing.sequence === (event.sequence || 0)) {
-      // Reuse existing geocoded data
+    // Generate fingerprint for this event to detect real changes
+    // Fingerprint is based on: title, startAt, city, coordinates
+    const startAt = new Date(event.startDate)
+    const tempCity = event.geo?.lat && event.geo?.lon ?
+      (existing?.city || cityResult.citySlug) : cityResult.citySlug
+
+    const eventFingerprint = generateFingerprint(
+      event.title,
+      startAt,
+      tempCity,
+      event.geo?.lat,
+      event.geo?.lon
+    )
+
+    // Skip geocoding if event exists and fingerprint hasn't changed
+    if (existing && existing.fingerprint === eventFingerprint) {
+      // Reuse existing geocoded data - event hasn't actually changed
       const normalizedEvent = await normalizeEvent(event, cityResult.citySlug, {
         skipGeocoding: true,
         reuseLocation: {

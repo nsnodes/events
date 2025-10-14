@@ -185,10 +185,10 @@ export class SupabaseDatabase implements Database {
       return []
     }
 
-    // Fetch only uid, sequence, city, country, timezone for optimization
+    // Fetch only uid, fingerprint, city, country, timezone for optimization
     const { data, error } = await this.client
       .from('events')
-      .select('uid, sequence, city, country, timezone')
+      .select('uid, fingerprint, city, country, timezone')
       .in('uid', uids)
 
     if (error) {
@@ -198,7 +198,7 @@ export class SupabaseDatabase implements Database {
     // Return partial Event objects (only fields needed for optimization)
     return (data || []).map(row => ({
       uid: row.uid,
-      sequence: row.sequence,
+      fingerprint: row.fingerprint,
       city: row.city,
       country: row.country,
       timezone: row.timezone
