@@ -66,9 +66,12 @@ export async function* fetchAllCityEventsStreaming(icalUrls, options = {}) {
   const { concurrency = 5 } = options;
   const cities = Object.entries(icalUrls);
 
+  console.log(`[scraper] Starting to fetch ${cities.length} cities in batches of ${concurrency}`)
+
   // Process in batches for concurrency control
   for (let i = 0; i < cities.length; i += concurrency) {
     const batch = cities.slice(i, i + concurrency);
+    console.log(`[scraper] Fetching batch ${Math.floor(i/concurrency) + 1}: ${batch.map(([slug]) => slug).join(', ')}`)
     const batchPromises = batch.map(([slug, url]) => fetchEvents(slug, url));
     const batchResults = await Promise.allSettled(batchPromises);
 

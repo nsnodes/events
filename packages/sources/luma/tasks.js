@@ -123,8 +123,10 @@ export default [
 
       for await (const cityResult of scrapers.fetchAllCityEventsStreaming(icalUrls)) {
         processedCities++
+        console.log(`[luma:events] Processing ${cityResult.citySlug}...`)
 
         if (cityResult.success) {
+          console.log(`[luma:events]   Fetched ${cityResult.eventCount} events, normalizing...`)
           const normalized = await normalizeCityEvents(cityResult, db)
           totalEvents += normalized.length
 
