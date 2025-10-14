@@ -2,7 +2,7 @@
  * Geocoding Utility
  *
  * Reverse geocodes coordinates to normalized city and country names
- * Uses OpenStreetMap Nominatim with rate limiting and caching
+ * Uses Mapbox Geocoding API with rate limiting and persistent caching
  * Also includes timezone lookup from coordinates
  */
 
@@ -10,35 +10,85 @@ import NodeGeocoder from 'node-geocoder'
 import { find as findTimezone } from 'geo-tz'
 import countries from 'i18n-iso-countries'
 import { createRequire } from 'module'
+import fs from 'fs'
+import path from 'path'
 
 // Register English locale for country name translation
 const require = createRequire(import.meta.url)
 countries.registerLocale(require('i18n-iso-countries/langs/en.json'))
 
-// Initialize geocoder with Nominatim provider
-// IMPORTANT: Nominatim requires a custom User-Agent identifying the application
-const geocoder = NodeGeocoder({
-  provider: 'openstreetmap',
+// Cache file location
+const CACHE_DIR = path.join(process.cwd(), 'packages/core/data')
+const CACHE_FILE = path.join(CACHE_DIR, 'geocoding-cache.json')
+
+// Initialize geocoder with Mapbox provider
+// Mapbox supports automated/bulk geocoding (unlike Nominatim)
+const mapboxToken = process.env.MAPBOX_TOKEN
+
+if (!mapboxToken) {
+  console.warn('[geocoding] MAPBOX_TOKEN not set - geocoding will be disabled')
+}
+
+const geocoder = mapboxToken ? NodeGeocoder({
+  provider: 'mapbox',
+  apiKey: mapboxToken,
   httpAdapter: 'https',
-  apiKey: null,
-  formatter: null,
-  headers: {
-    'User-Agent': 'nsnodes-events/1.0 (events aggregation platform; contact: github.com/nsnodes/events)'
+  formatter: null
+}) : null
+
+// Load cache from disk or initialize empty
+function loadCache() {
+  try {
+    if (fs.existsSync(CACHE_FILE)) {
+      const data = JSON.parse(fs.readFileSync(CACHE_FILE, 'utf8'))
+      return new Map(Object.entries(data))
+    }
+  } catch (error) {
+    console.warn('[geocoding] Failed to load cache:', error.message)
   }
+  return new Map()
+}
+
+// Save cache to disk
+function saveCache() {
+  try {
+    if (!fs.existsSync(CACHE_DIR)) {
+      fs.mkdirSync(CACHE_DIR, { recursive: true })
+    }
+    const data = Object.fromEntries(cache)
+    fs.writeFileSync(CACHE_FILE, JSON.stringify(data, null, 2))
+  } catch (error) {
+    console.warn('[geocoding] Failed to save cache:', error.message)
+  }
+}
+
+// Persistent cache to avoid duplicate API calls
+const cache = loadCache()
+
+// Save cache periodically and on exit
+let saveTimeout = null
+function scheduleCacheSave() {
+  if (saveTimeout) clearTimeout(saveTimeout)
+  saveTimeout = setTimeout(() => {
+    saveCache()
+  }, 5000) // Save 5 seconds after last change
+}
+
+process.on('exit', () => saveCache())
+process.on('SIGINT', () => {
+  saveCache()
+  process.exit(0)
 })
 
-// In-memory cache to avoid duplicate API calls
-const cache = new Map()
-
-// Rate limiting: Conservative 2 seconds per request for Nominatim
-// Nominatim discourages bulk/automated requests - be very conservative
+// Rate limiting: Mapbox allows 600 requests/minute (10/sec)
+// We'll be conservative and do 2 requests/second max
 let lastRequestTime = 0
-const MIN_REQUEST_INTERVAL = 2000 // 2 seconds (more conservative than required 1/sec)
+const MIN_REQUEST_INTERVAL = 500 // 500ms = 2 requests/second (well under Mapbox limit)
 
 // Exponential backoff for when we get rate limited
 let consecutiveErrors = 0
-const MAX_CONSECUTIVE_ERRORS = 3
-const BACKOFF_BASE = 5000 // Start with 5 second backoff
+const MAX_CONSECUTIVE_ERRORS = 5 // More lenient since Mapbox supports bulk
+const BACKOFF_BASE = 2000 // Start with 2 second backoff
 
 /**
  * Wait to respect rate limit with exponential backoff on errors
@@ -93,23 +143,30 @@ export async function reverseGeocode(lat, lng) {
   }
 
   try {
+    // If no geocoder configured, return fallback
+    if (!geocoder) {
+      const fallback = { city: null, country: null, timezone: null }
+      cache.set(cacheKey, fallback)
+      scheduleCacheSave()
+      return fallback
+    }
+
     // Check if we've hit max consecutive errors - stop geocoding temporarily
     if (consecutiveErrors >= MAX_CONSECUTIVE_ERRORS) {
       console.warn(`[geocoding] Max consecutive errors reached, skipping geocoding for ${lat},${lng}`)
       const fallback = { city: null, country: null, timezone: null }
       cache.set(cacheKey, fallback)
+      scheduleCacheSave()
       return fallback
     }
 
-    // Wait for rate limit
+    // Wait for rate limit (with exponential backoff if we've had errors)
     await waitForRateLimit()
 
-    // Perform reverse geocoding with accept-language header
+    // Perform reverse geocoding with Mapbox
     const results = await geocoder.reverse({
       lat,
-      lon: lng,
-      addressdetails: 1,
-      'accept-language': 'en'
+      lon: lng
     })
 
     if (!results || results.length === 0) {
@@ -119,11 +176,6 @@ export async function reverseGeocode(lat, lng) {
     }
 
     const result = results[0]
-
-    // Check if we got an HTML error response (Nominatim blocks return HTML)
-    if (typeof result === 'string' && result.includes('<html>')) {
-      throw new Error('Nominatim access blocked - please wait before retrying')
-    }
 
     // Success - reset error counter
     consecutiveErrors = 0
@@ -137,11 +189,11 @@ export async function reverseGeocode(lat, lng) {
       console.warn(`Timezone lookup failed for ${lat},${lng}:`, tzError.message)
     }
 
-    // Extract normalized city, country, and timezone
-    // Use countryCode with i18n-iso-countries for proper English country name
+    // Extract normalized city, country, and timezone from Mapbox response
+    // Mapbox returns: city, country, countryCode, state, etc.
     let country = result.country
     if (!country && result.countryCode) {
-      // Convert ISO country code to English name using proper i18n library
+      // Convert ISO country code to English name using i18n library
       country = countries.getName(result.countryCode, 'en', { select: 'official' })
     }
 
@@ -153,6 +205,7 @@ export async function reverseGeocode(lat, lng) {
 
     // Cache the result
     cache.set(cacheKey, normalized)
+    scheduleCacheSave()
 
     return normalized
 
@@ -164,8 +217,8 @@ export async function reverseGeocode(lat, lng) {
 
     // Only log first few errors to avoid spam
     if (consecutiveErrors <= 3) {
-      if (errorMsg.includes('blocked')) {
-        console.error(`[geocoding] BLOCKED by Nominatim for ${lat},${lng} - stopping geocoding requests`)
+      if (errorMsg.includes('blocked') || errorMsg.includes('rate limit')) {
+        console.error(`[geocoding] Rate limited for ${lat},${lng} - backing off`)
       } else {
         console.error(`Geocoding failed for ${lat},${lng}:`, errorMsg.substring(0, 200))
       }
@@ -174,6 +227,7 @@ export async function reverseGeocode(lat, lng) {
     // Cache negative result to avoid retrying
     const fallback = { city: null, country: null, timezone: null }
     cache.set(cacheKey, fallback)
+    scheduleCacheSave()
 
     return fallback
   }
@@ -212,5 +266,12 @@ export function getCacheStats() {
  */
 export function clearCache() {
   cache.clear()
+  try {
+    if (fs.existsSync(CACHE_FILE)) {
+      fs.unlinkSync(CACHE_FILE)
+    }
+  } catch (error) {
+    console.warn('[geocoding] Failed to delete cache file:', error.message)
+  }
 }
 
