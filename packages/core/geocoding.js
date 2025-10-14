@@ -81,9 +81,9 @@ process.on('SIGINT', () => {
 })
 
 // Rate limiting: Mapbox allows 600 requests/minute (10/sec)
-// We'll be conservative and do 2 requests/second max
+// Use 8 req/sec to stay comfortably under the limit with some buffer
 let lastRequestTime = 0
-const MIN_REQUEST_INTERVAL = 500 // 500ms = 2 requests/second (well under Mapbox limit)
+const MIN_REQUEST_INTERVAL = 125 // 125ms = 8 requests/second (80% of Mapbox limit)
 
 // Exponential backoff for when we get rate limited
 let consecutiveErrors = 0
