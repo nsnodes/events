@@ -49,17 +49,8 @@ export async function normalizeEvent(rawEvent, entitySlug = null, options = {}) 
     country = geocoded.country
     timezone = geocoded.timezone
   }
-
-  // Fallback to parsing if geocoding didn't work or no coordinates
-  if (!city) {
-    city = extractCity(rawEvent.location) || entitySlug
-  }
-  if (!country) {
-    country = extractCountry(rawEvent.location)
-  }
-
-  // Handle-specific fallback: Use cached location for internal room references
-  if (options.entityType === 'handle' && handleLocations[entitySlug]) {
+  // Option 3: Check for internal room references (for handles)
+  else if (options.entityType === 'handle' && handleLocations[entitySlug]) {
     const isInternalRoom = isInternalRoomReference(rawEvent.location)
 
     if (isInternalRoom) {
@@ -69,6 +60,14 @@ export async function normalizeEvent(rawEvent, entitySlug = null, options = {}) 
       country = defaultLocation.country
       timezone = defaultLocation.timezone
     }
+  }
+
+  // Fallback to parsing if no location data yet
+  if (!city) {
+    city = extractCity(rawEvent.location) || entitySlug
+  }
+  if (!country) {
+    country = extractCountry(rawEvent.location)
   }
 
   // Extract the actual Luma URL from description before cleaning
@@ -266,7 +265,18 @@ function extractCountry(location) {
   const parts = location.split(',').map(p => p.trim())
 
   if (parts.length > 1) {
-    return parts[parts.length - 1]
+    const lastPart = parts[parts.length - 1]
+
+    // If the last part has a postal code, try to extract just the country name
+    // e.g., "Singapore 059191" -> "Singapore"
+    const postalCodePattern = /\b\d{5,6}(-\d{4})?\b/
+    if (postalCodePattern.test(lastPart)) {
+      // Remove postal code and return the country name
+      const countryName = lastPart.replace(postalCodePattern, '').trim()
+      if (countryName) return countryName
+    }
+
+    return lastPart
   }
 
   return null
@@ -282,30 +292,42 @@ function isInternalRoomReference(location) {
 
   const parts = location.split(',').map(p => p.trim())
 
-  // Real addresses typically have 3+ parts (street, city, region/country)
-  if (parts.length >= 3) return false
+  // Check for obvious internal room patterns
+  const internalRoomKeywords = /\b(room|floor|corridor|suite|vip|ping pong|karaoke|conference|lift|elevator|alleyway|beach shack|volleyball|library|opposite|branching|near the)\b/i
+  if (internalRoomKeywords.test(location)) {
+    // If it has internal keywords AND is short (< 3 parts), likely internal
+    if (parts.length < 3) return true
+  }
 
-  // Check for postal codes (various formats)
+  // Check for postal codes (various formats) - indicates real address
   // US: 12345 or 12345-6789
+  // Singapore: 6 digits
   // Canada: A1A 1A1
   // UK: SW1A 1AA
-  if (/\b\d{5}(-\d{4})?\b|\b[A-Z]\d[A-Z]\s?\d[A-Z]\d\b|\b[A-Z]{1,2}\d{1,2}\s?\d[A-Z]{2}\b/i.test(location)) {
+  if (/\b\d{5,6}(-\d{4})?\b|\b[A-Z]\d[A-Z]\s?\d[A-Z]\d\b|\b[A-Z]{1,2}\d{1,2}\s?\d[A-Z]{2}\b/i.test(location)) {
     return false // Has postal code = real address
   }
 
-  // Check for street address indicators
+  // Check for street address indicators - indicates real address
   const streetIndicators = /\b(street|st|avenue|ave|road|rd|drive|dr|boulevard|blvd|lane|ln|jalan|jln)\b/i
   if (streetIndicators.test(location)) return false
 
-  // Check for hotel/building indicators (these are real addresses)
+  // Real addresses typically have 3+ parts (street, city, region/country)
+  // If 3+ parts and no internal keywords, assume real address
+  if (parts.length >= 3 && !internalRoomKeywords.test(location)) return false
+
+  // Hotel/building names can be part of internal references OR real addresses
+  // Only trust them as real addresses if they have 3+ parts
   const buildingIndicators = /\b(hotel|resort|mall|center|centre|plaza|tower|building)\b/i
-  if (buildingIndicators.test(location)) return false
+  if (buildingIndicators.test(location) && parts.length >= 3) {
+    return false // Multi-part with building = real address
+  }
 
   // If short and single-part, likely internal
   if (parts.length === 1 && location.length < 30) return true
 
   // Default to internal for 2-part short strings without geographic keywords
-  if (parts.length <= 2 && location.length < 40) return true
+  if (parts.length <= 2 && location.length < 80) return true
 
   return false
 }
