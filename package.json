@@ -31,7 +31,9 @@
   "license": "MIT",
   "dependencies": {
     "@supabase/supabase-js": "^2.39.0",
+    "geo-tz": "^8.1.4",
     "glob": "^11.0.0",
+    "i18n-iso-countries": "^7.14.0",
     "node-geocoder": "^4.4.1",
     "playwright": "^1.48.0",
     "playwright-extra": "^4.3.6",
