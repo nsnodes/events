@@ -5,14 +5,19 @@ import path from 'path';
 /**
  * Luma iCal URL Scraper
  *
- * Purpose: Extract iCal subscription URLs for each city
+ * Purpose: Extract iCal subscription URLs for any Luma entity (cities, user handles, etc.)
  * Frequency: Weekly (to detect if iCal endpoints change)
+ *
+ * Note: This scraper works generically for any Luma page with the same layout:
+ *   - Cities: luma.com/amsterdam
+ *   - User handles: luma.com/ns
+ *   - Any other entity with an RSS/iCal subscribe button
  *
  * Usage:
  *   import { scrapeIcalUrls, getIcalUrls } from './scrapers/ical-urls.js'
  *
- *   // Scrape iCal URLs for all cities
- *   const urls = await scrapeIcalUrls(cities)
+ *   // Scrape iCal URLs for any entities (cities, handles, etc.)
+ *   const urls = await scrapeIcalUrls(entities)
  *
  *   // Load existing iCal URLs
  *   const urls = getIcalUrls()
@@ -26,24 +31,26 @@ const CONCURRENT_BROWSERS = 3;
 const RETRY_ATTEMPTS = 2;
 
 /**
- * Scrape iCal URLs for all cities
- * @param {Array} cities - Array of city objects
+ * Scrape iCal URLs for any Luma entities (cities, handles, etc.)
+ * Works generically for any entity with a slug that maps to luma.com/{slug}
+ *
+ * @param {Array} entities - Array of entity objects with { slug, ... } structure
  * @param {Object} options - Configuration options
  * @param {boolean} options.headless - Run in headless mode (default: true)
  * @param {number} options.concurrency - Number of concurrent browsers (default: 3)
  * @returns {Promise<Object>} iCal URL data
  */
-export async function scrapeIcalUrls(cities, options = {}) {
+export async function scrapeIcalUrls(entities, options = {}) {
   const { headless = true, concurrency = CONCURRENT_BROWSERS } = options;
 
   const results = [];
   const browser = await chromium.launch({ headless });
 
   try {
-    // Process cities in batches
-    for (let i = 0; i < cities.length; i += concurrency) {
-      const batch = cities.slice(i, i + concurrency);
-      const batchPromises = batch.map(city => processCity(browser, city));
+    // Process entities in batches
+    for (let i = 0; i < entities.length; i += concurrency) {
+      const batch = entities.slice(i, i + concurrency);
+      const batchPromises = batch.map(entity => processEntity(browser, entity));
       const batchResults = await Promise.allSettled(batchPromises);
 
       batchResults.forEach((result, idx) => {
@@ -61,10 +68,10 @@ export async function scrapeIcalUrls(cities, options = {}) {
 
     const output = {
       timestamp: new Date().toISOString(),
-      totalCities: cities.length,
+      totalEntities: entities.length,
       withIcalUrl: results.filter(r => r.icalUrl).length,
       withoutIcalUrl: results.filter(r => !r.icalUrl).length,
-      cities: results
+      entities: results
     };
 
     return output;
@@ -75,10 +82,11 @@ export async function scrapeIcalUrls(cities, options = {}) {
 }
 
 /**
- * Process a single city to extract iCal URL
+ * Process a single entity (city, handle, etc.) to extract iCal URL
+ * Works for any luma.com/{slug} page with the same layout
  * @private
  */
-async function processCity(browser, city, attempt = 1) {
+async function processEntity(browser, entity, attempt = 1) {
   const context = await browser.newContext({
     viewport: { width: 1280, height: 800 },
     userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36'
@@ -87,7 +95,7 @@ async function processCity(browser, city, attempt = 1) {
   const page = await context.newPage();
 
   try {
-    await page.goto(`https://luma.com/${city.slug}`, {
+    await page.goto(`https://luma.com/${entity.slug}`, {
       waitUntil: 'domcontentloaded',
       timeout: 15000
     });
@@ -99,18 +107,18 @@ async function processCity(browser, city, attempt = 1) {
     await context.close();
 
     if (icalUrl) {
-      return { ...city, icalUrl };
+      return { ...entity, icalUrl };
     } else if (attempt < RETRY_ATTEMPTS) {
-      return await processCity(browser, city, attempt + 1);
+      return await processEntity(browser, entity, attempt + 1);
     } else {
-      return { ...city, icalUrl: null };
+      return { ...entity, icalUrl: null };
     }
 
   } catch (error) {
     await context.close();
 
     if (attempt < RETRY_ATTEMPTS) {
-      return await processCity(browser, city, attempt + 1);
+      return await processEntity(browser, entity, attempt + 1);
     }
 
     throw error;
@@ -243,7 +251,7 @@ async function findAndExtractIcal(page) {
 
 /**
  * Save iCal URLs to disk
- * @param {Object} icalData - iCal URL data
+ * @param {Object} icalData - iCal URL data with entities array
  */
 export function saveIcalUrls(icalData) {
   if (!fs.existsSync(DATA_DIR)) {
@@ -253,11 +261,11 @@ export function saveIcalUrls(icalData) {
   // Save full data
   fs.writeFileSync(ICAL_FULL_FILE, JSON.stringify(icalData, null, 2));
 
-  // Save URL mapping (slug -> url)
+  // Save URL mapping (slug -> url) - works for any entity type
   const urlMap = {};
-  icalData.cities.forEach(city => {
-    if (city.icalUrl) {
-      urlMap[city.slug] = city.icalUrl;
+  icalData.entities.forEach(entity => {
+    if (entity.icalUrl) {
+      urlMap[entity.slug] = entity.icalUrl;
     }
   });
 
