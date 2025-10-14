@@ -1,5 +1,5 @@
 {
-  "timestamp": "2025-10-12T21:52:08.198Z",
+  "timestamp": "2025-10-14T01:40:25.831Z",
   "totalCities": 72,
   "totalRegions": 5,
   "cities": [
@@ -24,7 +24,7 @@
       "slug": "austin",
       "url": "https://luma.com/austin",
       "region": "North America",
-      "eventCount": 12,
+      "eventCount": 17,
       "iconUrl": "https://images.lumacdn.com/discovery/austin-icon.png"
     },
     {
@@ -32,7 +32,7 @@
       "slug": "bangkok",
       "url": "https://luma.com/bangkok",
       "region": "Asia & Pacific",
-      "eventCount": 10,
+      "eventCount": 11,
       "iconUrl": "https://images.lumacdn.com/discovery/bangkok-icon.png"
     },
     {
@@ -40,7 +40,7 @@
       "slug": "barcelona",
       "url": "https://luma.com/barcelona",
       "region": "Europe",
-      "eventCount": 17,
+      "eventCount": 16,
       "iconUrl": "https://images.lumacdn.com/discovery/bcn-icon.png"
     },
     {
@@ -56,7 +56,7 @@
       "slug": "berlin",
       "url": "https://luma.com/berlin",
       "region": "Europe",
-      "eventCount": 27,
+      "eventCount": 33,
       "iconUrl": "https://images.lumacdn.com/discovery/berlin-icon.png"
     },
     {
@@ -64,7 +64,7 @@
       "slug": "bogota",
       "url": "https://luma.com/bogota",
       "region": "South America",
-      "eventCount": 7,
+      "eventCount": 8,
       "iconUrl": "https://images.lumacdn.com/discovery/bogota-icon.png"
     },
     {
@@ -72,7 +72,7 @@
       "slug": "boston",
       "url": "https://luma.com/boston",
       "region": "North America",
-      "eventCount": 23,
+      "eventCount": 25,
       "iconUrl": "https://images.lumacdn.com/discovery/boston-icon.png"
     },
     {
@@ -104,7 +104,7 @@
       "slug": "buenos-aires",
       "url": "https://luma.com/buenos-aires",
       "region": "South America",
-      "eventCount": 16,
+      "eventCount": 24,
       "iconUrl": "https://images.lumacdn.com/discovery/ba-icon.png"
     },
     {
@@ -152,7 +152,7 @@
       "slug": "dubai",
       "url": "https://luma.com/dubai",
       "region": "Asia & Pacific",
-      "eventCount": 17,
+      "eventCount": 15,
       "iconUrl": "https://images.lumacdn.com/discovery/dubai-icon.png"
     },
     {
@@ -176,7 +176,7 @@
       "slug": "helsinki",
       "url": "https://luma.com/helsinki",
       "region": "Europe",
-      "eventCount": 17,
+      "eventCount": 15,
       "iconUrl": "https://images.lumacdn.com/discovery/helsinki-icon.png"
     },
     {
@@ -192,7 +192,7 @@
       "slug": "hongkong",
       "url": "https://luma.com/hongkong",
       "region": "Asia & Pacific",
-      "eventCount": 8,
+      "eventCount": 7,
       "iconUrl": "https://images.lumacdn.com/discovery/hk-icon.png"
     },
     {
@@ -208,7 +208,7 @@
       "slug": "houston",
       "url": "https://luma.com/houston",
       "region": "North America",
-      "eventCount": 8,
+      "eventCount": 9,
       "iconUrl": "https://images.lumacdn.com/discovery/houston-icon.png"
     },
     {
@@ -216,7 +216,7 @@
       "slug": "istanbul",
       "url": "https://luma.com/istanbul",
       "region": "Europe",
-      "eventCount": 7,
+      "eventCount": 6,
       "iconUrl": "https://images.lumacdn.com/discovery/istanbul-icon.png"
     },
     {
@@ -224,7 +224,7 @@
       "slug": "jakarta",
       "url": "https://luma.com/jakarta",
       "region": "Asia & Pacific",
-      "eventCount": 13,
+      "eventCount": 12,
       "iconUrl": "https://images.lumacdn.com/discovery/jakarta-icon.png"
     },
     {
@@ -232,7 +232,7 @@
       "slug": "kuala-lumpur",
       "url": "https://luma.com/kuala-lumpur",
       "region": "Asia & Pacific",
-      "eventCount": 11,
+      "eventCount": 12,
       "iconUrl": "https://images.lumacdn.com/discovery/kl-icon.png"
     },
     {
@@ -264,7 +264,7 @@
       "slug": "lisbon",
       "url": "https://luma.com/lisbon",
       "region": "Europe",
-      "eventCount": 19,
+      "eventCount": 20,
       "iconUrl": "https://images.lumacdn.com/discovery/lisbon-icon.png"
     },
     {
@@ -272,7 +272,7 @@
       "slug": "london",
       "url": "https://luma.com/london",
       "region": "Europe",
-      "eventCount": 45,
+      "eventCount": 51,
       "iconUrl": "https://images.lumacdn.com/discovery/london-icon.png"
     },
     {
@@ -280,7 +280,7 @@
       "slug": "la",
       "url": "https://luma.com/la",
       "region": "North America",
-      "eventCount": 50,
+      "eventCount": 43,
       "iconUrl": "https://images.lumacdn.com/discovery/la-icon.png"
     },
     {
@@ -288,7 +288,7 @@
       "slug": "madrid",
       "url": "https://luma.com/madrid",
       "region": "Europe",
-      "eventCount": 13,
+      "eventCount": 15,
       "iconUrl": "https://images.lumacdn.com/discovery/madrid-icon.png"
     },
     {
@@ -304,7 +304,7 @@
       "slug": "medellin",
       "url": "https://luma.com/medellin",
       "region": "South America",
-      "eventCount": 6,
+      "eventCount": 5,
       "iconUrl": "https://images.lumacdn.com/discovery/medellin-icon.png"
     },
     {
@@ -320,7 +320,7 @@
       "slug": "mexico-city",
       "url": "https://luma.com/mexico-city",
       "region": "North America",
-      "eventCount": 22,
+      "eventCount": 25,
       "iconUrl": "https://images.lumacdn.com/discovery/cdmx-icon.png"
     },
     {
@@ -328,7 +328,7 @@
       "slug": "miami",
       "url": "https://luma.com/miami",
       "region": "North America",
-      "eventCount": 13,
+      "eventCount": 12,
       "iconUrl": "https://images.lumacdn.com/discovery/miami-icon.png"
     },
     {
@@ -336,7 +336,7 @@
       "slug": "milan",
       "url": "https://luma.com/milan",
       "region": "Europe",
-      "eventCount": 11,
+      "eventCount": 8,
       "iconUrl": "https://images.lumacdn.com/discovery/milan-icon.png"
     },
     {
@@ -344,7 +344,7 @@
       "slug": "montreal",
       "url": "https://luma.com/montreal",
       "region": "North America",
-      "eventCount": 18,
+      "eventCount": 17,
       "iconUrl": "https://images.lumacdn.com/discovery/montreal-icon.png"
     },
     {
@@ -376,7 +376,7 @@
       "slug": "new-delhi",
       "url": "https://luma.com/new-delhi",
       "region": "Asia & Pacific",
-      "eventCount": 4,
+      "eventCount": 5,
       "iconUrl": "https://images.lumacdn.com/discovery/newdelhi-icon.png"
     },
     {
@@ -384,7 +384,7 @@
       "slug": "nyc",
       "url": "https://luma.com/nyc",
       "region": "North America",
-      "eventCount": 55,
+      "eventCount": 54,
       "iconUrl": "https://images.lumacdn.com/discovery/nyc-icon.png"
     },
     {
@@ -392,7 +392,7 @@
       "slug": "paris",
       "url": "https://luma.com/paris",
       "region": "Europe",
-      "eventCount": 29,
+      "eventCount": 28,
       "iconUrl": "https://images.lumacdn.com/discovery/paris-icon.png"
     },
     {
@@ -400,7 +400,7 @@
       "slug": "philadelphia",
       "url": "https://luma.com/philadelphia",
       "region": "North America",
-      "eventCount": 15,
+      "eventCount": 16,
       "iconUrl": "https://images.lumacdn.com/discovery/philly-icon.png"
     },
     {
@@ -416,7 +416,7 @@
       "slug": "portland",
       "url": "https://luma.com/portland",
       "region": "North America",
-      "eventCount": 6,
+      "eventCount": 5,
       "iconUrl": "https://images.lumacdn.com/discovery/portland-icon.png"
     },
     {
@@ -432,7 +432,7 @@
       "slug": "rio",
       "url": "https://luma.com/rio",
       "region": "South America",
-      "eventCount": 5,
+      "eventCount": 6,
       "iconUrl": "https://images.lumacdn.com/discovery/rio-icon.png"
     },
     {
@@ -456,7 +456,7 @@
       "slug": "sd",
       "url": "https://luma.com/sd",
       "region": "North America",
-      "eventCount": 6,
+      "eventCount": 8,
       "iconUrl": "https://images.lumacdn.com/discovery/sd-icon.png"
     },
     {
@@ -464,7 +464,7 @@
       "slug": "sf",
       "url": "https://luma.com/sf",
       "region": "North America",
-      "eventCount": 46,
+      "eventCount": 54,
       "iconUrl": "https://images.lumacdn.com/discovery/sf-icon.png"
     },
     {
@@ -472,7 +472,7 @@
       "slug": "saopaulo",
       "url": "https://luma.com/saopaulo",
       "region": "South America",
-      "eventCount": 12,
+      "eventCount": 19,
       "iconUrl": "https://images.lumacdn.com/discovery/sp-icon.png"
     },
     {
@@ -480,7 +480,7 @@
       "slug": "seattle",
       "url": "https://luma.com/seattle",
       "region": "North America",
-      "eventCount": 19,
+      "eventCount": 22,
       "iconUrl": "https://images.lumacdn.com/discovery/seattle-icon.png"
     },
     {
@@ -496,7 +496,7 @@
       "slug": "singapore",
       "url": "https://luma.com/singapore",
       "region": "Asia & Pacific",
-      "eventCount": 26,
+      "eventCount": 25,
       "iconUrl": "https://images.lumacdn.com/discovery/sg-icon.png"
     },
     {
@@ -520,7 +520,7 @@
       "slug": "taipei",
       "url": "https://luma.com/taipei",
       "region": "Asia & Pacific",
-      "eventCount": 9,
+      "eventCount": 8,
       "iconUrl": "https://images.lumacdn.com/discovery/taipei-icon.png"
     },
     {
@@ -536,7 +536,7 @@
       "slug": "tokyo",
       "url": "https://luma.com/tokyo",
       "region": "Asia & Pacific",
-      "eventCount": 22,
+      "eventCount": 24,
       "iconUrl": "https://images.lumacdn.com/discovery/tokyo-icon.png"
     },
     {
@@ -544,7 +544,7 @@
       "slug": "toronto",
       "url": "https://luma.com/toronto",
       "region": "North America",
-      "eventCount": 27,
+      "eventCount": 29,
       "iconUrl": "https://images.lumacdn.com/discovery/toronto-icon.png"
     },
     {
@@ -552,7 +552,7 @@
       "slug": "vancouver",
       "url": "https://luma.com/vancouver",
       "region": "North America",
-      "eventCount": 16,
+      "eventCount": 18,
       "iconUrl": "https://images.lumacdn.com/discovery/vancouver-icon.png"
     },
     {
@@ -560,7 +560,7 @@
       "slug": "dc",
       "url": "https://luma.com/dc",
       "region": "North America",
-      "eventCount": 21,
+      "eventCount": 23,
       "iconUrl": "https://images.lumacdn.com/discovery/dc-icon.png"
     },
     {
@@ -576,7 +576,7 @@
       "slug": "zurich",
       "url": "https://luma.com/zurich",
       "region": "Europe",
-      "eventCount": 12,
+      "eventCount": 11,
       "iconUrl": "https://images.lumacdn.com/discovery/zurich-icon.png"
     }
   ],
@@ -595,7 +595,7 @@
         "slug": "barcelona",
         "url": "https://luma.com/barcelona",
         "region": "Europe",
-        "eventCount": 17,
+        "eventCount": 16,
         "iconUrl": "https://images.lumacdn.com/discovery/bcn-icon.png"
       },
       {
@@ -603,7 +603,7 @@
         "slug": "berlin",
         "url": "https://luma.com/berlin",
         "region": "Europe",
-        "eventCount": 27,
+        "eventCount": 33,
         "iconUrl": "https://images.lumacdn.com/discovery/berlin-icon.png"
       },
       {
@@ -651,7 +651,7 @@
         "slug": "helsinki",
         "url": "https://luma.com/helsinki",
         "region": "Europe",
-        "eventCount": 17,
+        "eventCount": 15,
         "iconUrl": "https://images.lumacdn.com/discovery/helsinki-icon.png"
       },
       {
@@ -659,7 +659,7 @@
         "slug": "istanbul",
         "url": "https://luma.com/istanbul",
         "region": "Europe",
-        "eventCount": 7,
+        "eventCount": 6,
         "iconUrl": "https://images.lumacdn.com/discovery/istanbul-icon.png"
       },
       {
@@ -675,7 +675,7 @@
         "slug": "lisbon",
         "url": "https://luma.com/lisbon",
         "region": "Europe",
-        "eventCount": 19,
+        "eventCount": 20,
         "iconUrl": "https://images.lumacdn.com/discovery/lisbon-icon.png"
       },
       {
@@ -683,7 +683,7 @@
         "slug": "london",
         "url": "https://luma.com/london",
         "region": "Europe",
-        "eventCount": 45,
+        "eventCount": 51,
         "iconUrl": "https://images.lumacdn.com/discovery/london-icon.png"
       },
       {
@@ -691,7 +691,7 @@
         "slug": "madrid",
         "url": "https://luma.com/madrid",
         "region": "Europe",
-        "eventCount": 13,
+        "eventCount": 15,
         "iconUrl": "https://images.lumacdn.com/discovery/madrid-icon.png"
       },
       {
@@ -699,7 +699,7 @@
         "slug": "milan",
         "url": "https://luma.com/milan",
         "region": "Europe",
-        "eventCount": 11,
+        "eventCount": 8,
         "iconUrl": "https://images.lumacdn.com/discovery/milan-icon.png"
       },
       {
@@ -715,7 +715,7 @@
         "slug": "paris",
         "url": "https://luma.com/paris",
         "region": "Europe",
-        "eventCount": 29,
+        "eventCount": 28,
         "iconUrl": "https://images.lumacdn.com/discovery/paris-icon.png"
       },
       {
@@ -747,7 +747,7 @@
         "slug": "zurich",
         "url": "https://luma.com/zurich",
         "region": "Europe",
-        "eventCount": 12,
+        "eventCount": 11,
         "iconUrl": "https://images.lumacdn.com/discovery/zurich-icon.png"
       }
     ],
@@ -765,7 +765,7 @@
         "slug": "austin",
         "url": "https://luma.com/austin",
         "region": "North America",
-        "eventCount": 12,
+        "eventCount": 17,
         "iconUrl": "https://images.lumacdn.com/discovery/austin-icon.png"
       },
       {
@@ -773,7 +773,7 @@
         "slug": "boston",
         "url": "https://luma.com/boston",
         "region": "North America",
-        "eventCount": 23,
+        "eventCount": 25,
         "iconUrl": "https://images.lumacdn.com/discovery/boston-icon.png"
       },
       {
@@ -813,7 +813,7 @@
         "slug": "houston",
         "url": "https://luma.com/houston",
         "region": "North America",
-        "eventCount": 8,
+        "eventCount": 9,
         "iconUrl": "https://images.lumacdn.com/discovery/houston-icon.png"
       },
       {
@@ -829,7 +829,7 @@
         "slug": "la",
         "url": "https://luma.com/la",
         "region": "North America",
-        "eventCount": 50,
+        "eventCount": 43,
         "iconUrl": "https://images.lumacdn.com/discovery/la-icon.png"
       },
       {
@@ -837,7 +837,7 @@
         "slug": "mexico-city",
         "url": "https://luma.com/mexico-city",
         "region": "North America",
-        "eventCount": 22,
+        "eventCount": 25,
         "iconUrl": "https://images.lumacdn.com/discovery/cdmx-icon.png"
       },
       {
@@ -845,7 +845,7 @@
         "slug": "miami",
         "url": "https://luma.com/miami",
         "region": "North America",
-        "eventCount": 13,
+        "eventCount": 12,
         "iconUrl": "https://images.lumacdn.com/discovery/miami-icon.png"
       },
       {
@@ -853,7 +853,7 @@
         "slug": "montreal",
         "url": "https://luma.com/montreal",
         "region": "North America",
-        "eventCount": 18,
+        "eventCount": 17,
         "iconUrl": "https://images.lumacdn.com/discovery/montreal-icon.png"
       },
       {
@@ -861,7 +861,7 @@
         "slug": "nyc",
         "url": "https://luma.com/nyc",
         "region": "North America",
-        "eventCount": 55,
+        "eventCount": 54,
         "iconUrl": "https://images.lumacdn.com/discovery/nyc-icon.png"
       },
       {
@@ -869,7 +869,7 @@
         "slug": "philadelphia",
         "url": "https://luma.com/philadelphia",
         "region": "North America",
-        "eventCount": 15,
+        "eventCount": 16,
         "iconUrl": "https://images.lumacdn.com/discovery/philly-icon.png"
       },
       {
@@ -885,7 +885,7 @@
         "slug": "portland",
         "url": "https://luma.com/portland",
         "region": "North America",
-        "eventCount": 6,
+        "eventCount": 5,
         "iconUrl": "https://images.lumacdn.com/discovery/portland-icon.png"
       },
       {
@@ -901,7 +901,7 @@
         "slug": "sd",
         "url": "https://luma.com/sd",
         "region": "North America",
-        "eventCount": 6,
+        "eventCount": 8,
         "iconUrl": "https://images.lumacdn.com/discovery/sd-icon.png"
       },
       {
@@ -909,7 +909,7 @@
         "slug": "sf",
         "url": "https://luma.com/sf",
         "region": "North America",
-        "eventCount": 46,
+        "eventCount": 54,
         "iconUrl": "https://images.lumacdn.com/discovery/sf-icon.png"
       },
       {
@@ -917,7 +917,7 @@
         "slug": "seattle",
         "url": "https://luma.com/seattle",
         "region": "North America",
-        "eventCount": 19,
+        "eventCount": 22,
         "iconUrl": "https://images.lumacdn.com/discovery/seattle-icon.png"
       },
       {
@@ -925,7 +925,7 @@
         "slug": "toronto",
         "url": "https://luma.com/toronto",
         "region": "North America",
-        "eventCount": 27,
+        "eventCount": 29,
         "iconUrl": "https://images.lumacdn.com/discovery/toronto-icon.png"
       },
       {
@@ -933,7 +933,7 @@
         "slug": "vancouver",
         "url": "https://luma.com/vancouver",
         "region": "North America",
-        "eventCount": 16,
+        "eventCount": 18,
         "iconUrl": "https://images.lumacdn.com/discovery/vancouver-icon.png"
       },
       {
@@ -941,7 +941,7 @@
         "slug": "dc",
         "url": "https://luma.com/dc",
         "region": "North America",
-        "eventCount": 21,
+        "eventCount": 23,
         "iconUrl": "https://images.lumacdn.com/discovery/dc-icon.png"
       },
       {
@@ -959,7 +959,7 @@
         "slug": "bangkok",
         "url": "https://luma.com/bangkok",
         "region": "Asia & Pacific",
-        "eventCount": 10,
+        "eventCount": 11,
         "iconUrl": "https://images.lumacdn.com/discovery/bangkok-icon.png"
       },
       {
@@ -983,7 +983,7 @@
         "slug": "dubai",
         "url": "https://luma.com/dubai",
         "region": "Asia & Pacific",
-        "eventCount": 17,
+        "eventCount": 15,
         "iconUrl": "https://images.lumacdn.com/discovery/dubai-icon.png"
       },
       {
@@ -999,7 +999,7 @@
         "slug": "hongkong",
         "url": "https://luma.com/hongkong",
         "region": "Asia & Pacific",
-        "eventCount": 8,
+        "eventCount": 7,
         "iconUrl": "https://images.lumacdn.com/discovery/hk-icon.png"
       },
       {
@@ -1015,7 +1015,7 @@
         "slug": "jakarta",
         "url": "https://luma.com/jakarta",
         "region": "Asia & Pacific",
-        "eventCount": 13,
+        "eventCount": 12,
         "iconUrl": "https://images.lumacdn.com/discovery/jakarta-icon.png"
       },
       {
@@ -1023,7 +1023,7 @@
         "slug": "kuala-lumpur",
         "url": "https://luma.com/kuala-lumpur",
         "region": "Asia & Pacific",
-        "eventCount": 11,
+        "eventCount": 12,
         "iconUrl": "https://images.lumacdn.com/discovery/kl-icon.png"
       },
       {
@@ -1055,7 +1055,7 @@
         "slug": "new-delhi",
         "url": "https://luma.com/new-delhi",
         "region": "Asia & Pacific",
-        "eventCount": 4,
+        "eventCount": 5,
         "iconUrl": "https://images.lumacdn.com/discovery/newdelhi-icon.png"
       },
       {
@@ -1071,7 +1071,7 @@
         "slug": "singapore",
         "url": "https://luma.com/singapore",
         "region": "Asia & Pacific",
-        "eventCount": 26,
+        "eventCount": 25,
         "iconUrl": "https://images.lumacdn.com/discovery/sg-icon.png"
       },
       {
@@ -1087,7 +1087,7 @@
         "slug": "taipei",
         "url": "https://luma.com/taipei",
         "region": "Asia & Pacific",
-        "eventCount": 9,
+        "eventCount": 8,
         "iconUrl": "https://images.lumacdn.com/discovery/taipei-icon.png"
       },
       {
@@ -1103,7 +1103,7 @@
         "slug": "tokyo",
         "url": "https://luma.com/tokyo",
         "region": "Asia & Pacific",
-        "eventCount": 22,
+        "eventCount": 24,
         "iconUrl": "https://images.lumacdn.com/discovery/tokyo-icon.png"
       }
     ],
@@ -1113,7 +1113,7 @@
         "slug": "bogota",
         "url": "https://luma.com/bogota",
         "region": "South America",
-        "eventCount": 7,
+        "eventCount": 8,
         "iconUrl": "https://images.lumacdn.com/discovery/bogota-icon.png"
       },
       {
@@ -1121,7 +1121,7 @@
         "slug": "buenos-aires",
         "url": "https://luma.com/buenos-aires",
         "region": "South America",
-        "eventCount": 16,
+        "eventCount": 24,
         "iconUrl": "https://images.lumacdn.com/discovery/ba-icon.png"
       },
       {
@@ -1129,7 +1129,7 @@
         "slug": "medellin",
         "url": "https://luma.com/medellin",
         "region": "South America",
-        "eventCount": 6,
+        "eventCount": 5,
         "iconUrl": "https://images.lumacdn.com/discovery/medellin-icon.png"
       },
       {
@@ -1137,7 +1137,7 @@
         "slug": "rio",
         "url": "https://luma.com/rio",
         "region": "South America",
-        "eventCount": 5,
+        "eventCount": 6,
         "iconUrl": "https://images.lumacdn.com/discovery/rio-icon.png"
       },
       {
@@ -1145,7 +1145,7 @@
         "slug": "saopaulo",
         "url": "https://luma.com/saopaulo",
         "region": "South America",
-        "eventCount": 12,
+        "eventCount": 19,
         "iconUrl": "https://images.lumacdn.com/discovery/sp-icon.png"
       }
     ],
