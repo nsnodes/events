@@ -1,5 +1,5 @@
 {
-  "timestamp": "2025-10-14T17:39:54.667Z",
+  "timestamp": "2025-10-19T02:12:40.349Z",
   "totalEntities": 1,
   "withIcalUrl": 1,
   "withoutIcalUrl": 0,
@@ -9,7 +9,9 @@
       "slug": "ns",
       "url": "https://luma.com/ns",
       "type": "user",
+      "name": "Network School",
       "icalUrl": "http://api2.luma.com/ics/get?entity=calendar&id=cal-4dWxlBFjW9Cd6ou"
     }
-  ]
+  ],
+  "entityType": "handles"
 }
