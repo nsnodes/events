@@ -136,7 +136,12 @@ function fetchUrl(url, maxRedirects = 5) {
   return new Promise((resolve, reject) => {
     const client = url.startsWith('https') ? https : http;
 
-    client.get(url, (response) => {
+    // Configure agent to not keep connections alive (prevents process hanging)
+    const options = {
+      agent: new client.Agent({ keepAlive: false })
+    };
+
+    client.get(url, options, (response) => {
       // Handle redirects
       if (response.statusCode === 301 || response.statusCode === 302) {
         if (maxRedirects === 0) {

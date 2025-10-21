@@ -6,3 +6,9 @@ results/
 *.swp
 *.swo
 .supabase/
+
+# Probe artifacts
+screenshots/
+packages/sources/*/screenshots/
+packages/sources/*/tools/
+tools/probes/*.json
