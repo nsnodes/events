@@ -59,17 +59,64 @@ export async function scrapePopupCities(options = {}) {
         const slugMatch = href.match(/\/event\/([^\/]+)$/);
         const slug = slugMatch ? slugMatch[1] : null;
 
-        // Get text content which usually includes dates
-        const text = card.textContent.trim();
+        // Extract title from h3 or semibold div
+        const h3 = card.querySelector('h3');
+        const titleDiv = card.querySelector('.webkit-box-clamp-2.text-lg.font-semibold');
+        const title = h3 ? h3.textContent.trim() : (titleDiv ? titleDiv.textContent.trim() : null);
 
-        // Try to extract image
+        // Extract dates from the date div (class contains responsive Tailwind classes like sm:text-sm)
+        const dateDiv = card.querySelector('[class*="webkit-box-clamp-1"]');
+        const dates = dateDiv ? dateDiv.textContent.trim() : null;
+
+        // Extract location - handle two different card layouts:
+        let location = null;
+        if (dateDiv) {
+          const parent = dateDiv.parentElement;
+
+          // Layout 1: Date and location are siblings in a flex container
+          // Check if parent is the flex row container
+          if (parent.className.includes('flex') && parent.className.includes('flex-row')) {
+            const siblings = Array.from(parent.children);
+            const dateDivIndex = siblings.indexOf(dateDiv);
+            const locationDiv = siblings[dateDivIndex + 1];
+
+            if (locationDiv && locationDiv.textContent) {
+              location = locationDiv.textContent.trim();
+            }
+          }
+          // Layout 2: Location is in a different part of the card
+          // Find a div that contains location+organizer (has "by " in it)
+          else {
+            const allDivs = Array.from(card.querySelectorAll('div'));
+            const locationOrgDiv = allDivs.find(d => {
+              const text = d.textContent.trim();
+              // Must have "by " and not be the title div and not contain the dates
+              return text.includes('by ') &&
+                     !d.className.includes('webkit-box-clamp-2') &&
+                     !text.includes(dates || '');
+            });
+
+            if (locationOrgDiv) {
+              // Extract location part before "by"
+              const text = locationOrgDiv.textContent.trim();
+              const byIndex = text.toLowerCase().indexOf('by ');
+              if (byIndex > 0) {
+                location = text.substring(0, byIndex).trim();
+              }
+            }
+          }
+        }
+
+        // Extract image
         const img = card.querySelector('img');
         const imageUrl = img ? img.src : null;
 
         citiesData.push({
           slug,
           url: href,
-          text: text.substring(0, 200), // Truncate long text
+          title,
+          dates,
+          location,
           imageUrl
         });
       });

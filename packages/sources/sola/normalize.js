@@ -214,14 +214,79 @@ function extractCountry(location) {
   // Skip URLs
   if (location.startsWith('http')) return null
 
+  // Skip internal room references - they don't have valid country data
+  if (isInternalRoomReference(location)) return null
+
   // Try to get last part (usually country)
   const parts = location.split(',').map(p => p.trim())
 
   if (parts.length > 1) {
-    return parts[parts.length - 1]
+    const lastPart = parts[parts.length - 1]
+
+    // Basic validation: if the last part has a postal code, extract country name
+    // e.g., "Singapore 059191" -> "Singapore"
+    const postalCodePattern = /\b\d{5,6}(-\d{4})?\b/
+    if (postalCodePattern.test(lastPart)) {
+      const countryName = lastPart.replace(postalCodePattern, '').trim()
+      if (countryName) return countryName
+    }
+
+    return lastPart
   }
 
   return null
+}
+
+/**
+ * Detect if a location string is an internal room reference (not a real address)
+ * @private
+ */
+function isInternalRoomReference(location) {
+  if (!location) return false
+
+  const parts = location.split(',').map(p => p.trim())
+
+  // Check for postal codes (various formats) - indicates real address
+  // US: 12345 or 12345-6789
+  // Singapore: 6 digits
+  // Canada: A1A 1A1
+  // UK: SW1A 1AA
+  if (/\b\d{5,6}(-\d{4})?\b|\b[A-Z]\d[A-Z]\s?\d[A-Z]\d\b|\b[A-Z]{1,2}\d{1,2}\s?\d[A-Z]{2}\b/i.test(location)) {
+    return false // Has postal code = real address
+  }
+
+  // Check for street address indicators - indicates real address
+  const streetIndicators = /\b(street|st|avenue|ave|road|rd|drive|dr|boulevard|blvd|lane|ln|jalan|jln)\b/i
+  if (streetIndicators.test(location)) return false
+
+  // Check for obvious internal room patterns
+  const internalRoomKeywords = /\b(room|floor|corridor|suite|vip|ping pong|karaoke|conference|lift|elevator|alleyway|beach shack|volleyball|library|opposite|branching|near the)\b/i
+
+  // If it has internal keywords and no street indicators or postal codes, it's likely internal
+  if (internalRoomKeywords.test(location)) {
+    // Exception: If it's a long multi-part address with geographic indicators, might be real
+    const geoIndicators = /\b(city|state|province|country|region|district)\b/i
+    if (parts.length >= 4 && geoIndicators.test(location)) {
+      return false // Long address with geographic terms = likely real
+    }
+
+    // Otherwise, internal keywords = internal room
+    return true
+  }
+
+  // Hotel/building names alone (without more context) are likely internal
+  const buildingIndicators = /\b(hotel|resort|mall|center|centre|plaza|tower|building)\b/i
+  if (buildingIndicators.test(location) && parts.length < 3) {
+    return true
+  }
+
+  // If short and single-part, likely internal
+  if (parts.length === 1 && location.length < 30) return true
+
+  // Default to internal for 2-part short strings
+  if (parts.length <= 2 && location.length < 80) return true
+
+  return false
 }
 
 function cleanDescription(description) {

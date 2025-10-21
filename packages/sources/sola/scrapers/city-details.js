@@ -34,28 +34,18 @@ function getMonthIndex(monthStr) {
 }
 
 /**
- * Parse city detail from the city card text
- * The text format can be:
- * - With year: "Aug 28-Aug 27, 2028TitleLocationby Organizer"
- * - Without year: "Aug 28-Aug 27TitleLocationby Organizer"
- * @param {Object} city - City object from cities.json
- * @returns {Object} Parsed city information
+ * Parse dates from the date string
+ * Format: "Aug 28-Aug 27, 2028" or "Sep 02-Oct 01, 2025"
+ * @param {string} dateStr - Date string from city card
+ * @returns {Object} Parsed start and end dates in ISO format
  */
-function parseCityCardData(city) {
-  const text = city.text || '';
+function parseDates(dateStr) {
+  if (!dateStr) return { startDate: null, endDate: null };
 
-  // Extract dates - look for pattern with optional year
-  // Pattern 1: "Aug 28-Aug 27, 2028" (with year)
-  // Pattern 2: "Aug 28-Aug 27" (without year - fallback)
+  // Pattern with year: "Aug 28-Aug 27, 2028"
   const datePatternWithYear = /([A-Z][a-z]{2}\s+\d{1,2})-([A-Z][a-z]{2}\s+\d{1,2}),\s*(\d{4})/;
-  const datePatternNoYear = /^([A-Z][a-z]{2}\s+\d{1,2})-([A-Z][a-z]{2}\s+\d{1,2})/;
+  const matchWithYear = dateStr.match(datePatternWithYear);
 
-  let startDate = null;
-  let endDate = null;
-  let textWithoutDates = text;
-
-  // Try pattern with year first
-  const matchWithYear = text.match(datePatternWithYear);
   if (matchWithYear) {
     const startDateStr = matchWithYear[1];
     const endDateStr = matchWithYear[2];
@@ -65,12 +55,12 @@ function parseCityCardData(city) {
     // Parse end date first (use UTC noon to avoid timezone issues)
     const endMonth = endDateStr.split(' ')[0];
     const endDay = parseInt(endDateStr.split(' ')[1]);
-    endDate = new Date(Date.UTC(endYear, getMonthIndex(endMonth), endDay, 12, 0, 0));
+    const endDate = new Date(Date.UTC(endYear, getMonthIndex(endMonth), endDay, 12, 0, 0));
 
     // Parse start date - try with same year first
     const startMonth = startDateStr.split(' ')[0];
     const startDay = parseInt(startDateStr.split(' ')[1]);
-    startDate = new Date(Date.UTC(endYear, getMonthIndex(startMonth), startDay, 12, 0, 0));
+    let startDate = new Date(Date.UTC(endYear, getMonthIndex(startMonth), startDay, 12, 0, 0));
 
     // If start date is after end date, start must be in the previous year
     if (startDate > endDate) {
@@ -78,43 +68,54 @@ function parseCityCardData(city) {
     }
 
     // Convert to ISO date strings (YYYY-MM-DD)
-    startDate = startDate.toISOString().split('T')[0];
-    endDate = endDate.toISOString().split('T')[0];
-
-    // Remove dates from text
-    textWithoutDates = text.replace(matchWithYear[0], '');
+    return {
+      startDate: startDate.toISOString().split('T')[0],
+      endDate: endDate.toISOString().split('T')[0]
+    };
   }
-  // Fallback to pattern without year
-  else {
-    const matchNoYear = text.match(datePatternNoYear);
-    if (matchNoYear) {
-      const currentYear = new Date().getFullYear();
-      const startDateStr = matchNoYear[1];
-      const endDateStr = matchNoYear[2];
 
-      startDate = new Date(`${startDateStr} ${currentYear}`);
-      endDate = new Date(`${endDateStr} ${currentYear}`);
+  // Fallback: pattern without year (shouldn't happen anymore, but keep for safety)
+  const datePatternNoYear = /([A-Z][a-z]{2}\s+\d{1,2})-([A-Z][a-z]{2}\s+\d{1,2})/;
+  const matchNoYear = dateStr.match(datePatternNoYear);
 
-      // If end date is before start date, assume it's next year
-      if (endDate < startDate) {
-        endDate = new Date(`${endDateStr} ${currentYear + 1}`);
-      }
+  if (matchNoYear) {
+    const currentYear = new Date().getFullYear();
+    const startDateStr = matchNoYear[1];
+    const endDateStr = matchNoYear[2];
 
-      // Convert to ISO strings
-      startDate = startDate.toISOString().split('T')[0];
-      endDate = endDate.toISOString().split('T')[0];
+    let startDate = new Date(`${startDateStr} ${currentYear}`);
+    let endDate = new Date(`${endDateStr} ${currentYear}`);
 
-      // Remove dates from text
-      textWithoutDates = text.substring(matchNoYear[0].length);
+    // If end date is before start date, assume it's next year
+    if (endDate < startDate) {
+      endDate = new Date(`${endDateStr} ${currentYear + 1}`);
     }
+
+    // Convert to ISO strings
+    return {
+      startDate: startDate.toISOString().split('T')[0],
+      endDate: endDate.toISOString().split('T')[0]
+    };
   }
 
-  // Use slug as title (most reliable)
-  const title = city.slug.charAt(0).toUpperCase() + city.slug.slice(1);
+  return { startDate: null, endDate: null };
+}
 
-  // Don't try to parse location - the text format is too inconsistent
-  // Location will be null, normalization can handle it
-  const location = null;
+/**
+ * Parse city detail from the city card structured data
+ * @param {Object} city - City object from cities.json with title, dates, location, imageUrl
+ * @returns {Object} Parsed city information
+ */
+function parseCityCardData(city) {
+  // Parse dates from the clean dates string
+  const { startDate, endDate } = parseDates(city.dates);
+
+  // Use title from the structured data (already clean!)
+  // Fall back to slug if title is missing
+  const title = city.title || (city.slug.charAt(0).toUpperCase() + city.slug.slice(1));
+
+  // Use location from the structured data (already clean!)
+  const location = city.location || null;
 
   return {
     id: null,
@@ -132,7 +133,7 @@ function parseCityCardData(city) {
 
 /**
  * Get detailed information for a single popup city
- * @param {Object} city - City object from cities.json with url, slug, text, imageUrl
+ * @param {Object} city - City object from cities.json with url, slug, title, dates, location, imageUrl
  * @param {Object} options - Configuration options (unused, for compatibility)
  * @returns {Promise<Object>} Detailed city information
  */
