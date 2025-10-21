@@ -4813,5 +4813,165 @@
     "city": "Zürich",
     "country": "Switzerland",
     "timezone": "Europe/Zurich"
+  },
+  "51.475,-0.0287": {
+    "city": "London",
+    "country": "United Kingdom",
+    "timezone": "Europe/London"
+  },
+  "51.5302,-0.0755": {
+    "city": "London",
+    "country": "United Kingdom",
+    "timezone": "Europe/London"
+  },
+  "-23.6,-46.675": {
+    "city": "São Paulo",
+    "country": "Brazil",
+    "timezone": "America/Sao_Paulo"
+  },
+  "25.1875,55.2675": {
+    "city": "Dubai",
+    "country": "United Arab Emirates",
+    "timezone": "Asia/Dubai"
+  },
+  "1.2833,103.8447": {
+    "city": "Singapore",
+    "country": null,
+    "timezone": "Asia/Singapore"
+  },
+  "37.425,-122.1675": {
+    "city": "Stanford",
+    "country": "United States",
+    "timezone": "America/Los_Angeles"
+  },
+  "12.9675,77.6075": {
+    "city": "Bengaluru",
+    "country": "India",
+    "timezone": "Asia/Kolkata"
+  },
+  "19.09,72.8275": {
+    "city": "Mumbai",
+    "country": "India",
+    "timezone": "Asia/Kolkata"
+  },
+  "51.5252,-0.0713": {
+    "city": "London",
+    "country": "United Kingdom",
+    "timezone": "Europe/London"
+  },
+  "52.3725,4.9": {
+    "city": "Amsterdam",
+    "country": "Netherlands",
+    "timezone": "Europe/Brussels"
+  },
+  "52.4213,4.8335": {
+    "city": "Zaandam",
+    "country": "Netherlands",
+    "timezone": "Europe/Brussels"
+  },
+  "52.375,4.8975": {
+    "city": "Amsterdam",
+    "country": "Netherlands",
+    "timezone": "Europe/Brussels"
+  },
+  "41.0464,28.9889": {
+    "city": "Şişli",
+    "country": "Türkiye",
+    "timezone": "Europe/Istanbul"
+  },
+  "1.336,103.5938": {
+    "city": "Gelang Patah",
+    "country": "Malaysia",
+    "timezone": "Asia/Singapore"
+  },
+  "35.334,-81.8651": {
+    "city": "Forest City",
+    "country": "United States",
+    "timezone": "America/New_York"
+  },
+  "30.0674,31.3493": {
+    "city": "Nasr",
+    "country": "Egypt",
+    "timezone": "Africa/Cairo"
+  },
+  "4.21,101.975": {
+    "city": "Padang Tengku",
+    "country": "Malaysia",
+    "timezone": "Asia/Singapore"
+  },
+  "1.3414,103.5901": {
+    "city": "Gelang Patah",
+    "country": "Malaysia",
+    "timezone": "Asia/Singapore"
+  },
+  "29.979,-90.1016": {
+    "city": "New Orleans",
+    "country": "United States",
+    "timezone": "America/Chicago"
+  },
+  "1.2801,103.8414": {
+    "city": "Singapore",
+    "country": null,
+    "timezone": "Asia/Singapore"
+  },
+  "1.3004,103.8593": {
+    "city": "Singapore",
+    "country": null,
+    "timezone": "Asia/Singapore"
+  },
+  "1.3409,103.5902": {
+    "city": "Gelang Patah",
+    "country": "Malaysia",
+    "timezone": "Asia/Singapore"
+  },
+  "39.9649,-0.08": {
+    "city": "Almassora",
+    "country": "Spain",
+    "timezone": "Europe/Madrid"
+  },
+  "1.3343,103.5909": {
+    "city": "Gelang Patah",
+    "country": "Malaysia",
+    "timezone": "Asia/Singapore"
+  },
+  "1.4272,103.6295": {
+    "city": "Iskandar Puteri",
+    "country": "Malaysia",
+    "timezone": "Asia/Singapore"
+  },
+  "1.34,103.59": {
+    "city": "Gelang Patah",
+    "country": "Malaysia",
+    "timezone": "Asia/Singapore"
+  },
+  "1.2935,103.8514": {
+    "city": "Singapore",
+    "country": null,
+    "timezone": "Asia/Singapore"
+  },
+  "-8.756,115.17": {
+    "city": "Badung",
+    "country": "Indonesia",
+    "timezone": "Asia/Makassar"
+  },
+  "1.395,103.635": {
+    "city": "Iskandar Puteri",
+    "country": "Malaysia",
+    "timezone": "Asia/Singapore"
+  },
+  "1.4391,103.6174": {
+    "city": "Iskandar Puteri",
+    "country": "Malaysia",
+    "timezone": "Asia/Singapore"
+  },
+  "1.335,103.595": {
+    "city": "Gelang Patah",
+    "country": "Malaysia",
+    "timezone": "Asia/Singapore"
+  },
+  "-34.5781,-58.4265": {
+    "city": "Buenos Aires",
+    "country": "Argentina",
+    "timezone": "America/Argentina/Buenos_Aires"
   }
 }
