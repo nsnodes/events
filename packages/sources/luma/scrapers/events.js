@@ -1,5 +1,6 @@
 import https from 'https';
 import http from 'http';
+import ical from 'node-ical';
 
 /**
  * Luma Events Fetcher
@@ -165,112 +166,85 @@ function fetchUrl(url, maxRedirects = 5) {
 }
 
 /**
- * Parse iCal data to extract events
+ * Parse iCal data to extract events using node-ical library
  * @private
  */
 async function parseIcal(icalData) {
-  // Simple iCal parser - extract VEVENT blocks
-  const events = [];
-  const veventRegex = /BEGIN:VEVENT([\s\S]*?)END:VEVENT/g;
-  let match;
+  try {
+    // Parse iCal data using node-ical
+    const parsed = ical.sync.parseICS(icalData);
+    const events = [];
 
-  while ((match = veventRegex.exec(icalData)) !== null) {
-    const veventBlock = match[1];
-    const event = parseVEvent(veventBlock);
-    if (event) events.push(event);
-  }
+    // Convert node-ical format to our internal format
+    for (const [key, component] of Object.entries(parsed)) {
+      // Only process VEVENT components
+      if (component.type !== 'VEVENT') continue;
 
-  return events;
-}
+      const event = {
+        uid: component.uid,
+      };
 
-/**
- * Parse a single VEVENT block
- * @private
- */
-function parseVEvent(veventBlock) {
-  // Handle iCal line folding (RFC 5545): lines are folded by inserting CRLF followed by space
-  // Unfold by removing CRLF + space sequences
-  const unfoldedBlock = veventBlock.replace(/\r?\n[ \t]/g, '');
-  const lines = unfoldedBlock.split('\n').map(l => l.trim()).filter(Boolean);
-  const event = {};
-
-  for (const line of lines) {
-    if (line.includes(':')) {
-      const [key, ...valueParts] = line.split(':');
-      const value = valueParts.join(':').trim();
-
-      // Extract property name (remove parameters like ;VALUE=DATE)
-      const propName = key.split(';')[0];
-
-      switch (propName) {
-        case 'UID':
-          event.uid = value;
-          break;
-        case 'SUMMARY':
-          event.title = value;
-          break;
-        case 'DESCRIPTION':
-          event.description = value;
-          // Extract Luma URL from description
-          const urlMatch = value.match(/https?:\/\/lu\.ma\/[^\s]+/);
-          if (urlMatch) event.lumaUrl = urlMatch[0];
-          break;
-        case 'DTSTART':
-          event.startDate = parseIcalDate(value);
-          break;
-        case 'DTEND':
-          event.endDate = parseIcalDate(value);
-          break;
-        case 'LOCATION':
-          event.location = value;
-          break;
-        case 'GEO':
-          const [lat, lon] = value.split(';').map(parseFloat);
-          event.geo = { lat, lon };
-          break;
-        case 'ORGANIZER':
-          // Extract name from ORGANIZER:CN=Name:mailto:email
-          const nameMatch = value.match(/CN=([^:]+)/);
-          if (nameMatch) event.organizer = nameMatch[1];
-          break;
-        case 'STATUS':
-          event.status = value; // CONFIRMED, TENTATIVE, CANCELLED
-          break;
-        case 'SEQUENCE':
-          event.sequence = parseInt(value) || 0;
-          break;
-        case 'URL':
-          event.url = value;
-          break;
+      // Map properties to our expected format
+      if (component.summary) event.title = component.summary;
+      if (component.description) {
+        event.description = component.description;
+        // Extract Luma URL from description (matches both lu.ma and luma.com)
+        const urlMatch = component.description.match(/https?:\/\/(luma\.com|lu\.ma)\/[^\s]+/);
+        if (urlMatch) event.lumaUrl = urlMatch[0];
       }
+
+      // Handle dates - node-ical returns Date objects
+      if (component.start) {
+        event.startDate = component.start instanceof Date
+          ? component.start.toISOString()
+          : new Date(component.start).toISOString();
+      }
+      if (component.end) {
+        event.endDate = component.end instanceof Date
+          ? component.end.toISOString()
+          : new Date(component.end).toISOString();
+      }
+
+      if (component.location) event.location = component.location;
+
+      // Handle GEO property
+      if (component.geo) {
+        event.geo = {
+          lat: parseFloat(component.geo.lat),
+          lon: parseFloat(component.geo.lon)
+        };
+      }
+
+      // Handle organizer - node-ical provides full object
+      if (component.organizer) {
+        // Organizer can be string or object with val/params
+        if (typeof component.organizer === 'string') {
+          event.organizer = component.organizer;
+        } else if (component.organizer.params?.CN) {
+          event.organizer = component.organizer.params.CN;
+        } else if (component.organizer.val) {
+          // Extract name from mailto: URL
+          event.organizer = component.organizer.val.replace('mailto:', '');
+        }
+      }
+
+      if (component.status) event.status = component.status;
+      if (component.sequence !== undefined) {
+        event.sequence = typeof component.sequence === 'string'
+          ? parseInt(component.sequence, 10)
+          : component.sequence;
+      }
+      if (component.url) event.url = component.url;
+
+      // Only include events with a UID
+      if (event.uid) events.push(event);
     }
+
+    return events;
+  } catch (error) {
+    console.error('[parseIcal] Error parsing iCal data:', error.message);
+    throw new Error(`Failed to parse iCal data: ${error.message}`);
   }
-
-  return event.uid ? event : null;
-}
-
-/**
- * Parse iCal date format (YYYYMMDDTHHMMSSZ)
- * @private
- */
-function parseIcalDate(dateString) {
-  // Handle date-only format (YYYYMMDD)
-  if (dateString.length === 8) {
-    const year = dateString.substring(0, 4);
-    const month = dateString.substring(4, 6);
-    const day = dateString.substring(6, 8);
-    return new Date(`${year}-${month}-${day}T00:00:00Z`).toISOString();
-  }
-
-  // Handle datetime format (YYYYMMDDTHHMMSSZ or YYYYMMDDTHHMMSS)
-  const year = dateString.substring(0, 4);
-  const month = dateString.substring(4, 6);
-  const day = dateString.substring(6, 8);
-  const hour = dateString.substring(9, 11);
-  const minute = dateString.substring(11, 13);
-  const second = dateString.substring(13, 15);
-
-  return new Date(`${year}-${month}-${day}T${hour}:${minute}:${second}Z`).toISOString();
 }
 
 /**
