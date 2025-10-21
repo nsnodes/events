@@ -9,7 +9,11 @@ export default {
   // Luma configuration
   luma: {
     // User handles to scrape (e.g., "ns" for luma.com/ns)
-    handles: ['ns'],
+    handles: [
+      'ns',
+      'Prospera-events',
+      'zuzalucity'
+    ],
 
     // Enable/disable city scraping (disabled by default)
     cities_enabled: false,
