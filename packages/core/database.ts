@@ -1,10 +1,16 @@
 /**
  * Database operations (Supabase)
  * Can be swapped out for other databases without changing core logic
+ *
+ * Features:
+ * - Automatic retries for transient failures
+ * - Batch operations with chunking
+ * - Preserves first_seen timestamps
  */
 
 import { createClient, SupabaseClient } from '@supabase/supabase-js'
 import type { Event } from './types.js'
+import { retry, TransientError, PermanentError } from './retry.js'
 
 export interface Database {
   upsertEvent(event: Event): Promise<void>
@@ -101,23 +107,50 @@ export class SupabaseDatabase implements Database {
   }
 
   async upsertEvent(event: Event): Promise<void> {
-    const row = eventToRow(event)
+    await retry(
+      async () => {
+        const row = eventToRow(event)
 
-    // Check if event exists to preserve first_seen
-    const existing = await this.getEventByUid(event.uid)
-    if (existing) {
-      row.first_seen = existing.firstSeen.toISOString()
-    }
+        // Check if event exists to preserve first_seen
+        const existing = await this.getEventByUid(event.uid)
+        if (existing) {
+          row.first_seen = existing.firstSeen.toISOString()
+        }
 
-    const { error } = await this.client
-      .from('events')
-      .upsert(row, {
-        onConflict: 'uid'
-      })
+        const { error } = await this.client
+          .from('events')
+          .upsert(row, {
+            onConflict: 'uid'
+          })
 
-    if (error) {
-      throw new Error(`Failed to upsert event: ${error.message}`)
-    }
+        if (error) {
+          // Classify database errors
+          if (error.code === '23505') {
+            // Duplicate key - not an error for upsert
+            return
+          }
+
+          if (error.message?.includes('timeout') || error.message?.includes('connection')) {
+            throw new TransientError(`Database connection error: ${error.message}`, error)
+          }
+
+          if (error.code?.startsWith('23')) {
+            // PostgreSQL constraint violations (23xxx) are permanent
+            throw new PermanentError(`Database constraint error: ${error.message}`, error)
+          }
+
+          // Default: treat as transient
+          throw new TransientError(`Database error: ${error.message}`, error)
+        }
+      },
+      {
+        maxAttempts: 3,
+        initialDelay: 500,
+        onRetry: (error, attempt) => {
+          console.warn(`[database] Retry ${attempt} for upsertEvent(${event.uid}): ${error.message}`)
+        }
+      }
+    )
   }
 
   async upsertEvents(events: Event[]): Promise<void> {
@@ -129,10 +162,21 @@ export class SupabaseDatabase implements Database {
 
     // Get existing events to preserve first_seen timestamps
     const uids = events.map(e => e.uid)
-    const { data: existingRows } = await this.client
-      .from('events')
-      .select('uid, first_seen')
-      .in('uid', uids)
+    const { data: existingRows } = await retry(
+      async () => {
+        const result = await this.client
+          .from('events')
+          .select('uid, first_seen')
+          .in('uid', uids)
+
+        if (result.error) {
+          throw new TransientError(`Failed to fetch existing events: ${result.error.message}`, result.error)
+        }
+
+        return result
+      },
+      { maxAttempts: 3, initialDelay: 500 }
+    )
 
     const existingMap = new Map(
       (existingRows || []).map(row => [row.uid, row.first_seen])
@@ -147,18 +191,59 @@ export class SupabaseDatabase implements Database {
 
     // Supabase has a limit on batch size, so chunk if needed
     const BATCH_SIZE = 500
+    const errors: Array<{ batch: number, error: string }> = []
+
     for (let i = 0; i < rows.length; i += BATCH_SIZE) {
       const batch = rows.slice(i, i + BATCH_SIZE)
+      const batchNumber = Math.floor(i / BATCH_SIZE) + 1
 
-      const { error } = await this.client
-        .from('events')
-        .upsert(batch, {
-          onConflict: 'uid'
-        })
+      try {
+        await retry(
+          async () => {
+            const { error } = await this.client
+              .from('events')
+              .upsert(batch, {
+                onConflict: 'uid'
+              })
 
-      if (error) {
-        throw new Error(`Failed to upsert events batch: ${error.message}`)
+            if (error) {
+              if (error.code === '23505') {
+                // Duplicate key - not an error for upsert
+                return
+              }
+
+              if (error.message?.includes('timeout') || error.message?.includes('connection')) {
+                throw new TransientError(`Database connection error: ${error.message}`, error)
+              }
+
+              if (error.code?.startsWith('23')) {
+                // PostgreSQL constraint violations are permanent
+                throw new PermanentError(`Database constraint error: ${error.message}`, error)
+              }
+
+              throw new TransientError(`Database error: ${error.message}`, error)
+            }
+          },
+          {
+            maxAttempts: 3,
+            initialDelay: 500,
+            onRetry: (error, attempt) => {
+              console.warn(`[database] Retry ${attempt} for batch ${batchNumber}/${Math.ceil(rows.length / BATCH_SIZE)}: ${error.message}`)
+            }
+          }
+        )
+      } catch (error: any) {
+        // Log but don't stop - continue with other batches
+        const errorMsg = error.message || String(error)
+        console.error(`[database] Batch ${batchNumber} failed after retries: ${errorMsg}`)
+        errors.push({ batch: batchNumber, error: errorMsg })
       }
+    }
+
+    // If any batches failed, throw error with details
+    if (errors.length > 0) {
+      const failedBatches = errors.map(e => e.batch).join(', ')
+      throw new Error(`Failed to upsert ${errors.length} batch(es): ${failedBatches}. First error: ${errors[0].error}`)
     }
   }
 
