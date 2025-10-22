@@ -1,7 +1,7 @@
 {
-  "timestamp": "2025-10-19T02:12:40.349Z",
-  "totalEntities": 1,
-  "withIcalUrl": 1,
+  "timestamp": "2025-10-22T13:34:33.290Z",
+  "totalEntities": 3,
+  "withIcalUrl": 3,
   "withoutIcalUrl": 0,
   "entities": [
     {
@@ -11,6 +11,22 @@
       "type": "user",
       "name": "Network School",
       "icalUrl": "http://api2.luma.com/ics/get?entity=calendar&id=cal-4dWxlBFjW9Cd6ou"
+    },
+    {
+      "handle": "Prospera-events",
+      "slug": "Prospera-events",
+      "url": "https://luma.com/Prospera-events",
+      "type": "calendar",
+      "name": "Próspera",
+      "icalUrl": "http://api2.luma.com/ics/get?entity=calendar&id=cal-NhvyJaSITZmvThz"
+    },
+    {
+      "handle": "zuzalucity",
+      "slug": "zuzalucity",
+      "url": "https://luma.com/zuzalucity",
+      "type": "calendar",
+      "name": "Zuzalu.City",
+      "icalUrl": "http://api2.luma.com/ics/get?entity=calendar&id=cal-S7U4Fqhz1x17KTT"
     }
   ],
   "entityType": "handles"

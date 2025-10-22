@@ -1,3 +1,5 @@
 {
-  "ns": "http://api2.luma.com/ics/get?entity=calendar&id=cal-4dWxlBFjW9Cd6ou"
+  "ns": "http://api2.luma.com/ics/get?entity=calendar&id=cal-4dWxlBFjW9Cd6ou",
+  "Prospera-events": "http://api2.luma.com/ics/get?entity=calendar&id=cal-NhvyJaSITZmvThz",
+  "zuzalucity": "http://api2.luma.com/ics/get?entity=calendar&id=cal-S7U4Fqhz1x17KTT"
 }
