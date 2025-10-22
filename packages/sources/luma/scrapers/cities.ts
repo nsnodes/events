@@ -1,4 +1,4 @@
-import { chromium } from 'playwright';
+import { chromium, Browser, Page } from 'playwright';
 import fs from 'fs';
 import path from 'path';
 
@@ -21,19 +21,53 @@ import path from 'path';
 const DATA_DIR = path.join(process.cwd(), 'packages/sources/luma/data');
 const CITIES_FILE = path.join(DATA_DIR, 'cities.json');
 
+interface City {
+  city: string;
+  slug: string;
+  url: string;
+  region: string;
+  eventCount: number;
+  iconUrl: string | null;
+}
+
+interface CitiesData {
+  timestamp: string;
+  totalCities: number;
+  totalRegions: number;
+  cities: City[];
+  byRegion: Record<string, City[]>;
+}
+
+interface ScrapeCitiesOptions {
+  headless?: boolean;
+}
+
+interface CityComparison {
+  hasChanges: boolean;
+  added: City[];
+  removed: City[];
+  updated: City[];
+  summary: {
+    totalBefore: number;
+    totalAfter: number;
+    added: number;
+    removed: number;
+    updated: number;
+  };
+}
+
 /**
  * Scrape all cities from Luma discover page
- * @param {Object} options - Configuration options
- * @param {boolean} options.headless - Run browser in headless mode (default: true)
- * @returns {Promise<Object>} City data with metadata
+ * @param options - Configuration options
+ * @returns City data with metadata
  */
-export async function scrapeCities(options = {}) {
+export async function scrapeCities(options: ScrapeCitiesOptions = {}): Promise<CitiesData> {
   const { headless = true } = options;
 
-  const browser = await chromium.launch({ headless });
-  const page = await browser.newPage();
+  const browser: Browser = await chromium.launch({ headless });
+  const page: Page = await browser.newPage();
 
-  const allCities = [];
+  const allCities: City[] = [];
 
   try {
     await page.goto('https://luma.com/discover', { waitUntil: 'networkidle' });
@@ -51,10 +85,10 @@ export async function scrapeCities(options = {}) {
     await page.waitForTimeout(1000);
 
     // Get all region tabs
-    const regions = await page.evaluate(() => {
+    const regions: string[] = await page.evaluate(() => {
       return Array.from(document.querySelectorAll('button.tab'))
         .map(tab => tab.textContent?.trim())
-        .filter(Boolean);
+        .filter((text): text is string => Boolean(text));
     });
 
     // Extract cities from each region
@@ -62,12 +96,12 @@ export async function scrapeCities(options = {}) {
       await page.evaluate((regionName) => {
         const tabs = Array.from(document.querySelectorAll('button.tab'));
         const tab = tabs.find(t => t.textContent?.trim() === regionName);
-        if (tab) tab.click();
+        if (tab) (tab as HTMLButtonElement).click();
       }, region);
 
       await page.waitForTimeout(1000);
 
-      const cities = await page.evaluate((regionName) => {
+      const cities: City[] = await page.evaluate((regionName) => {
         const cityElements = document.querySelectorAll('.city-grid .place-item');
         return Array.from(cityElements).map(cityLink => {
           const href = cityLink.getAttribute('href');
@@ -77,7 +111,7 @@ export async function scrapeCities(options = {}) {
           const eventCountMatch = desc?.match(/(\d+)/);
 
           return {
-            city: title,
+            city: title || '',
             slug: href?.replace('?k=p', '').replace('/', '') || '',
             url: 'https://luma.com' + href?.replace('?k=p', ''),
             region: regionName,
@@ -96,13 +130,13 @@ export async function scrapeCities(options = {}) {
 
     uniqueCities.sort((a, b) => a.city.localeCompare(b.city));
 
-    const byRegion = {};
+    const byRegion: Record<string, City[]> = {};
     uniqueCities.forEach(city => {
       if (!byRegion[city.region]) byRegion[city.region] = [];
       byRegion[city.region].push(city);
     });
 
-    const result = {
+    const result: CitiesData = {
       timestamp: new Date().toISOString(),
       totalCities: uniqueCities.length,
       totalRegions: Object.keys(byRegion).length,
@@ -119,9 +153,9 @@ export async function scrapeCities(options = {}) {
 
 /**
  * Save cities data to disk
- * @param {Object} citiesData - City data object
+ * @param citiesData - City data object
  */
-export function saveCities(citiesData) {
+export function saveCities(citiesData: CitiesData): void {
   if (!fs.existsSync(DATA_DIR)) {
     fs.mkdirSync(DATA_DIR, { recursive: true });
   }
@@ -146,9 +180,9 @@ export function saveCities(citiesData) {
 
 /**
  * Load cities from disk
- * @returns {Object} City data object
+ * @returns City data object
  */
-export function getCities() {
+export function getCities(): CitiesData {
   if (!fs.existsSync(CITIES_FILE)) {
     throw new Error('Cities data not found. Run scrapeCities() first.');
   }
@@ -157,11 +191,11 @@ export function getCities() {
 
 /**
  * Compare old and new city data to detect changes
- * @param {Object} oldData - Previous city data
- * @param {Object} newData - New city data
- * @returns {Object} Diff with added/removed/updated cities
+ * @param oldData - Previous city data
+ * @param newData - New city data
+ * @returns Diff with added/removed/updated cities
  */
-export function compareCities(oldData, newData) {
+export function compareCities(oldData: CitiesData, newData: CitiesData): CityComparison {
   const oldSlugs = new Set(oldData.cities.map(c => c.slug));
   const newSlugs = new Set(newData.cities.map(c => c.slug));
 

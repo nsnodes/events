@@ -8,7 +8,22 @@ import * as scrapers from './scrapers/index.js'
 import { normalizeCityEvents, normalizePopupCities } from './normalize.js'
 import config from '../../../config.js'
 
-export default [
+interface TaskResult {
+  totalCities?: number;
+  withIcalUrl?: number;
+  withoutIcalUrl?: number;
+}
+
+interface Task {
+  id: string;
+  schedule: 'daily' | 'weekly' | 'polling';
+  description: string;
+  enabled?: () => boolean;
+  run?: () => Promise<TaskResult>;
+  extractStream?: (db: any) => AsyncGenerator<any[], void, unknown>;
+}
+
+const tasks: Task[] = [
   /**
    * Task: Discover popup cities
    * Frequency: Daily
@@ -19,7 +34,7 @@ export default [
     schedule: 'daily',
     description: 'Discover all popup cities on Sola.day',
 
-    async run() {
+    async run(): Promise<TaskResult> {
       console.log('[sola:cities] Starting city discovery...')
 
       const data = await scrapers.scrapePopupCities({ headless: true })
@@ -31,8 +46,8 @@ export default [
 
         if (diff.hasChanges) {
           console.log(`[sola:cities] Changes detected: ${diff.summary}`)
-          console.log(`  Added: ${diff.added.map(c => c.slug).join(', ')}`)
-          console.log(`  Removed: ${diff.removed.map(c => c.slug).join(', ')}`)
+          console.log(`  Added: ${diff.added.map((c: any) => c.slug).join(', ')}`)
+          console.log(`  Removed: ${diff.removed.map((c: any) => c.slug).join(', ')}`)
         } else {
           console.log('[sola:cities] No changes detected')
         }
@@ -62,7 +77,7 @@ export default [
     description: 'Extract iCal subscription URLs for all popup cities',
     enabled: () => config.sola?.cities_events_enabled === true,
 
-    async run() {
+    async run(): Promise<TaskResult> {
       console.log('[sola:ical-urls] Starting iCal URL extraction...')
 
       const cities = scrapers.getCities()
@@ -109,7 +124,7 @@ export default [
     description: 'Scrape popup city details and normalize as events',
     enabled: () => config.sola?.cities_enabled === true,
 
-    async *extractStream(db) {
+    async *extractStream(db: any): AsyncGenerator<any[], void, unknown> {
       console.log('[sola:popup-cities] Starting popup city sync (streaming)...')
 
       const citiesData = scrapers.getCities()
@@ -158,7 +173,7 @@ export default [
     description: 'Fetch events from all popup city iCal feeds',
     enabled: () => config.sola?.cities_events_enabled === true,
 
-    async *extractStream(db) {
+    async *extractStream(db: any): AsyncGenerator<any[], void, unknown> {
       console.log('[sola:events] Starting event sync (streaming)...')
 
       const icalUrls = scrapers.getIcalUrls()
@@ -194,3 +209,5 @@ export default [
     }
   }
 ]
+
+export default tasks

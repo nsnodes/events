@@ -11,7 +11,26 @@ import config from '../../../config.js'
 import fs from 'fs'
 import path from 'path'
 
-export default [
+interface TaskResult {
+  skipped?: boolean;
+  reason?: string;
+  totalCities?: number;
+  totalRegions?: number;
+  entityType?: string;
+  totalEntities?: number;
+  withIcalUrl?: number;
+  withoutIcalUrl?: number;
+}
+
+interface Task {
+  id: string;
+  schedule: 'daily' | 'weekly' | 'polling';
+  description: string;
+  run?: () => Promise<TaskResult>;
+  extractStream?: (db: any) => AsyncGenerator<any[], void, unknown>;
+}
+
+const tasks: Task[] = [
   /**
    * Task: Discover cities
    * Frequency: Daily (detect new cities being added)
@@ -23,7 +42,7 @@ export default [
     schedule: 'daily',
     description: 'Discover all cities available on Luma (disabled by default)',
 
-    async run() {
+    async run(): Promise<TaskResult> {
       if (!config.luma.cities_enabled) {
         console.log('[luma:cities] Skipping - cities_enabled=false in config.js')
         return { skipped: true, reason: 'cities_enabled=false' }
@@ -73,11 +92,11 @@ export default [
     schedule: 'weekly',
     description: 'Extract iCal subscription URLs for configured entities (handles or cities)',
 
-    async run() {
+    async run(): Promise<TaskResult> {
       console.log('[luma:ical-urls] Starting iCal URL extraction...')
 
-      let entities
-      let entityType
+      let entities: any[]
+      let entityType: string
 
       // Use handles if cities are disabled
       if (!config.luma.cities_enabled && config.luma.handles.length > 0) {
@@ -89,7 +108,7 @@ export default [
         const handlesData = JSON.parse(fs.readFileSync(handlesPath, 'utf8'))
         entities = handlesData.handles
 
-        console.log(`[luma:ical-urls] Loaded ${entities.length} handles: ${entities.map(h => h.slug).join(', ')}`)
+        console.log(`[luma:ical-urls] Loaded ${entities.length} handles: ${entities.map((h: any) => h.slug).join(', ')}`)
       } else if (config.luma.cities_enabled) {
         console.log('[luma:ical-urls] Using cities from data file')
         entityType = 'cities'
@@ -146,7 +165,7 @@ export default [
     schedule: 'polling',
     description: 'Fetch events from all configured entity iCal feeds (handles or cities)',
 
-    async *extractStream(db) {
+    async *extractStream(db: any): AsyncGenerator<any[], void, unknown> {
       console.log('[luma:events] Starting event sync (streaming)...')
 
       // Get full iCal data with entity type metadata
@@ -166,7 +185,7 @@ export default [
 
         if (entityResult.success) {
           console.log(`[luma:events]   Fetched ${entityResult.eventCount} events, normalizing...`)
-          const normalized = await normalizeCityEvents(entityResult, db, entityType)
+          const normalized = await normalizeCityEvents(entityResult, db, entityType as 'city' | 'handle')
           totalEvents += normalized.length
 
           console.log(
@@ -187,3 +206,5 @@ export default [
     }
   }
 ]
+
+export default tasks

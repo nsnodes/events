@@ -11,30 +11,115 @@ import path from 'path'
 
 // Load handle location cache
 const HANDLE_LOCATIONS_FILE = path.join(process.cwd(), 'packages/sources/luma/data/handle-locations.json')
-let handleLocations = {}
+
+interface HandleLocation {
+  name?: string;
+  city: string | null;
+  country: string | null;
+  timezone: string | null;
+}
+
+type HandleLocations = Record<string, HandleLocation>;
+
+let handleLocations: HandleLocations = {}
 try {
   handleLocations = JSON.parse(fs.readFileSync(HANDLE_LOCATIONS_FILE, 'utf8'))
 } catch (error) {
   // File doesn't exist yet, that's okay
 }
 
+interface RawEvent {
+  uid: string;
+  title: string;
+  description?: string;
+  startDate: string | Date;
+  endDate?: string | Date;
+  location?: string;
+  geo?: { lat: number; lon: number };
+  organizer?: string;
+  status?: string;
+  sequence?: number;
+  url?: string;
+  lumaUrl?: string;
+}
+
+interface Organizer {
+  name: string;
+}
+
+interface NormalizedEvent {
+  uid: string;
+  fingerprint: string;
+  source: string;
+  sourceUrl: string;
+  sourceEventId: string;
+  title: string;
+  description: string | null;
+  startAt: Date;
+  endAt: Date | null;
+  timezone: string | null;
+  venueName: string | null;
+  address: string | undefined;
+  lat: number | undefined;
+  lng: number | undefined;
+  city: string | null;
+  country: string | null;
+  organizers: Organizer[];
+  tags: string[];
+  imageUrl: null;
+  status: string;
+  sequence: number;
+  confidence: number;
+  raw: RawEvent;
+  firstSeen: Date;
+  lastSeen: Date;
+  lastChecked: Date;
+}
+
+interface NormalizationOptions {
+  skipGeocoding?: boolean;
+  reuseLocation?: {
+    city: string | null;
+    country: string | null;
+    timezone: string | null;
+  };
+  entityType?: 'city' | 'handle';
+}
+
+interface EntityResult {
+  success: boolean;
+  citySlug: string;
+  events?: RawEvent[];
+}
+
+interface DatabaseInterface {
+  getEventsByUids(uids: string[]): Promise<Array<{
+    uid: string;
+    city: string | null;
+    country: string | null;
+    timezone: string | null;
+    fingerprint: string;
+  }>>;
+}
+
 /**
  * Normalize a single Luma event to common Event schema
- * @param {Object} rawEvent - Raw event from Luma iCal
- * @param {string} entitySlug - Entity slug for context (city or handle)
- * @param {Object} options - Normalization options
- * @param {boolean} options.skipGeocoding - Skip geocoding (reuse existing data)
- * @param {Object} options.reuseLocation - Location data to reuse {city, country}
- * @param {string} options.entityType - Type of entity ('city' or 'handle')
- * @returns {Promise<Object>} Normalized event
+ * @param rawEvent - Raw event from Luma iCal
+ * @param entitySlug - Entity slug for context (city or handle)
+ * @param options - Normalization options
+ * @returns Normalized event
  */
-export async function normalizeEvent(rawEvent, entitySlug = null, options = {}) {
+export async function normalizeEvent(
+  rawEvent: RawEvent,
+  entitySlug: string | null = null,
+  options: NormalizationOptions = {}
+): Promise<NormalizedEvent> {
   const startAt = new Date(rawEvent.startDate)
   const endAt = rawEvent.endDate ? new Date(rawEvent.endDate) : null
 
-  let city = null
-  let country = null
-  let timezone = null
+  let city: string | null = null
+  let country: string | null = null
+  let timezone: string | null = null
 
   // Option 1: Reuse existing location data (for unchanged events)
   if (options.skipGeocoding && options.reuseLocation) {
@@ -50,7 +135,7 @@ export async function normalizeEvent(rawEvent, entitySlug = null, options = {}) 
     timezone = geocoded.timezone
   }
   // Option 3: Check for internal room references (for handles)
-  else if (options.entityType === 'handle' && handleLocations[entitySlug]) {
+  else if (options.entityType === 'handle' && entitySlug && handleLocations[entitySlug]) {
     const isInternalRoom = isInternalRoomReference(rawEvent.location)
 
     if (isInternalRoom) {
@@ -74,12 +159,12 @@ export async function normalizeEvent(rawEvent, entitySlug = null, options = {}) 
   const extractedUrl = extractLumaUrl(rawEvent.description)
 
   // Build organizers array
-  const organizers = []
+  const organizers: Organizer[] = []
   if (rawEvent.organizer) {
     organizers.push({ name: rawEvent.organizer })
   }
   // Add handle organization if this is from a handle
-  if (options.entityType === 'handle' && handleLocations[entitySlug]?.name) {
+  if (options.entityType === 'handle' && entitySlug && handleLocations[entitySlug]?.name) {
     const handleName = handleLocations[entitySlug].name
     // Only add if not already in organizers
     if (!organizers.some(o => o.name === handleName)) {
@@ -87,7 +172,7 @@ export async function normalizeEvent(rawEvent, entitySlug = null, options = {}) 
     }
   }
 
-  const normalized = {
+  const normalized: NormalizedEvent = {
     // Identifiers
     uid: rawEvent.uid,
     fingerprint: generateFingerprint(
@@ -142,36 +227,48 @@ export async function normalizeEvent(rawEvent, entitySlug = null, options = {}) 
  * Normalize batch of events from an entity result (city or handle)
  * Optimized: Only geocodes new or updated events
  *
- * @param {Object} entityResult - Result from fetchEvents()
- * @param {Object} db - Database instance (optional, for optimization)
- * @param {string} entityType - Type of entity ('city' or 'handle')
- * @returns {Promise<Array>} Array of normalized events
+ * @param entityResult - Result from fetchEvents()
+ * @param db - Database instance (optional, for optimization)
+ * @param entityType - Type of entity ('city' or 'handle')
+ * @returns Array of normalized events
  */
-export async function normalizeCityEvents(entityResult, db = null, entityType = 'city') {
+export async function normalizeCityEvents(
+  entityResult: EntityResult,
+  db: DatabaseInterface | null = null,
+  entityType: 'city' | 'handle' = 'city'
+): Promise<NormalizedEvent[]> {
   if (!entityResult.success || !entityResult.events) {
     return []
   }
 
   // Detect entity type from slug if not provided
   // (handles are typically in handleLocations, cities are not)
+  let detectedEntityType = entityType
   if (!entityType && handleLocations[entityResult.citySlug]) {
-    entityType = 'handle'
+    detectedEntityType = 'handle'
   }
 
   // Optimization: Check which events already exist in DB
-  let existingEventsMap = new Map()
+  let existingEventsMap = new Map<string, {
+    uid: string;
+    city: string | null;
+    country: string | null;
+    timezone: string | null;
+    fingerprint: string;
+  }>()
+
   if (db) {
     try {
       const uids = entityResult.events.map(e => e.uid)
       const existingEvents = await db.getEventsByUids(uids)
       existingEventsMap = new Map(existingEvents.map(e => [e.uid, e]))
     } catch (error) {
-      console.warn('Could not fetch existing events for optimization:', error.message)
+      console.warn('Could not fetch existing events for optimization:', (error as Error).message)
     }
   }
 
   // Process events sequentially to respect geocoding rate limits
-  const normalized = []
+  const normalized: NormalizedEvent[] = []
   let geocodingCount = 0
   let reusedCount = 0
 
@@ -203,14 +300,14 @@ export async function normalizeCityEvents(entityResult, db = null, entityType = 
           country: existing.country,
           timezone: existing.timezone
         },
-        entityType
+        entityType: detectedEntityType
       })
       normalized.push(normalizedEvent)
       reusedCount++
     } else {
       // New or updated event - perform geocoding
       const normalizedEvent = await normalizeEvent(event, entityResult.citySlug, {
-        entityType
+        entityType: detectedEntityType
       })
       normalized.push(normalizedEvent)
       geocodingCount++
@@ -226,7 +323,7 @@ export async function normalizeCityEvents(entityResult, db = null, entityType = 
 
 // Helper functions
 
-function extractCity(location) {
+function extractCity(location: string | undefined): string | null {
   if (!location) return null
 
   // Skip URLs
@@ -244,7 +341,7 @@ function extractCity(location) {
   return null
 }
 
-function extractVenueName(location) {
+function extractVenueName(location: string | undefined): string | null {
   if (!location) return null
 
   // Skip URLs
@@ -255,7 +352,7 @@ function extractVenueName(location) {
   return firstPart || null
 }
 
-function extractCountry(location) {
+function extractCountry(location: string | undefined): string | null {
   if (!location) return null
 
   // Skip URLs
@@ -290,7 +387,7 @@ function extractCountry(location) {
  * Uses structural characteristics rather than hardcoded room names
  * @private
  */
-function isInternalRoomReference(location) {
+function isInternalRoomReference(location: string | undefined): boolean {
   if (!location) return false
 
   const parts = location.split(',').map(p => p.trim())
@@ -338,7 +435,7 @@ function isInternalRoomReference(location) {
   return false
 }
 
-function extractLumaUrl(description) {
+function extractLumaUrl(description: string | undefined): string | null {
   if (!description) return null
 
   // Extract URL from "Get up-to-date information at: https://luma.com/..." line
@@ -346,7 +443,7 @@ function extractLumaUrl(description) {
   return match ? match[1] : null
 }
 
-function cleanDescription(description) {
+function cleanDescription(description: string | undefined): string | null {
   if (!description) return null
 
   // Remove Luma boilerplate:
@@ -381,7 +478,7 @@ function cleanDescription(description) {
   return cleaned.trim() || null
 }
 
-function mapStatus(status) {
+function mapStatus(status: string | undefined): string {
   if (!status) return 'scheduled'
 
   const normalized = status.toUpperCase()

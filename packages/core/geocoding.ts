@@ -43,21 +43,29 @@ const geocoder = mapboxToken ? NodeGeocoder({
   formatter: null
 }) : null
 
+interface GeocodeResult {
+  city: string | null;
+  country: string | null;
+  timezone: string | null;
+}
+
+type CacheData = Record<string, GeocodeResult>;
+
 // Load cache from disk or initialize empty
-function loadCache() {
+function loadCache(): Map<string, GeocodeResult> {
   try {
     if (fs.existsSync(CACHE_FILE)) {
-      const data = JSON.parse(fs.readFileSync(CACHE_FILE, 'utf8'))
+      const data: CacheData = JSON.parse(fs.readFileSync(CACHE_FILE, 'utf8'))
       return new Map(Object.entries(data))
     }
   } catch (error) {
-    console.warn('[geocoding] Failed to load cache:', error.message)
+    console.warn('[geocoding] Failed to load cache:', (error as Error).message)
   }
   return new Map()
 }
 
 // Save cache to disk
-function saveCache() {
+function saveCache(): void {
   try {
     if (!fs.existsSync(CACHE_DIR)) {
       fs.mkdirSync(CACHE_DIR, { recursive: true })
@@ -65,7 +73,7 @@ function saveCache() {
     const data = Object.fromEntries(cache)
     fs.writeFileSync(CACHE_FILE, JSON.stringify(data, null, 2))
   } catch (error) {
-    console.warn('[geocoding] Failed to save cache:', error.message)
+    console.warn('[geocoding] Failed to save cache:', (error as Error).message)
   }
 }
 
@@ -73,8 +81,8 @@ function saveCache() {
 const cache = loadCache()
 
 // Save cache periodically and on exit
-let saveTimeout = null
-function scheduleCacheSave() {
+let saveTimeout: NodeJS.Timeout | null = null
+function scheduleCacheSave(): void {
   if (saveTimeout) clearTimeout(saveTimeout)
   saveTimeout = setTimeout(() => {
     saveCache()
@@ -103,7 +111,7 @@ const MIN_REQUEST_INTERVAL = 125 // 125ms = 8 requests/second (80% of Mapbox lim
 /**
  * Wait to respect rate limit
  */
-async function waitForRateLimit() {
+async function waitForRateLimit(): Promise<void> {
   const now = Date.now()
   const timeSinceLastRequest = now - lastRequestTime
   const waitTime = MIN_REQUEST_INTERVAL - timeSinceLastRequest
@@ -118,7 +126,7 @@ async function waitForRateLimit() {
 /**
  * Generate cache key from coordinates
  */
-function getCacheKey(lat, lng) {
+function getCacheKey(lat: number, lng: number): string {
   // Round to 4 decimal places (~11m precision) for cache key
   const roundedLat = Math.round(lat * 10000) / 10000
   const roundedLng = Math.round(lng * 10000) / 10000
@@ -129,13 +137,13 @@ function getCacheKey(lat, lng) {
  * Perform the actual geocoding API call (wrapped by retry logic)
  * @private
  */
-async function performGeocode(lat, lng) {
+async function performGeocode(lat: number, lng: number): Promise<any> {
   // Wait for rate limit before making request
   await waitForRateLimit()
 
   try {
     // Perform reverse geocoding with Mapbox
-    const results = await geocoder.reverse({
+    const results = await geocoder!.reverse({
       lat,
       lon: lng
     })
@@ -147,20 +155,20 @@ async function performGeocode(lat, lng) {
 
     return results[0]
   } catch (error) {
-    const errorMsg = error.message?.toLowerCase() || ''
+    const errorMsg = (error as Error).message?.toLowerCase() || ''
 
     // Classify errors as transient or permanent
     if (errorMsg.includes('rate limit') || errorMsg.includes('429')) {
-      throw new TransientError(`Rate limited: ${error.message}`, error)
+      throw new TransientError(`Rate limited: ${(error as Error).message}`, error as Error)
     }
 
     if (errorMsg.includes('timeout') || errorMsg.includes('network') ||
         errorMsg.includes('econnreset') || errorMsg.includes('503')) {
-      throw new TransientError(`Network error: ${error.message}`, error)
+      throw new TransientError(`Network error: ${(error as Error).message}`, error as Error)
     }
 
     if (errorMsg.includes('unauthorized') || errorMsg.includes('invalid key')) {
-      throw new PermanentError(`Auth error: ${error.message}`, error)
+      throw new PermanentError(`Auth error: ${(error as Error).message}`, error as Error)
     }
 
     if (error instanceof PermanentError) {
@@ -168,18 +176,18 @@ async function performGeocode(lat, lng) {
     }
 
     // Default: treat unknown errors as transient (will retry)
-    throw new TransientError(`Geocoding error: ${error.message}`, error)
+    throw new TransientError(`Geocoding error: ${(error as Error).message}`, error as Error)
   }
 }
 
 /**
  * Reverse geocode coordinates to get normalized city, country, and timezone
  *
- * @param {number} lat - Latitude
- * @param {number} lng - Longitude
- * @returns {Promise<{city: string|null, country: string|null, timezone: string|null}>}
+ * @param lat - Latitude
+ * @param lng - Longitude
+ * @returns Object with city, country, and timezone
  */
-export async function reverseGeocode(lat, lng) {
+export async function reverseGeocode(lat: number | null | undefined, lng: number | null | undefined): Promise<GeocodeResult> {
   if (!lat || !lng) {
     return { city: null, country: null, timezone: null }
   }
@@ -187,12 +195,12 @@ export async function reverseGeocode(lat, lng) {
   // Check cache first
   const cacheKey = getCacheKey(lat, lng)
   if (cache.has(cacheKey)) {
-    return cache.get(cacheKey)
+    return cache.get(cacheKey)!
   }
 
   // If no geocoder configured, return fallback
   if (!geocoder) {
-    const fallback = { city: null, country: null, timezone: null }
+    const fallback: GeocodeResult = { city: null, country: null, timezone: null }
     cache.set(cacheKey, fallback)
     scheduleCacheSave()
     return fallback
@@ -206,19 +214,19 @@ export async function reverseGeocode(lat, lng) {
         maxAttempts: 3,
         initialDelay: 1000,
         maxDelay: 10000,
-        onRetry: (error, attempt, delay) => {
+        onRetry: (error: Error, attempt: number, delay: number) => {
           console.warn(`[geocoding] Retry ${attempt} for ${lat},${lng} after ${delay}ms: ${error.message}`)
         }
       }
     )
 
     // Lookup timezone from coordinates (offline, fast)
-    let timezone = null
+    let timezone: string | null = null
     try {
       const timezones = findTimezone(lat, lng)
       timezone = timezones && timezones.length > 0 ? timezones[0] : null
     } catch (tzError) {
-      console.warn(`[geocoding] Timezone lookup failed for ${lat},${lng}:`, tzError.message)
+      console.warn(`[geocoding] Timezone lookup failed for ${lat},${lng}:`, (tzError as Error).message)
     }
 
     // Extract normalized city, country, and timezone from Mapbox response
@@ -228,7 +236,7 @@ export async function reverseGeocode(lat, lng) {
       country = countries.getName(result.countryCode, 'en', { select: 'official' })
     }
 
-    const normalized = {
+    const normalized: GeocodeResult = {
       city: result.city || result.county || result.state || null,
       country: country || null,
       timezone
@@ -245,7 +253,7 @@ export async function reverseGeocode(lat, lng) {
 
     if (error instanceof PermanentError) {
       // No data found or auth issue - cache this to avoid retrying
-      const fallback = { city: null, country: null, timezone: null }
+      const fallback: GeocodeResult = { city: null, country: null, timezone: null }
       cache.set(cacheKey, fallback)
       scheduleCacheSave()
 
@@ -260,7 +268,7 @@ export async function reverseGeocode(lat, lng) {
 
     // Transient error - all retries failed
     // Don't cache failures - we want to try again next time
-    console.error(`[geocoding] All retries failed for ${lat},${lng}:`, error.message)
+    console.error(`[geocoding] All retries failed for ${lat},${lng}:`, (error as Error).message)
 
     // Return fallback but don't cache it
     return { city: null, country: null, timezone: null }
@@ -271,11 +279,11 @@ export async function reverseGeocode(lat, lng) {
  * Batch reverse geocode multiple coordinates
  * Processes sequentially to respect rate limiting
  *
- * @param {Array<{lat: number, lng: number}>} coordinates
- * @returns {Promise<Array<{city: string|null, country: string|null}>>}
+ * @param coordinates - Array of coordinate objects
+ * @returns Array of geocode results
  */
-export async function reverseGeocodeBatch(coordinates) {
-  const results = []
+export async function reverseGeocodeBatch(coordinates: Array<{ lat: number; lng: number }>): Promise<GeocodeResult[]> {
+  const results: GeocodeResult[] = []
 
   for (const coord of coordinates) {
     const result = await reverseGeocode(coord.lat, coord.lng)
@@ -288,7 +296,7 @@ export async function reverseGeocodeBatch(coordinates) {
 /**
  * Get cache statistics
  */
-export function getCacheStats() {
+export function getCacheStats(): { size: number; keys: string[] } {
   return {
     size: cache.size,
     keys: Array.from(cache.keys())
@@ -298,14 +306,13 @@ export function getCacheStats() {
 /**
  * Clear the cache
  */
-export function clearCache() {
+export function clearCache(): void {
   cache.clear()
   try {
     if (fs.existsSync(CACHE_FILE)) {
       fs.unlinkSync(CACHE_FILE)
     }
   } catch (error) {
-    console.warn('[geocoding] Failed to delete cache file:', error.message)
+    console.warn('[geocoding] Failed to delete cache file:', (error as Error).message)
   }
 }
-

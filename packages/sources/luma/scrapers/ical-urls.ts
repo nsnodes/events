@@ -1,4 +1,4 @@
-import { chromium } from 'playwright';
+import { chromium, Browser, BrowserContext, Page } from 'playwright';
 import fs from 'fs';
 import path from 'path';
 
@@ -30,21 +30,64 @@ const ICAL_FULL_FILE = path.join(DATA_DIR, 'cities-with-ical.json');
 const CONCURRENT_BROWSERS = 3;
 const RETRY_ATTEMPTS = 2;
 
+interface Entity {
+  slug: string;
+  [key: string]: any;
+}
+
+interface EntityWithIcal extends Entity {
+  icalUrl: string | null;
+  error?: string;
+}
+
+interface IcalUrlsData {
+  timestamp: string;
+  totalEntities: number;
+  withIcalUrl: number;
+  withoutIcalUrl: number;
+  entities: EntityWithIcal[];
+}
+
+interface IcalFullData extends IcalUrlsData {
+  entityType: string;
+}
+
+interface ScrapeOptions {
+  headless?: boolean;
+  concurrency?: number;
+}
+
+interface UrlMap {
+  [slug: string]: string;
+}
+
+interface IcalComparison {
+  hasChanges: boolean;
+  changed: Array<{ slug: string; oldUrl: string; newUrl: string }>;
+  added: Array<{ slug: string; url: string }>;
+  removed: Array<{ slug: string; url: string }>;
+  summary: {
+    totalBefore: number;
+    totalAfter: number;
+    changed: number;
+    added: number;
+    removed: number;
+  };
+}
+
 /**
  * Scrape iCal URLs for any Luma entities (cities, handles, etc.)
  * Works generically for any entity with a slug that maps to luma.com/{slug}
  *
- * @param {Array} entities - Array of entity objects with { slug, ... } structure
- * @param {Object} options - Configuration options
- * @param {boolean} options.headless - Run in headless mode (default: true)
- * @param {number} options.concurrency - Number of concurrent browsers (default: 3)
- * @returns {Promise<Object>} iCal URL data
+ * @param entities - Array of entity objects with { slug, ... } structure
+ * @param options - Configuration options
+ * @returns iCal URL data
  */
-export async function scrapeIcalUrls(entities, options = {}) {
+export async function scrapeIcalUrls(entities: Entity[], options: ScrapeOptions = {}): Promise<IcalUrlsData> {
   const { headless = true, concurrency = CONCURRENT_BROWSERS } = options;
 
-  const results = [];
-  const browser = await chromium.launch({ headless });
+  const results: EntityWithIcal[] = [];
+  const browser: Browser = await chromium.launch({ headless });
 
   try {
     // Process entities in batches
@@ -66,7 +109,7 @@ export async function scrapeIcalUrls(entities, options = {}) {
       });
     }
 
-    const output = {
+    const output: IcalUrlsData = {
       timestamp: new Date().toISOString(),
       totalEntities: entities.length,
       withIcalUrl: results.filter(r => r.icalUrl).length,
@@ -86,13 +129,13 @@ export async function scrapeIcalUrls(entities, options = {}) {
  * Works for any luma.com/{slug} page with the same layout
  * @private
  */
-async function processEntity(browser, entity, attempt = 1) {
-  const context = await browser.newContext({
+async function processEntity(browser: Browser, entity: Entity, attempt: number = 1): Promise<EntityWithIcal> {
+  const context: BrowserContext = await browser.newContext({
     viewport: { width: 1280, height: 800 },
     userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36'
   });
 
-  const page = await context.newPage();
+  const page: Page = await context.newPage();
 
   try {
     await page.goto(`https://luma.com/${entity.slug}`, {
@@ -129,7 +172,7 @@ async function processEntity(browser, entity, attempt = 1) {
  * Find subscribe button and extract iCal URL from modal
  * @private
  */
-async function findAndExtractIcal(page) {
+async function findAndExtractIcal(page: Page): Promise<string | null> {
   try {
     // Click RSS icon button
     const clicked = await page.evaluate(() => {
@@ -152,7 +195,7 @@ async function findAndExtractIcal(page) {
         if (hasRssPath && hasRssCircle) {
           const button = svg.closest('button');
           if (button) {
-            button.click();
+            (button as HTMLButtonElement).click();
             return true;
           }
         }
@@ -166,7 +209,7 @@ async function findAndExtractIcal(page) {
         const section = eventsHeading.closest('section, div');
         const buttons = section?.querySelectorAll('button svg');
         if (buttons && buttons.length > 0) {
-          const iconButtons = Array.from(buttons).map(svg => svg.closest('button')).filter(Boolean);
+          const iconButtons = Array.from(buttons).map(svg => svg.closest('button')).filter((btn): btn is HTMLButtonElement => Boolean(btn));
           for (const btn of iconButtons) {
             const svg = btn.querySelector('svg');
             if (svg && svg.querySelectorAll('path, circle').length >= 2) {
@@ -190,7 +233,7 @@ async function findAndExtractIcal(page) {
       if (modals.length === 0) return null;
 
       const modal = modals[modals.length - 1];
-      const urls = [];
+      const urls: string[] = [];
 
       // Collect all URLs
       modal.querySelectorAll('a[href]').forEach(link => {
@@ -251,23 +294,23 @@ async function findAndExtractIcal(page) {
 
 /**
  * Save iCal URLs to disk
- * @param {Object} icalData - iCal URL data with entities array
- * @param {string} entityType - Type of entities ('cities' or 'handles')
+ * @param icalData - iCal URL data with entities array
+ * @param entityType - Type of entities ('cities' or 'handles')
  */
-export function saveIcalUrls(icalData, entityType = 'cities') {
+export function saveIcalUrls(icalData: IcalUrlsData, entityType: string = 'cities'): void {
   if (!fs.existsSync(DATA_DIR)) {
     fs.mkdirSync(DATA_DIR, { recursive: true });
   }
 
   // Save full data with entity type metadata
-  const fullData = {
+  const fullData: IcalFullData = {
     ...icalData,
     entityType
   };
   fs.writeFileSync(ICAL_FULL_FILE, JSON.stringify(fullData, null, 2));
 
   // Save URL mapping (slug -> url) - works for any entity type
-  const urlMap = {};
+  const urlMap: UrlMap = {};
   icalData.entities.forEach(entity => {
     if (entity.icalUrl) {
       urlMap[entity.slug] = entity.icalUrl;
@@ -279,9 +322,9 @@ export function saveIcalUrls(icalData, entityType = 'cities') {
 
 /**
  * Load iCal URLs from disk
- * @returns {Object} Slug to URL mapping
+ * @returns Slug to URL mapping
  */
-export function getIcalUrls() {
+export function getIcalUrls(): UrlMap {
   if (!fs.existsSync(ICAL_URLS_FILE)) {
     throw new Error('iCal URLs not found. Run scrapeIcalUrls() first.');
   }
@@ -290,9 +333,9 @@ export function getIcalUrls() {
 
 /**
  * Load full iCal data with metadata
- * @returns {Object} Full iCal data including entityType
+ * @returns Full iCal data including entityType
  */
-export function getIcalData() {
+export function getIcalData(): IcalFullData {
   if (!fs.existsSync(ICAL_FULL_FILE)) {
     throw new Error('iCal data not found. Run scrapeIcalUrls() first.');
   }
@@ -301,17 +344,22 @@ export function getIcalData() {
 
 /**
  * Compare old and new iCal URLs to detect changes
- * @param {Object} oldUrls - Previous URL mapping
- * @param {Object} newUrls - New URL mapping
- * @returns {Object} Diff with changed URLs
+ * @param oldUrls - Previous URL mapping
+ * @param newUrls - New URL mapping (can be IcalUrlsData or UrlMap)
+ * @returns Diff with changed URLs
  */
-export function compareIcalUrls(oldUrls, newUrls) {
-  const changed = [];
-  const added = [];
-  const removed = [];
+export function compareIcalUrls(oldUrls: UrlMap, newUrls: IcalUrlsData | UrlMap): IcalComparison {
+  // Handle both formats: convert IcalUrlsData to UrlMap if needed
+  const newUrlMap: UrlMap = 'entities' in newUrls
+    ? Object.fromEntries(newUrls.entities.filter(e => e.icalUrl).map(e => [e.slug, e.icalUrl!]))
+    : newUrls;
+
+  const changed: Array<{ slug: string; oldUrl: string; newUrl: string }> = [];
+  const added: Array<{ slug: string; url: string }> = [];
+  const removed: Array<{ slug: string; url: string }> = [];
 
   // Check for changes and additions
-  for (const [slug, newUrl] of Object.entries(newUrls)) {
+  for (const [slug, newUrl] of Object.entries(newUrlMap)) {
     if (!oldUrls[slug]) {
       added.push({ slug, url: newUrl });
     } else if (oldUrls[slug] !== newUrl) {
@@ -325,7 +373,7 @@ export function compareIcalUrls(oldUrls, newUrls) {
 
   // Check for removals
   for (const slug of Object.keys(oldUrls)) {
-    if (!newUrls[slug]) {
+    if (!newUrlMap[slug]) {
       removed.push({ slug, url: oldUrls[slug] });
     }
   }
@@ -337,7 +385,7 @@ export function compareIcalUrls(oldUrls, newUrls) {
     removed,
     summary: {
       totalBefore: Object.keys(oldUrls).length,
-      totalAfter: Object.keys(newUrls).length,
+      totalAfter: Object.keys(newUrlMap).length,
       changed: changed.length,
       added: added.length,
       removed: removed.length

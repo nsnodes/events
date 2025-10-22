@@ -12,25 +12,61 @@ import { fileURLToPath } from 'url'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
+interface Task {
+  id: string;
+  schedule: string;
+  description?: string;
+  enabled?: boolean | (() => boolean);
+  run?: () => Promise<any>;
+  extractStream?: (db: any) => AsyncGenerator<any[], void, unknown>;
+}
+
+interface TaskResult {
+  taskId: string;
+  success: boolean;
+  eventsProcessed?: number;
+  duration: number;
+  result?: any;
+  error?: string;
+  skipped?: boolean;
+  reason?: string;
+}
+
+interface ScheduleResult {
+  schedule: string;
+  tasksRun: number;
+  eventsProcessed: number;
+  duration: number;
+  tasks?: TaskResult[];
+}
+
+interface TaskMetadata {
+  id: string;
+  schedule: string;
+  description: string;
+  hasExtractStream: boolean;
+  hasRun: boolean;
+}
+
 /**
  * Load all task definitions from all sources
- * @returns {Promise<Array>} Array of all tasks
+ * @returns Array of all tasks
  */
-async function loadAllTasks() {
-  const tasks = []
+async function loadAllTasks(): Promise<Task[]> {
+  const tasks: Task[] = []
 
-  // Find all tasks.js files in sources
+  // Find all tasks.ts files in sources
   const sourcesDir = path.join(__dirname, '../sources')
-  const taskFiles = await glob('*/tasks.js', { cwd: sourcesDir, absolute: true })
+  const taskFiles = await glob('*/tasks.{ts,js}', { cwd: sourcesDir, absolute: true })
 
   for (const taskFile of taskFiles) {
     try {
       const module = await import(taskFile)
-      const sourceTasks = module.default || []
+      const sourceTasks: Task[] = module.default || []
 
       tasks.push(...sourceTasks)
     } catch (error) {
-      console.error(`Failed to load tasks from ${taskFile}:`, error.message)
+      console.error(`Failed to load tasks from ${taskFile}:`, (error as Error).message)
     }
   }
 
@@ -39,10 +75,10 @@ async function loadAllTasks() {
 
 /**
  * Run all tasks matching a specific schedule
- * @param {string} schedule - Schedule name ('polling', 'daily', 'weekly')
- * @returns {Promise<Object>} Execution summary
+ * @param schedule - Schedule name ('polling', 'daily', 'weekly')
+ * @returns Execution summary
  */
-export async function runSchedule(schedule) {
+export async function runSchedule(schedule: string): Promise<ScheduleResult> {
   console.log(`\n🚀 Running schedule: ${schedule}\n`)
 
   const startTime = Date.now()
@@ -81,7 +117,7 @@ export async function runSchedule(schedule) {
   console.log()
 
   let totalEventsProcessed = 0
-  const taskResults = []
+  const taskResults: TaskResult[] = []
 
   // Execute each task
   for (const task of matchingTasks) {
@@ -93,11 +129,12 @@ export async function runSchedule(schedule) {
         totalEventsProcessed += taskResult.eventsProcessed
       }
     } catch (error) {
-      console.error(`\n❌ Task ${task.id} failed:`, error.message)
+      console.error(`\n❌ Task ${task.id} failed:`, (error as Error).message)
       taskResults.push({
         taskId: task.id,
         success: false,
-        error: error.message
+        error: (error as Error).message,
+        duration: 0
       })
     }
   }
@@ -121,7 +158,7 @@ export async function runSchedule(schedule) {
  * Execute a single task
  * @private
  */
-async function executeTask(task) {
+async function executeTask(task: Task): Promise<TaskResult> {
   const startTime = Date.now()
 
   // Task with extractStream (yields normalized events to save)
@@ -163,10 +200,10 @@ async function executeTask(task) {
 
 /**
  * Run a specific task by ID (for testing)
- * @param {string} taskId - Task identifier (e.g., 'luma:events')
- * @returns {Promise<Object>} Task result
+ * @param taskId - Task identifier (e.g., 'luma:events')
+ * @returns Task result
  */
-export async function runTask(taskId) {
+export async function runTask(taskId: string): Promise<TaskResult> {
   console.log(`\n🎯 Running task: ${taskId}\n`)
 
   const allTasks = await loadAllTasks()
@@ -185,7 +222,8 @@ export async function runTask(taskId) {
         taskId: task.id,
         success: false,
         skipped: true,
-        reason: 'Task is disabled via config'
+        reason: 'Task is disabled via config',
+        duration: 0
       }
     }
   }
@@ -195,9 +233,9 @@ export async function runTask(taskId) {
 
 /**
  * List all available tasks
- * @returns {Promise<Array>} Array of task metadata
+ * @returns Array of task metadata
  */
-export async function listTasks() {
+export async function listTasks(): Promise<TaskMetadata[]> {
   const allTasks = await loadAllTasks()
 
   return allTasks.map(task => ({

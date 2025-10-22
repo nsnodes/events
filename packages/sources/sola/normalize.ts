@@ -9,22 +9,117 @@
 import { generateFingerprint } from '../../core/fingerprint.ts'
 import { reverseGeocode } from '../../core/geocoding.js'
 
+interface RawEvent {
+  uid: string;
+  title: string;
+  description?: string;
+  startDate: string | Date;
+  endDate?: string | Date;
+  location?: string;
+  geo?: { lat: number; lon: number };
+  organizer?: string;
+  status?: string;
+  sequence?: number;
+  url?: string;
+  solaUrl?: string;
+}
+
+interface NormalizationOptions {
+  skipGeocoding?: boolean;
+  reuseLocation?: {
+    city: string | null;
+    country: string | null;
+    timezone: string | null;
+  };
+}
+
+interface Organizer {
+  name: string;
+}
+
+interface NormalizedEvent {
+  uid: string;
+  fingerprint: string;
+  source: string;
+  sourceUrl: string;
+  sourceEventId: string;
+  title: string;
+  description: string | null;
+  startAt: Date;
+  endAt: Date | null;
+  timezone: string | null;
+  venueName: string | null;
+  address: string | undefined;
+  lat: number | undefined;
+  lng: number | undefined;
+  city: string | null;
+  country: string | null;
+  organizers: Organizer[];
+  tags: string[];
+  imageUrl: null | string;
+  status: string;
+  sequence: number;
+  confidence: number;
+  raw: RawEvent | CityDetail;
+  firstSeen: Date;
+  lastSeen: Date;
+  lastChecked: Date;
+  website?: string | null;
+}
+
+interface CityResult {
+  success: boolean;
+  citySlug: string;
+  events?: RawEvent[];
+}
+
+interface DatabaseInterface {
+  getEventsByUids(uids: string[]): Promise<Array<{
+    uid: string;
+    city: string | null;
+    country: string | null;
+    timezone: string | null;
+    fingerprint: string;
+  }>>;
+}
+
+interface CityDetail {
+  success: boolean;
+  id?: number | string;
+  citySlug: string;
+  title: string;
+  description?: string;
+  startDate?: string | Date;
+  endDate?: string | Date;
+  location?: string;
+  timezone?: string;
+  imageUrl?: string;
+  website?: string;
+}
+
+interface CityDetailsResult {
+  success: boolean;
+  cities?: CityDetail[];
+}
+
 /**
  * Normalize a single Sola.day event to common Event schema
- * @param {Object} rawEvent - Raw event from Sola.day iCal
- * @param {string} citySlug - City slug for context
- * @param {Object} options - Normalization options
- * @param {boolean} options.skipGeocoding - Skip geocoding (reuse existing data)
- * @param {Object} options.reuseLocation - Location data to reuse {city, country}
- * @returns {Promise<Object>} Normalized event
+ * @param rawEvent - Raw event from Sola.day iCal
+ * @param citySlug - City slug for context
+ * @param options - Normalization options
+ * @returns Normalized event
  */
-export async function normalizeEvent(rawEvent, citySlug = null, options = {}) {
+export async function normalizeEvent(
+  rawEvent: RawEvent,
+  citySlug: string | null = null,
+  options: NormalizationOptions = {}
+): Promise<NormalizedEvent> {
   const startAt = new Date(rawEvent.startDate)
   const endAt = rawEvent.endDate ? new Date(rawEvent.endDate) : null
 
-  let city = null
-  let country = null
-  let timezone = null
+  let city: string | null = null
+  let country: string | null = null
+  let timezone: string | null = null
 
   // Option 1: Reuse existing location data (for unchanged events)
   if (options.skipGeocoding && options.reuseLocation) {
@@ -48,7 +143,7 @@ export async function normalizeEvent(rawEvent, citySlug = null, options = {}) {
     country = extractCountry(rawEvent.location)
   }
 
-  const normalized = {
+  const normalized: NormalizedEvent = {
     // Identifiers
     uid: rawEvent.uid,
     fingerprint: generateFingerprint(
@@ -103,29 +198,39 @@ export async function normalizeEvent(rawEvent, citySlug = null, options = {}) {
  * Normalize batch of events from a city result
  * Optimized: Only geocodes new or updated events
  *
- * @param {Object} cityResult - Result from fetchEvents()
- * @param {Object} db - Database instance (optional, for optimization)
- * @returns {Promise<Array>} Array of normalized events
+ * @param cityResult - Result from fetchEvents()
+ * @param db - Database instance (optional, for optimization)
+ * @returns Array of normalized events
  */
-export async function normalizeCityEvents(cityResult, db = null) {
+export async function normalizeCityEvents(
+  cityResult: CityResult,
+  db: DatabaseInterface | null = null
+): Promise<NormalizedEvent[]> {
   if (!cityResult.success || !cityResult.events) {
     return []
   }
 
   // Optimization: Check which events already exist in DB
-  let existingEventsMap = new Map()
+  let existingEventsMap = new Map<string, {
+    uid: string;
+    city: string | null;
+    country: string | null;
+    timezone: string | null;
+    fingerprint: string;
+  }>()
+
   if (db) {
     try {
       const uids = cityResult.events.map(e => e.uid)
       const existingEvents = await db.getEventsByUids(uids)
       existingEventsMap = new Map(existingEvents.map(e => [e.uid, e]))
     } catch (error) {
-      console.warn('Could not fetch existing events for optimization:', error.message)
+      console.warn('Could not fetch existing events for optimization:', (error as Error).message)
     }
   }
 
   // Process events sequentially to respect geocoding rate limits
-  const normalized = []
+  const normalized: NormalizedEvent[] = []
   let geocodingCount = 0
   let reusedCount = 0
 
@@ -176,7 +281,7 @@ export async function normalizeCityEvents(cityResult, db = null) {
 
 // Helper functions
 
-function extractCity(location) {
+function extractCity(location: string | undefined): string | null {
   if (!location) return null
 
   // Skip URLs
@@ -197,7 +302,7 @@ function extractCity(location) {
   return null
 }
 
-function extractVenueName(location) {
+function extractVenueName(location: string | undefined): string | null {
   if (!location) return null
 
   // Skip URLs
@@ -208,7 +313,7 @@ function extractVenueName(location) {
   return firstPart || null
 }
 
-function extractCountry(location) {
+function extractCountry(location: string | undefined): string | null {
   if (!location) return null
 
   // Skip URLs
@@ -241,7 +346,7 @@ function extractCountry(location) {
  * Detect if a location string is an internal room reference (not a real address)
  * @private
  */
-function isInternalRoomReference(location) {
+function isInternalRoomReference(location: string): boolean {
   if (!location) return false
 
   const parts = location.split(',').map(p => p.trim())
@@ -289,7 +394,7 @@ function isInternalRoomReference(location) {
   return false
 }
 
-function cleanDescription(description) {
+function cleanDescription(description: string | undefined): string | null {
   if (!description) return null
 
   // Remove common iCal artifacts
@@ -298,7 +403,7 @@ function cleanDescription(description) {
     .trim()
 }
 
-function mapStatus(status) {
+function mapStatus(status: string | undefined): string {
   if (!status) return 'scheduled'
 
   const normalized = status.toUpperCase()
@@ -312,11 +417,14 @@ function mapStatus(status) {
 
 /**
  * Normalize a popup city to common Event schema
- * @param {Object} cityDetail - City detail from scrapeCityDetail()
- * @param {Object} options - Normalization options
- * @returns {Promise<Object>} Normalized event
+ * @param cityDetail - City detail from scrapeCityDetail()
+ * @param options - Normalization options
+ * @returns Normalized event or null if invalid
  */
-export async function normalizePopupCity(cityDetail, options = {}) {
+export async function normalizePopupCity(
+  cityDetail: CityDetail,
+  options: NormalizationOptions = {}
+): Promise<NormalizedEvent | null> {
   if (!cityDetail.success) return null
 
   const startAt = cityDetail.startDate ? new Date(cityDetail.startDate) : null
@@ -332,7 +440,7 @@ export async function normalizePopupCity(cityDetail, options = {}) {
   const country = null
   const timezone = cityDetail.timezone || null
 
-  const normalized = {
+  const normalized: NormalizedEvent = {
     // Identifiers
     uid: `soladay-city-${cityDetail.id || cityDetail.citySlug}`,
     fingerprint: generateFingerprint(
@@ -386,15 +494,15 @@ export async function normalizePopupCity(cityDetail, options = {}) {
 
 /**
  * Normalize batch of popup cities from city details result
- * @param {Object} cityDetailsResult - Result from scrapeCityDetails()
- * @returns {Promise<Array>} Array of normalized events
+ * @param cityDetailsResult - Result from scrapeCityDetails()
+ * @returns Array of normalized events
  */
-export async function normalizePopupCities(cityDetailsResult) {
+export async function normalizePopupCities(cityDetailsResult: CityDetailsResult): Promise<NormalizedEvent[]> {
   if (!cityDetailsResult.success || !cityDetailsResult.cities) {
     return []
   }
 
-  const normalized = []
+  const normalized: NormalizedEvent[] = []
 
   for (const cityDetail of cityDetailsResult.cities) {
     const normalizedCity = await normalizePopupCity(cityDetail)

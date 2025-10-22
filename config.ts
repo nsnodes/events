@@ -5,7 +5,26 @@
  * (cities, handles, groups, etc.) to scrape from each source.
  */
 
-export default {
+interface LumaConfig {
+  /** User handles to scrape (e.g., "ns" for luma.com/ns) */
+  handles: string[];
+  /** Enable/disable city scraping (disabled by default) */
+  cities_enabled: boolean;
+}
+
+interface SolaConfig {
+  /** Enable/disable popup city tracking (cities as events) */
+  cities_enabled: boolean;
+  /** Enable/disable city events scraping (events within cities) */
+  cities_events_enabled: boolean;
+}
+
+interface Config {
+  luma: LumaConfig;
+  sola: SolaConfig;
+}
+
+const config: Config = {
   // Luma configuration
   luma: {
     // User handles to scrape (e.g., "ns" for luma.com/ns)
@@ -28,3 +47,5 @@ export default {
     cities_events_enabled: false,
   }
 }
+
+export default config

@@ -1,6 +1,7 @@
 import https from 'https';
 import http from 'http';
 import ical from 'node-ical';
+import { VEvent, CalendarComponent } from 'node-ical';
 
 /**
  * Luma Events Fetcher
@@ -18,13 +19,58 @@ import ical from 'node-ical';
  *   const allEvents = await fetchAllCityEvents(icalUrls)
  */
 
+interface RawEvent {
+  uid: string;
+  title?: string;
+  description?: string;
+  lumaUrl?: string;
+  startDate?: string;
+  endDate?: string;
+  location?: string;
+  geo?: {
+    lat: number;
+    lon: number;
+  };
+  organizer?: string;
+  status?: string;
+  sequence?: number;
+  url?: string;
+}
+
+interface CityResult {
+  citySlug: string;
+  success: boolean;
+  timestamp: string;
+  eventCount: number;
+  events: RawEvent[];
+  error?: string;
+}
+
+interface AllEventsResult {
+  timestamp: string;
+  totalCities: number;
+  successfulCities: number;
+  failedCities: number;
+  totalEvents: number;
+  cities: CityResult[];
+  events: RawEvent[];
+}
+
+interface FetchOptions {
+  concurrency?: number;
+}
+
+interface UrlMap {
+  [citySlug: string]: string;
+}
+
 /**
  * Fetch and parse iCal feed for a single city
- * @param {string} citySlug - City identifier
- * @param {string} icalUrl - iCal feed URL
- * @returns {Promise<Object>} Parsed events data
+ * @param citySlug - City identifier
+ * @param icalUrl - iCal feed URL
+ * @returns Parsed events data
  */
-export async function fetchEvents(citySlug, icalUrl) {
+export async function fetchEvents(citySlug: string, icalUrl: string): Promise<CityResult> {
   try {
     const icalData = await fetchUrl(icalUrl);
     const events = await parseIcal(icalData);
@@ -42,7 +88,8 @@ export async function fetchEvents(citySlug, icalUrl) {
       citySlug,
       success: false,
       timestamp: new Date().toISOString(),
-      error: error.message,
+      error: (error as Error).message,
+      eventCount: 0,
       events: []
     };
   }
@@ -52,10 +99,9 @@ export async function fetchEvents(citySlug, icalUrl) {
  * Fetch events for all cities (streaming with async generator)
  * Yields city results as they complete to avoid holding all events in memory
  *
- * @param {Object} icalUrls - Mapping of citySlug to iCal URL
- * @param {Object} options - Configuration options
- * @param {number} options.concurrency - Number of concurrent requests (default: 5)
- * @yields {Object} City result with events: { citySlug, success, timestamp, eventCount, events, error? }
+ * @param icalUrls - Mapping of citySlug to iCal URL
+ * @param options - Configuration options
+ * @yields City result with events: { citySlug, success, timestamp, eventCount, events, error? }
  *
  * @example
  * for await (const cityResult of fetchAllCityEventsStreaming(urls)) {
@@ -63,7 +109,10 @@ export async function fetchEvents(citySlug, icalUrl) {
  *   await storeInDatabase(cityResult.events);
  * }
  */
-export async function* fetchAllCityEventsStreaming(icalUrls, options = {}) {
+export async function* fetchAllCityEventsStreaming(
+  icalUrls: UrlMap,
+  options: FetchOptions = {}
+): AsyncGenerator<CityResult, void, unknown> {
   const { concurrency = 5 } = options;
   const cities = Object.entries(icalUrls);
 
@@ -99,13 +148,12 @@ export async function* fetchAllCityEventsStreaming(icalUrls, options = {}) {
  * Fetch events for all cities (aggregated in memory)
  * Use fetchAllCityEventsStreaming() for better memory efficiency
  *
- * @param {Object} icalUrls - Mapping of citySlug to iCal URL
- * @param {Object} options - Configuration options
- * @param {number} options.concurrency - Number of concurrent requests (default: 5)
- * @returns {Promise<Object>} Aggregated events from all cities
+ * @param icalUrls - Mapping of citySlug to iCal URL
+ * @param options - Configuration options
+ * @returns Aggregated events from all cities
  */
-export async function fetchAllCityEvents(icalUrls, options = {}) {
-  const results = [];
+export async function fetchAllCityEvents(icalUrls: UrlMap, options: FetchOptions = {}): Promise<AllEventsResult> {
+  const results: CityResult[] = [];
   let totalEvents = 0;
   let successCount = 0;
 
@@ -132,7 +180,7 @@ export async function fetchAllCityEvents(icalUrls, options = {}) {
  * Fetch URL content with redirect support
  * @private
  */
-function fetchUrl(url, maxRedirects = 5) {
+function fetchUrl(url: string, maxRedirects: number = 5): Promise<string> {
   return new Promise((resolve, reject) => {
     const client = url.startsWith('https') ? https : http;
 
@@ -174,72 +222,79 @@ function fetchUrl(url, maxRedirects = 5) {
  * Parse iCal data to extract events using node-ical library
  * @private
  */
-async function parseIcal(icalData) {
+async function parseIcal(icalData: string): Promise<RawEvent[]> {
   try {
     // Parse iCal data using node-ical
     const parsed = ical.sync.parseICS(icalData);
-    const events = [];
+    const events: RawEvent[] = [];
 
     // Convert node-ical format to our internal format
     for (const [key, component] of Object.entries(parsed)) {
       // Only process VEVENT components
       if (component.type !== 'VEVENT') continue;
 
-      const event = {
-        uid: component.uid,
+      const vevent = component as VEvent;
+      const event: RawEvent = {
+        uid: vevent.uid
       };
 
       // Map properties to our expected format
-      if (component.summary) event.title = component.summary;
-      if (component.description) {
-        event.description = component.description;
+      if (vevent.summary) event.title = vevent.summary;
+      if (vevent.description) {
+        event.description = vevent.description;
         // Extract Luma URL from description (matches both lu.ma and luma.com)
-        const urlMatch = component.description.match(/https?:\/\/(luma\.com|lu\.ma)\/[^\s]+/);
+        const urlMatch = vevent.description.match(/https?:\/\/(luma\.com|lu\.ma)\/[^\s]+/);
         if (urlMatch) event.lumaUrl = urlMatch[0];
       }
 
       // Handle dates - node-ical returns Date objects
-      if (component.start) {
-        event.startDate = component.start instanceof Date
-          ? component.start.toISOString()
-          : new Date(component.start).toISOString();
+      if (vevent.start) {
+        event.startDate = vevent.start instanceof Date
+          ? vevent.start.toISOString()
+          : new Date(vevent.start).toISOString();
       }
-      if (component.end) {
-        event.endDate = component.end instanceof Date
-          ? component.end.toISOString()
-          : new Date(component.end).toISOString();
+      if (vevent.end) {
+        event.endDate = vevent.end instanceof Date
+          ? vevent.end.toISOString()
+          : new Date(vevent.end).toISOString();
       }
 
-      if (component.location) event.location = component.location;
+      if (vevent.location) event.location = vevent.location;
 
       // Handle GEO property
-      if (component.geo) {
+      if (vevent.geo) {
         event.geo = {
-          lat: parseFloat(component.geo.lat),
-          lon: parseFloat(component.geo.lon)
+          lat: parseFloat(vevent.geo.lat as any),
+          lon: parseFloat(vevent.geo.lon as any)
         };
       }
 
       // Handle organizer - node-ical provides full object
-      if (component.organizer) {
+      if (vevent.organizer) {
         // Organizer can be string or object with val/params
-        if (typeof component.organizer === 'string') {
-          event.organizer = component.organizer;
-        } else if (component.organizer.params?.CN) {
-          event.organizer = component.organizer.params.CN;
-        } else if (component.organizer.val) {
+        if (typeof vevent.organizer === 'string') {
+          event.organizer = vevent.organizer;
+        } else if (vevent.organizer.params?.CN) {
+          event.organizer = vevent.organizer.params.CN;
+        } else if ((vevent.organizer as any).val) {
           // Extract name from mailto: URL
-          event.organizer = component.organizer.val.replace('mailto:', '');
+          event.organizer = (vevent.organizer as any).val.replace('mailto:', '');
         }
       }
 
-      if (component.status) event.status = component.status;
-      if (component.sequence !== undefined) {
-        event.sequence = typeof component.sequence === 'string'
-          ? parseInt(component.sequence, 10)
-          : component.sequence;
+      if (vevent.status) event.status = vevent.status;
+      if (vevent.sequence !== undefined) {
+        event.sequence = typeof vevent.sequence === 'string'
+          ? parseInt(vevent.sequence, 10)
+          : vevent.sequence;
       }
-      if (component.url) event.url = component.url;
+
+      // Handle URL - node-ical can return string or object
+      if (vevent.url) {
+        event.url = typeof vevent.url === 'string'
+          ? vevent.url
+          : (vevent.url as any).val || vevent.url;
+      }
 
       // Only include events with a UID
       if (event.uid) events.push(event);
@@ -247,20 +302,21 @@ async function parseIcal(icalData) {
 
     return events;
   } catch (error) {
-    console.error('[parseIcal] Error parsing iCal data:', error.message);
-    throw new Error(`Failed to parse iCal data: ${error.message}`);
+    console.error('[parseIcal] Error parsing iCal data:', (error as Error).message);
+    throw new Error(`Failed to parse iCal data: ${(error as Error).message}`);
   }
 }
 
 /**
  * Filter events by date range
- * @param {Array} events - Array of events
- * @param {Date} startDate - Start date
- * @param {Date} endDate - End date
- * @returns {Array} Filtered events
+ * @param events - Array of events
+ * @param startDate - Start date
+ * @param endDate - End date
+ * @returns Filtered events
  */
-export function filterEventsByDateRange(events, startDate, endDate) {
+export function filterEventsByDateRange(events: RawEvent[], startDate: Date, endDate: Date): RawEvent[] {
   return events.filter(event => {
+    if (!event.startDate) return false;
     const eventStart = new Date(event.startDate);
     return eventStart >= startDate && eventStart <= endDate;
   });
@@ -268,15 +324,18 @@ export function filterEventsByDateRange(events, startDate, endDate) {
 
 /**
  * Group events by city
- * @param {Array} events - Array of events with citySlug
- * @returns {Object} Events grouped by city
+ * @param events - Array of events with citySlug
+ * @returns Events grouped by city
  */
-export function groupEventsByCity(events) {
+export function groupEventsByCity(events: Array<RawEvent & { citySlug?: string }>): Record<string, RawEvent[]> {
   return events.reduce((acc, event) => {
-    if (!acc[event.citySlug]) {
-      acc[event.citySlug] = [];
+    const citySlug = event.citySlug;
+    if (!citySlug) return acc;
+
+    if (!acc[citySlug]) {
+      acc[citySlug] = [];
     }
-    acc[event.citySlug].push(event);
+    acc[citySlug].push(event);
     return acc;
-  }, {});
+  }, {} as Record<string, RawEvent[]>);
 }

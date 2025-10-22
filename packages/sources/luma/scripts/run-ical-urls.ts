@@ -4,8 +4,17 @@ import config from '../../../../config.js';
 import fs from 'fs';
 import path from 'path';
 
-let entities;
-let entityType;
+interface Entity {
+  slug: string;
+  [key: string]: any;
+}
+
+interface HandlesData {
+  handles: Entity[];
+}
+
+let entities: Entity[];
+let entityType: string;
 
 // Use handles if cities are disabled
 if (!config.luma.cities_enabled && config.luma.handles.length > 0) {
@@ -14,7 +23,7 @@ if (!config.luma.cities_enabled && config.luma.handles.length > 0) {
 
   // Load handles from data file
   const handlesPath = path.join(process.cwd(), 'packages/sources/luma/data/handles.json');
-  const handlesData = JSON.parse(fs.readFileSync(handlesPath, 'utf8'));
+  const handlesData: HandlesData = JSON.parse(fs.readFileSync(handlesPath, 'utf8'));
   entities = handlesData.handles;
 
   console.log(`Loaded ${entities.length} handles: ${entities.map(h => h.slug).join(', ')}`);

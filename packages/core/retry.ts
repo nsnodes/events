@@ -9,7 +9,9 @@
  * Error categories for retry logic
  */
 export class PermanentError extends Error {
-  constructor(message, cause) {
+  cause?: Error;
+
+  constructor(message: string, cause?: Error) {
     super(message);
     this.name = 'PermanentError';
     this.cause = cause;
@@ -17,7 +19,9 @@ export class PermanentError extends Error {
 }
 
 export class TransientError extends Error {
-  constructor(message, cause) {
+  cause?: Error;
+
+  constructor(message: string, cause?: Error) {
     super(message);
     this.name = 'TransientError';
     this.cause = cause;
@@ -26,24 +30,31 @@ export class TransientError extends Error {
 
 /**
  * Retry configuration
- * @typedef {Object} RetryOptions
- * @property {number} maxAttempts - Maximum number of attempts (default: 3)
- * @property {number} initialDelay - Initial delay in ms (default: 1000)
- * @property {number} maxDelay - Maximum delay in ms (default: 30000)
- * @property {number} backoffMultiplier - Multiplier for exponential backoff (default: 2)
- * @property {Function} shouldRetry - Custom function to determine if error is retryable
- * @property {Function} onRetry - Callback called before each retry attempt
  */
+export interface RetryOptions {
+  /** Maximum number of attempts (default: 3) */
+  maxAttempts?: number;
+  /** Initial delay in ms (default: 1000) */
+  initialDelay?: number;
+  /** Maximum delay in ms (default: 30000) */
+  maxDelay?: number;
+  /** Multiplier for exponential backoff (default: 2) */
+  backoffMultiplier?: number;
+  /** Custom function to determine if error is retryable */
+  shouldRetry?: (error: Error) => boolean;
+  /** Callback called before each retry attempt */
+  onRetry?: (error: Error, attempt: number, delay: number) => void;
+}
 
 /**
  * Default retry configuration
  */
-const DEFAULT_OPTIONS = {
+const DEFAULT_OPTIONS: Required<RetryOptions> = {
   maxAttempts: 3,
   initialDelay: 1000,
   maxDelay: 30000,
   backoffMultiplier: 2,
-  shouldRetry: (error) => {
+  shouldRetry: (error: Error): boolean => {
     // Don't retry permanent errors
     if (error instanceof PermanentError) return false;
 
@@ -69,16 +80,16 @@ const DEFAULT_OPTIONS = {
 
     return transientPatterns.some(pattern => message.includes(pattern));
   },
-  onRetry: null
+  onRetry: () => {}
 };
 
 /**
  * Execute a function with retry logic
  *
- * @param {Function} fn - Async function to execute
- * @param {RetryOptions} options - Retry configuration
- * @returns {Promise<any>} Result of the function
- * @throws {Error} Last error if all attempts fail
+ * @param fn - Async function to execute
+ * @param options - Retry configuration
+ * @returns Result of the function
+ * @throws Last error if all attempts fail
  *
  * @example
  * const result = await retry(async () => {
@@ -89,19 +100,19 @@ const DEFAULT_OPTIONS = {
  *   onRetry: (error, attempt) => console.log(`Retry ${attempt}: ${error.message}`)
  * });
  */
-export async function retry(fn, options = {}) {
+export async function retry<T>(fn: () => Promise<T>, options: RetryOptions = {}): Promise<T> {
   const config = { ...DEFAULT_OPTIONS, ...options };
-  let lastError;
+  let lastError: Error;
 
   for (let attempt = 1; attempt <= config.maxAttempts; attempt++) {
     try {
       return await fn();
     } catch (error) {
-      lastError = error;
+      lastError = error as Error;
 
       // Don't retry if it's not retryable
-      if (!config.shouldRetry(error)) {
-        throw error;
+      if (!config.shouldRetry(lastError)) {
+        throw lastError;
       }
 
       // Don't retry if this was the last attempt
@@ -117,7 +128,7 @@ export async function retry(fn, options = {}) {
 
       // Call retry callback if provided
       if (config.onRetry) {
-        config.onRetry(error, attempt, delay);
+        config.onRetry(lastError, attempt, delay);
       }
 
       // Wait before retrying
@@ -126,22 +137,25 @@ export async function retry(fn, options = {}) {
   }
 
   // All attempts failed
-  throw lastError;
+  throw lastError!;
 }
 
 /**
  * Create a retryable version of an async function
  *
- * @param {Function} fn - Async function to wrap
- * @param {RetryOptions} options - Retry configuration
- * @returns {Function} Wrapped function with retry logic
+ * @param fn - Async function to wrap
+ * @param options - Retry configuration
+ * @returns Wrapped function with retry logic
  *
  * @example
  * const fetchWithRetry = retryable(fetchData, { maxAttempts: 5 });
  * const data = await fetchWithRetry(url);
  */
-export function retryable(fn, options = {}) {
-  return async function(...args) {
+export function retryable<TArgs extends any[], TResult>(
+  fn: (...args: TArgs) => Promise<TResult>,
+  options: RetryOptions = {}
+): (...args: TArgs) => Promise<TResult> {
+  return async function(...args: TArgs): Promise<TResult> {
     return retry(() => fn(...args), options);
   };
 }
@@ -149,10 +163,10 @@ export function retryable(fn, options = {}) {
 /**
  * Determine if an error is likely permanent or transient
  *
- * @param {Error} error - Error to categorize
- * @returns {'permanent'|'transient'|'unknown'} Error category
+ * @param error - Error to categorize
+ * @returns Error category
  */
-export function categorizeError(error) {
+export function categorizeError(error: Error): 'permanent' | 'transient' | 'unknown' {
   if (error instanceof PermanentError) return 'permanent';
   if (error instanceof TransientError) return 'transient';
 
