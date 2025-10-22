@@ -8,6 +8,12 @@
 
 import { generateFingerprint } from '../../core/fingerprint.ts'
 import { reverseGeocode } from '../../core/geocoding.js'
+import citiesData from './data/cities.json' assert { type: 'json' }
+
+// Create slug -> title mapping for organizer lookup
+const cityTitleMap = new Map(
+  citiesData.cities.map(city => [city.slug, city.title])
+)
 
 interface RawEvent {
   uid: string;
@@ -175,7 +181,9 @@ export async function normalizeEvent(
     country,
 
     // Additional metadata
-    organizers: rawEvent.organizer ? [{ name: rawEvent.organizer }] : [],
+    organizers: rawEvent.organizer ? [{
+      name: cityTitleMap.get(rawEvent.organizer) || rawEvent.organizer
+    }] : [],
     tags: [],
     imageUrl: null, // Would need to be extracted from description or separate fetch
     status: mapStatus(rawEvent.status),
