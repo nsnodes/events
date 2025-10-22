@@ -44,7 +44,7 @@ const config: Config = {
     cities_enabled: true,
 
     // Enable/disable city events scraping (events within cities)
-    cities_events_enabled: false,
+    cities_events_enabled: true,
   }
 }
 
