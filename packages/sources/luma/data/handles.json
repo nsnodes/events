@@ -1,6 +1,6 @@
 {
   "timestamp": "2025-10-14T00:00:00.000Z",
-  "totalHandles": 1,
+  "totalHandles": 3,
   "handles": [
     {
       "handle": "ns",
@@ -8,6 +8,20 @@
       "url": "https://luma.com/ns",
       "type": "user",
       "name": "Network School"
+    },
+    {
+      "handle": "Prospera-events",
+      "slug": "Prospera-events",
+      "url": "https://luma.com/Prospera-events",
+      "type": "calendar",
+      "name": "Próspera"
+    },
+    {
+      "handle": "zuzalucity",
+      "slug": "zuzalucity",
+      "url": "https://luma.com/zuzalucity",
+      "type": "calendar",
+      "name": "Zuzalu.City"
     }
   ]
 }
