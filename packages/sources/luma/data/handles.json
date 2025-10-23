@@ -1,6 +1,6 @@
 {
   "timestamp": "2025-10-14T00:00:00.000Z",
-  "totalHandles": 8,
+  "totalHandles": 11,
   "handles": [
     {
       "handle": "ns",
@@ -57,6 +57,27 @@
       "url": "https://luma.com/user/usr-bRtyfgATCOX4Ek3",
       "type": "user",
       "name": "Liberland.org"
+    },
+    {
+      "handle": "logos",
+      "slug": "logos",
+      "url": "https://luma.com/user/logos",
+      "type": "user",
+      "name": "logos"
+    },
+    {
+      "handle": "montelibero",
+      "slug": "montelibero",
+      "url": "https://luma.com/user/montelibero",
+      "type": "user",
+      "name": "montelibero"
+    },
+    {
+      "handle": "joinvdao",
+      "slug": "joinvdao",
+      "url": "https://luma.com/joinvdao",
+      "type": "calendar",
+      "name": "V DAO"
     }
   ]
 }
