@@ -1,6 +1,6 @@
 {
   "timestamp": "2025-10-14T00:00:00.000Z",
-  "totalHandles": 3,
+  "totalHandles": 8,
   "handles": [
     {
       "handle": "ns",
@@ -22,6 +22,41 @@
       "url": "https://luma.com/zuzalucity",
       "type": "calendar",
       "name": "Zuzalu.City"
+    },
+    {
+      "handle": "ipecity",
+      "slug": "ipecity",
+      "url": "https://luma.com/ipecity",
+      "type": "calendar",
+      "name": "Ipê City"
+    },
+    {
+      "handle": "InfinitaCity",
+      "slug": "InfinitaCity",
+      "url": "https://luma.com/InfinitaCity",
+      "type": "calendar",
+      "name": "Infinite Games"
+    },
+    {
+      "handle": "4seas",
+      "slug": "4seas",
+      "url": "https://luma.com/4seas",
+      "type": "calendar",
+      "name": "4Seas"
+    },
+    {
+      "handle": "build_republic",
+      "slug": "build_republic",
+      "url": "https://luma.com/build_republic",
+      "type": "calendar",
+      "name": "build_republic"
+    },
+    {
+      "handle": "usr-bRtyfgATCOX4Ek3",
+      "slug": "usr-bRtyfgATCOX4Ek3",
+      "url": "https://luma.com/user/usr-bRtyfgATCOX4Ek3",
+      "type": "user",
+      "name": "Liberland.org"
     }
   ]
 }

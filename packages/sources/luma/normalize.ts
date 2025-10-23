@@ -172,6 +172,12 @@ export async function normalizeEvent(
     }
   }
 
+  // Determine if this is a popup city event (longer than 2 days)
+  const tags: string[] = []
+  if (isPopupCityEvent(startAt, endAt)) {
+    tags.push('popup-city')
+  }
+
   const normalized: NormalizedEvent = {
     // Identifiers
     uid: rawEvent.uid,
@@ -205,7 +211,7 @@ export async function normalizeEvent(
 
     // Additional metadata
     organizers,
-    tags: [],
+    tags,
     imageUrl: null, // Would need to be extracted from description URL
     status: mapStatus(rawEvent.status),
 
@@ -488,4 +494,28 @@ function mapStatus(status: string | undefined): string {
   if (normalized === 'CANCELLED') return 'cancelled'
 
   return 'scheduled'
+}
+
+/**
+ * Determine if an event should be tagged as a popup city event
+ * Events longer than 2 days are considered popup cities (similar to Sola.day popup cities)
+ * @param startAt - Event start date
+ * @param endAt - Event end date (can be null)
+ * @returns true if event should be tagged as popup-city
+ */
+function isPopupCityEvent(startAt: Date, endAt: Date | null): boolean {
+  if (!endAt) {
+    // If no end date, check if it's a multi-day event by looking at the start date
+    // Events that start at midnight and have no end date are often multi-day events
+    return startAt.getUTCHours() === 0 && startAt.getUTCMinutes() === 0
+  }
+
+  // Calculate duration in milliseconds
+  const durationMs = endAt.getTime() - startAt.getTime()
+  
+  // Convert to days (2 days = 2 * 24 * 60 * 60 * 1000 milliseconds)
+  const durationDays = durationMs / (24 * 60 * 60 * 1000)
+  
+  // Tag as popup city if longer than 2 days
+  return durationDays > 2
 }
