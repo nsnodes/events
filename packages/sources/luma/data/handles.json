@@ -61,15 +61,15 @@
     {
       "handle": "logos",
       "slug": "logos",
-      "url": "https://luma.com/user/logos",
-      "type": "user",
+      "url": "https://luma.com/logosevents",
+      "type": "calendar",
       "name": "logos"
     },
     {
       "handle": "montelibero",
       "slug": "montelibero",
-      "url": "https://luma.com/user/montelibero",
-      "type": "user",
+      "url": "https://luma.com/mtl-fest?k=c",
+      "type": "calendar",
       "name": "montelibero"
     },
     {

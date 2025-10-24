@@ -1,8 +1,8 @@
 {
-  "timestamp": "2025-10-24T04:48:08.344Z",
+  "timestamp": "2025-10-24T05:37:20.464Z",
   "totalEntities": 11,
-  "withIcalUrl": 7,
-  "withoutIcalUrl": 4,
+  "withIcalUrl": 8,
+  "withoutIcalUrl": 3,
   "entities": [
     {
       "handle": "ns",
@@ -26,8 +26,7 @@
       "url": "https://luma.com/zuzalucity",
       "type": "calendar",
       "name": "Zuzalu.City",
-      "icalUrl": null,
-      "error": "page.goto: Target page, context or browser has been closed\nCall log:\n\u001b[2m  - navigating to \"https://luma.com/zuzalucity\", waiting until \"domcontentloaded\"\u001b[22m\n"
+      "icalUrl": "http://api2.luma.com/ics/get?entity=calendar&id=cal-S7U4Fqhz1x17KTT"
     },
     {
       "handle": "ipecity",
@@ -72,16 +71,16 @@
     {
       "handle": "logos",
       "slug": "logos",
-      "url": "https://luma.com/user/logos",
-      "type": "user",
+      "url": "https://luma.com/logosevents",
+      "type": "calendar",
       "name": "logos",
       "icalUrl": null
     },
     {
       "handle": "montelibero",
       "slug": "montelibero",
-      "url": "https://luma.com/user/montelibero",
-      "type": "user",
+      "url": "https://luma.com/mtl-fest?k=c",
+      "type": "calendar",
       "name": "montelibero",
       "icalUrl": null
     },
