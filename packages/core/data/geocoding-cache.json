@@ -4973,5 +4973,375 @@
     "city": "Buenos Aires",
     "country": "Argentina",
     "timezone": "America/Argentina/Buenos_Aires"
+  },
+  "16.3694,-86.4716": {
+    "city": null,
+    "country": null,
+    "timezone": null
+  },
+  "16.3751,-86.4646": {
+    "city": null,
+    "country": null,
+    "timezone": null
+  },
+  "-23.5558,-46.6396": {
+    "city": null,
+    "country": null,
+    "timezone": null
+  },
+  "42.382,-71.1063": {
+    "city": null,
+    "country": null,
+    "timezone": null
+  },
+  "38.7148,-9.1447": {
+    "city": null,
+    "country": null,
+    "timezone": null
+  },
+  "48.1425,11.54": {
+    "city": null,
+    "country": null,
+    "timezone": null
+  },
+  "40.7375,-73.99": {
+    "city": null,
+    "country": null,
+    "timezone": null
+  },
+  "1.2807,103.8461": {
+    "city": null,
+    "country": null,
+    "timezone": null
+  },
+  "-34.5878,-58.4354": {
+    "city": null,
+    "country": null,
+    "timezone": null
+  },
+  "18.7472,98.8897": {
+    "city": null,
+    "country": null,
+    "timezone": null
+  },
+  "18.7959,98.9663": {
+    "city": null,
+    "country": null,
+    "timezone": null
+  },
+  "39.7392,-104.9903": {
+    "city": null,
+    "country": null,
+    "timezone": null
+  },
+  "37.8,-122.46": {
+    "city": null,
+    "country": null,
+    "timezone": null
+  },
+  "40.735,-74.045": {
+    "city": null,
+    "country": null,
+    "timezone": null
+  },
+  "40.0181,-105.2753": {
+    "city": null,
+    "country": null,
+    "timezone": null
+  },
+  "50.8476,4.3572": {
+    "city": null,
+    "country": null,
+    "timezone": null
+  },
+  "50.8433,4.3637": {
+    "city": null,
+    "country": null,
+    "timezone": null
+  },
+  "49.3127,-122.9252": {
+    "city": null,
+    "country": null,
+    "timezone": null
+  },
+  "48.1283,11.5843": {
+    "city": null,
+    "country": null,
+    "timezone": null
+  },
+  "42.3664,-83.0068": {
+    "city": null,
+    "country": null,
+    "timezone": null
+  },
+  "13.7042,100.5628": {
+    "city": null,
+    "country": null,
+    "timezone": null
+  },
+  "13.6869,100.5856": {
+    "city": null,
+    "country": null,
+    "timezone": null
+  },
+  "-31.3796,-57.9447": {
+    "city": null,
+    "country": null,
+    "timezone": null
+  },
+  "12.9825,77.71": {
+    "city": null,
+    "country": null,
+    "timezone": null
+  },
+  "10.4063,-66.8057": {
+    "city": null,
+    "country": null,
+    "timezone": null
+  },
+  "39.7725,-104.9825": {
+    "city": null,
+    "country": null,
+    "timezone": null
+  },
+  "-31.4235,-64.1861": {
+    "city": null,
+    "country": null,
+    "timezone": null
+  },
+  "48.045,11.13": {
+    "city": null,
+    "country": null,
+    "timezone": null
+  },
+  "-23.5577,-46.6623": {
+    "city": null,
+    "country": null,
+    "timezone": null
+  },
+  "-25.4538,-49.2529": {
+    "city": null,
+    "country": null,
+    "timezone": null
+  },
+  "-25.4538,-49.253": {
+    "city": null,
+    "country": null,
+    "timezone": null
+  },
+  "12.9325,77.635": {
+    "city": null,
+    "country": null,
+    "timezone": null
+  },
+  "-27.4387,-48.4995": {
+    "city": null,
+    "country": null,
+    "timezone": null
+  },
+  "-27.5454,-48.5013": {
+    "city": null,
+    "country": null,
+    "timezone": null
+  },
+  "-27.4387,-48.4969": {
+    "city": null,
+    "country": null,
+    "timezone": null
+  },
+  "-27.4376,-48.4997": {
+    "city": null,
+    "country": null,
+    "timezone": null
+  },
+  "-27.4397,-48.5008": {
+    "city": null,
+    "country": null,
+    "timezone": null
+  },
+  "-27.439,-48.4896": {
+    "city": null,
+    "country": null,
+    "timezone": null
+  },
+  "-27.5397,-48.5069": {
+    "city": null,
+    "country": null,
+    "timezone": null
+  },
+  "-27.4369,-48.5008": {
+    "city": null,
+    "country": null,
+    "timezone": null
+  },
+  "-27.4375,-48.5": {
+    "city": null,
+    "country": null,
+    "timezone": null
+  },
+  "-27.4336,-48.4526": {
+    "city": null,
+    "country": null,
+    "timezone": null
+  },
+  "-27.4375,-48.4975": {
+    "city": null,
+    "country": null,
+    "timezone": null
+  },
+  "-27.4313,-48.4421": {
+    "city": null,
+    "country": null,
+    "timezone": null
+  },
+  "-27.4314,-48.4419": {
+    "city": null,
+    "country": null,
+    "timezone": null
+  },
+  "-27.476,-48.4897": {
+    "city": null,
+    "country": null,
+    "timezone": null
+  },
+  "-27.5449,-48.5002": {
+    "city": null,
+    "country": null,
+    "timezone": null
+  },
+  "-27.44,-48.501": {
+    "city": null,
+    "country": null,
+    "timezone": null
+  },
+  "-23.5875,-46.6455": {
+    "city": null,
+    "country": null,
+    "timezone": null
+  },
+  "1.2775,103.855": {
+    "city": null,
+    "country": null,
+    "timezone": null
+  },
+  "1.303,103.8529": {
+    "city": null,
+    "country": null,
+    "timezone": null
+  },
+  "1.2821,103.8588": {
+    "city": null,
+    "country": null,
+    "timezone": null
+  },
+  "-27.5969,-48.5468": {
+    "city": null,
+    "country": null,
+    "timezone": null
+  },
+  "39.7975,-105.02": {
+    "city": null,
+    "country": null,
+    "timezone": null
+  },
+  "39.7775,-104.97": {
+    "city": null,
+    "country": null,
+    "timezone": null
+  },
+  "30.2675,-97.7475": {
+    "city": null,
+    "country": null,
+    "timezone": null
+  },
+  "25.23,55.2875": {
+    "city": null,
+    "country": null,
+    "timezone": null
+  },
+  "28.7984,-97.0059": {
+    "city": null,
+    "country": null,
+    "timezone": null
+  },
+  "28.0361,-80.6012": {
+    "city": null,
+    "country": null,
+    "timezone": null
+  },
+  "30.2639,-97.7297": {
+    "city": null,
+    "country": null,
+    "timezone": null
+  },
+  "47.674,-116.7801": {
+    "city": null,
+    "country": null,
+    "timezone": null
+  },
+  "47.7113,-116.9463": {
+    "city": null,
+    "country": null,
+    "timezone": null
+  },
+  "47.6456,-117.3843": {
+    "city": null,
+    "country": null,
+    "timezone": null
+  },
+  "47.6742,-117.0855": {
+    "city": null,
+    "country": null,
+    "timezone": null
+  },
+  "36.1627,-86.7816": {
+    "city": null,
+    "country": null,
+    "timezone": null
+  },
+  "47.674,-116.7802": {
+    "city": null,
+    "country": null,
+    "timezone": null
+  },
+  "47.6486,-117.4346": {
+    "city": null,
+    "country": null,
+    "timezone": null
+  },
+  "34.025,-118.4775": {
+    "city": null,
+    "country": null,
+    "timezone": null
+  },
+  "47.6648,-117.4249": {
+    "city": null,
+    "country": null,
+    "timezone": null
+  },
+  "47.675,-116.78": {
+    "city": null,
+    "country": null,
+    "timezone": null
+  },
+  "29.7513,-95.3057": {
+    "city": null,
+    "country": null,
+    "timezone": null
+  },
+  "34.0628,-118.4468": {
+    "city": null,
+    "country": null,
+    "timezone": null
+  },
+  "34.0611,-118.4457": {
+    "city": null,
+    "country": null,
+    "timezone": null
+  },
+  "47.9625,-116.5925": {
+    "city": null,
+    "country": null,
+    "timezone": null
   }
 }

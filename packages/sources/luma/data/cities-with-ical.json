@@ -1,8 +1,8 @@
 {
-  "timestamp": "2025-10-22T13:34:33.290Z",
-  "totalEntities": 3,
-  "withIcalUrl": 3,
-  "withoutIcalUrl": 0,
+  "timestamp": "2025-10-24T04:48:08.344Z",
+  "totalEntities": 11,
+  "withIcalUrl": 7,
+  "withoutIcalUrl": 4,
   "entities": [
     {
       "handle": "ns",
@@ -26,7 +26,72 @@
       "url": "https://luma.com/zuzalucity",
       "type": "calendar",
       "name": "Zuzalu.City",
-      "icalUrl": "http://api2.luma.com/ics/get?entity=calendar&id=cal-S7U4Fqhz1x17KTT"
+      "icalUrl": null,
+      "error": "page.goto: Target page, context or browser has been closed\nCall log:\n\u001b[2m  - navigating to \"https://luma.com/zuzalucity\", waiting until \"domcontentloaded\"\u001b[22m\n"
+    },
+    {
+      "handle": "ipecity",
+      "slug": "ipecity",
+      "url": "https://luma.com/ipecity",
+      "type": "calendar",
+      "name": "Ipê City",
+      "icalUrl": "http://api2.luma.com/ics/get?entity=calendar&id=cal-sKJ3W7xKmrTC9BR"
+    },
+    {
+      "handle": "InfinitaCity",
+      "slug": "InfinitaCity",
+      "url": "https://luma.com/InfinitaCity",
+      "type": "calendar",
+      "name": "Infinite Games",
+      "icalUrl": "http://api2.luma.com/ics/get?entity=calendar&id=cal-MMDkW17uzfTQotd"
+    },
+    {
+      "handle": "4seas",
+      "slug": "4seas",
+      "url": "https://luma.com/4seas",
+      "type": "calendar",
+      "name": "4Seas",
+      "icalUrl": "http://api2.luma.com/ics/get?entity=calendar&id=cal-qbuRX6xsEwmYRH3"
+    },
+    {
+      "handle": "build_republic",
+      "slug": "build_republic",
+      "url": "https://luma.com/build_republic",
+      "type": "calendar",
+      "name": "build_republic",
+      "icalUrl": "http://api2.luma.com/ics/get?entity=calendar&id=cal-tCJv5PEEXc5jw3F"
+    },
+    {
+      "handle": "usr-bRtyfgATCOX4Ek3",
+      "slug": "usr-bRtyfgATCOX4Ek3",
+      "url": "https://luma.com/user/usr-bRtyfgATCOX4Ek3",
+      "type": "user",
+      "name": "Liberland.org",
+      "icalUrl": null
+    },
+    {
+      "handle": "logos",
+      "slug": "logos",
+      "url": "https://luma.com/user/logos",
+      "type": "user",
+      "name": "logos",
+      "icalUrl": null
+    },
+    {
+      "handle": "montelibero",
+      "slug": "montelibero",
+      "url": "https://luma.com/user/montelibero",
+      "type": "user",
+      "name": "montelibero",
+      "icalUrl": null
+    },
+    {
+      "handle": "joinvdao",
+      "slug": "joinvdao",
+      "url": "https://luma.com/joinvdao",
+      "type": "calendar",
+      "name": "V DAO",
+      "icalUrl": "http://api2.luma.com/ics/get?entity=calendar&id=cal-58PxDBCmz9qCvSt"
     }
   ],
   "entityType": "handles"

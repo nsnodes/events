@@ -113,7 +113,7 @@ export async function* fetchAllCityEventsStreaming(
   icalUrls: UrlMap,
   options: FetchOptions = {}
 ): AsyncGenerator<CityResult, void, unknown> {
-  const { concurrency = 5 } = options;
+  const { concurrency = 2 } = options; // Reduced from 5 to avoid rate limiting
   const cities = Object.entries(icalUrls);
 
   console.log(`[scraper] Starting to fetch ${cities.length} cities in batches of ${concurrency}`)
@@ -186,10 +186,15 @@ function fetchUrl(url: string, maxRedirects: number = 5): Promise<string> {
 
     // Configure agent to not keep connections alive (prevents process hanging)
     const options = {
-      agent: new client.Agent({ keepAlive: false })
+      agent: new client.Agent({ keepAlive: false }),
+      timeout: 60000, // 60 second timeout
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (compatible; EventsBot/1.0)',
+        'Accept': 'text/calendar'
+      }
     };
 
-    client.get(url, options, (response) => {
+    const request = client.get(url, options, (response) => {
       // Handle redirects
       if (response.statusCode === 301 || response.statusCode === 302) {
         if (maxRedirects === 0) {
@@ -211,10 +216,23 @@ function fetchUrl(url: string, maxRedirects: number = 5): Promise<string> {
         return;
       }
 
+      // Set timeout on the socket/response itself to prevent hanging
+      response.setTimeout(60000, () => {
+        response.destroy();
+        reject(new Error('Response timeout'));
+      });
+
       let data = '';
       response.on('data', chunk => data += chunk);
       response.on('end', () => resolve(data));
-    }).on('error', reject);
+      response.on('error', reject);
+    });
+
+    request.on('error', reject);
+    request.on('timeout', () => {
+      request.destroy();
+      reject(new Error('Request timeout'));
+    });
   });
 }
 

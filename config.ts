@@ -31,7 +31,15 @@ const config: Config = {
     handles: [
       'ns',
       'Prospera-events',
-      'zuzalucity'
+      'zuzalucity',
+      'ipecity',
+      'InfinitaCity',
+      '4seas',
+      'build_republic',
+      'usr-bRtyfgATCOX4Ek3',
+      'logos',
+      'montelibero',
+      'joinvdao'
     ],
 
     // Enable/disable city scraping (disabled by default)

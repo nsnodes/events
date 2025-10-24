@@ -1,5 +1,9 @@
 {
-  "ns": "http://api2.luma.com/ics/get?entity=calendar&id=cal-4dWxlBFjW9Cd6ou",
-  "Prospera-events": "http://api2.luma.com/ics/get?entity=calendar&id=cal-NhvyJaSITZmvThz",
-  "zuzalucity": "http://api2.luma.com/ics/get?entity=calendar&id=cal-S7U4Fqhz1x17KTT"
+  "ns": "https://api2.luma.com/ics/get?entity=calendar&id=cal-4dWxlBFjW9Cd6ou",
+  "Prospera-events": "https://api2.luma.com/ics/get?entity=calendar&id=cal-NhvyJaSITZmvThz",
+  "ipecity": "https://api2.luma.com/ics/get?entity=calendar&id=cal-sKJ3W7xKmrTC9BR",
+  "InfinitaCity": "https://api2.luma.com/ics/get?entity=calendar&id=cal-MMDkW17uzfTQotd",
+  "4seas": "https://api2.luma.com/ics/get?entity=calendar&id=cal-qbuRX6xsEwmYRH3",
+  "build_republic": "https://api2.luma.com/ics/get?entity=calendar&id=cal-tCJv5PEEXc5jw3F",
+  "joinvdao": "https://api2.luma.com/ics/get?entity=calendar&id=cal-58PxDBCmz9qCvSt"
 }
