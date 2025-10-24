@@ -1,6 +1,6 @@
 {
   "success": true,
-  "timestamp": "2025-10-23T01:42:02.443Z",
+  "timestamp": "2025-10-24T01:37:50.252Z",
   "totalCities": 43,
   "cities": [
     {
@@ -46,10 +46,10 @@
     {
       "slug": "zuzalukas",
       "url": "https://app.sola.day/event/zuzalukas",
-      "title": "ZuKas",
+      "title": "ZuKas 2025",
       "dates": "Sep 05-Sep 19, 2025",
       "location": "Antalya,Kas",
-      "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2Fm87lxlb9_w9qCHRdlS&w=640&q=75&dpl=dpl_8euw4rHgmRa9H494fqMHAW6eHEaS"
+      "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fdatastore.sola.day%2Ff3776efb3d5aa726&w=640&q=75&dpl=dpl_8euw4rHgmRa9H494fqMHAW6eHEaS"
     },
     {
       "slug": "east2046festival",
