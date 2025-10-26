@@ -39,7 +39,9 @@ const config: Config = {
       'usr-bRtyfgATCOX4Ek3',
       'logos',
       'montelibero',
-      'joinvdao'
+      'joinvdao',
+      'ozcity_patagonia',
+      'crecimiento'
     ],
 
     // Enable/disable city scraping (disabled by default)
