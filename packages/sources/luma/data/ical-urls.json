@@ -6,5 +6,7 @@
   "InfinitaCity": "http://api2.luma.com/ics/get?entity=calendar&id=cal-MMDkW17uzfTQotd",
   "4seas": "http://api2.luma.com/ics/get?entity=calendar&id=cal-qbuRX6xsEwmYRH3",
   "build_republic": "http://api2.luma.com/ics/get?entity=calendar&id=cal-tCJv5PEEXc5jw3F",
-  "joinvdao": "http://api2.luma.com/ics/get?entity=calendar&id=cal-58PxDBCmz9qCvSt"
+  "joinvdao": "http://api2.luma.com/ics/get?entity=calendar&id=cal-58PxDBCmz9qCvSt",
+  "ozcity_patagonia": "http://api2.luma.com/ics/get?entity=calendar&id=cal-TODO",
+  "crecimiento": "http://api2.luma.com/ics/get?entity=calendar&id=cal-TODO"
 }
