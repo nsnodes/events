@@ -448,6 +448,12 @@ export async function normalizePopupCity(
   const country = null
   const timezone = cityDetail.timezone || null
 
+  // Build tags array - default to popup-city, add special tags as needed
+  const tags = ['popup-city']
+  if (cityDetail.citySlug?.includes('invisiblegarden')) {
+    tags.push('invisible-garden')
+  }
+
   const normalized: NormalizedEvent = {
     // Identifiers
     uid: `soladay-city-${cityDetail.id || cityDetail.citySlug}`,
@@ -481,7 +487,7 @@ export async function normalizePopupCity(
 
     // Additional metadata
     organizers: [],
-    tags: ['popup-city'], // Tag to distinguish popup cities from regular events
+    tags, // Tag to distinguish popup cities from regular events
     imageUrl: cityDetail.imageUrl || null,
     status: 'scheduled',
     website: cityDetail.website || null,
