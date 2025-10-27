@@ -1,6 +1,6 @@
 {
   "success": true,
-  "timestamp": "2025-10-26T01:47:24.361Z",
+  "timestamp": "2025-10-27T01:51:19.125Z",
   "totalCities": 43,
   "cities": [
     {
@@ -46,10 +46,10 @@
     {
       "slug": "zuzalukas",
       "url": "https://app.sola.day/event/zuzalukas",
-      "title": "ZuKas 2025",
-      "dates": "Sep 05-Sep 19, 2025",
+      "title": "ZuKas 2026",
+      "dates": "Apr 10-May 10, 2026",
       "location": "Antalya,Kas",
-      "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fdatastore.sola.day%2Ff3776efb3d5aa726&w=640&q=75&dpl=dpl_5dED7M9bgZMjA9HUPBnbyqWaUj11"
+      "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fdatastore.sola.day%2Fcb02a52f119d4ccd&w=640&q=75&dpl=dpl_5dED7M9bgZMjA9HUPBnbyqWaUj11"
     },
     {
       "slug": "east2046festival",
@@ -188,12 +188,12 @@
       "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2Faukzc8yl_L7YujgoaO&w=640&q=75&dpl=dpl_5dED7M9bgZMjA9HUPBnbyqWaUj11"
     },
     {
-      "slug": "herstoryweb3",
-      "url": "https://app.sola.day/event/herstoryweb3",
-      "title": "Femitopia",
-      "dates": "Nov 01-Nov 18, 2024",
-      "location": "Bankokk, Thailand",
-      "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2Ftr%3An-ik_ml_thumbnail%2F7ytfj6ip_Qe3oeVgS4&w=640&q=75&dpl=dpl_5dED7M9bgZMjA9HUPBnbyqWaUj11"
+      "slug": "seapunk",
+      "url": "https://app.sola.day/event/seapunk",
+      "title": "Seapunk",
+      "dates": "Nov 01-Nov 03, 2024",
+      "location": "Chiangmai,Thailand",
+      "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2F1u9w3gok_MaFf5Dj-o&w=640&q=75&dpl=dpl_5dED7M9bgZMjA9HUPBnbyqWaUj11"
     },
     {
       "slug": "4seas",
@@ -204,12 +204,12 @@
       "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2Fvtwl67b4_x3q6PJJ3r&w=640&q=75&dpl=dpl_5dED7M9bgZMjA9HUPBnbyqWaUj11"
     },
     {
-      "slug": "seapunk",
-      "url": "https://app.sola.day/event/seapunk",
-      "title": "Seapunk",
-      "dates": "Nov 01-Nov 03, 2024",
-      "location": "Chiangmai,Thailand",
-      "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2F1u9w3gok_MaFf5Dj-o&w=640&q=75&dpl=dpl_5dED7M9bgZMjA9HUPBnbyqWaUj11"
+      "slug": "herstoryweb3",
+      "url": "https://app.sola.day/event/herstoryweb3",
+      "title": "Femitopia",
+      "dates": "Nov 01-Nov 18, 2024",
+      "location": "Bankokk, Thailand",
+      "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2Ftr%3An-ik_ml_thumbnail%2F7ytfj6ip_Qe3oeVgS4&w=640&q=75&dpl=dpl_5dED7M9bgZMjA9HUPBnbyqWaUj11"
     },
     {
       "slug": "popoutclub",
