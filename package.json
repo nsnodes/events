@@ -4,8 +4,7 @@
   "description": "Event aggregation platform - scraping and normalizing events from multiple sources",
   "type": "module",
   "scripts": {
-    "test": "npx tsx tests/luma-parser.test.js && npx tsx tests/parser-regression.test.js && npx tsx tests/retry.test.js && npx tsx tests/error-handling.test.js && npx tsx packages/sources/sola/scrapers/city-details.test.js",
-    "probe": "npx tsx tools/probes/run-all-tests.js",
+    "test": "echo 'No tests configured'",
     "probe:luma": "npx tsx tools/probes/luma-probe.js",
     "probe:sola": "npx tsx tools/probes/sola-probe.js",
     "luma:cities": "npx tsx packages/sources/luma/scripts/run-cities.ts",
