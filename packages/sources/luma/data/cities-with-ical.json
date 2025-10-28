@@ -1,8 +1,8 @@
 {
-  "timestamp": "2025-10-26T02:10:01.548Z",
-  "totalEntities": 11,
-  "withIcalUrl": 8,
-  "withoutIcalUrl": 3,
+  "timestamp": "2025-10-28T04:31:11.889Z",
+  "totalEntities": 14,
+  "withIcalUrl": 0,
+  "withoutIcalUrl": 14,
   "entities": [
     {
       "handle": "ns",
@@ -10,7 +10,8 @@
       "url": "https://luma.com/ns",
       "type": "user",
       "name": "Network School",
-      "icalUrl": "http://api2.luma.com/ics/get?entity=calendar&id=cal-4dWxlBFjW9Cd6ou"
+      "icalUrl": null,
+      "error": "page.goto: net::ERR_TUNNEL_CONNECTION_FAILED at https://luma.com/ns\nCall log:\n\u001b[2m  - navigating to \"https://luma.com/ns\", waiting until \"domcontentloaded\"\u001b[22m\n"
     },
     {
       "handle": "Prospera-events",
@@ -18,7 +19,8 @@
       "url": "https://luma.com/Prospera-events",
       "type": "calendar",
       "name": "Próspera",
-      "icalUrl": "http://api2.luma.com/ics/get?entity=calendar&id=cal-NhvyJaSITZmvThz"
+      "icalUrl": null,
+      "error": "page.goto: net::ERR_TUNNEL_CONNECTION_FAILED at https://luma.com/Prospera-events\nCall log:\n\u001b[2m  - navigating to \"https://luma.com/Prospera-events\", waiting until \"domcontentloaded\"\u001b[22m\n"
     },
     {
       "handle": "zuzalucity",
@@ -26,7 +28,8 @@
       "url": "https://luma.com/zuzalucity",
       "type": "calendar",
       "name": "Zuzalu.City",
-      "icalUrl": "http://api2.luma.com/ics/get?entity=calendar&id=cal-S7U4Fqhz1x17KTT"
+      "icalUrl": null,
+      "error": "page.goto: net::ERR_TUNNEL_CONNECTION_FAILED at https://luma.com/zuzalucity\nCall log:\n\u001b[2m  - navigating to \"https://luma.com/zuzalucity\", waiting until \"domcontentloaded\"\u001b[22m\n"
     },
     {
       "handle": "ipecity",
@@ -34,7 +37,8 @@
       "url": "https://luma.com/ipecity",
       "type": "calendar",
       "name": "Ipê City",
-      "icalUrl": "http://api2.luma.com/ics/get?entity=calendar&id=cal-sKJ3W7xKmrTC9BR"
+      "icalUrl": null,
+      "error": "page.goto: net::ERR_TUNNEL_CONNECTION_FAILED at https://luma.com/ipecity\nCall log:\n\u001b[2m  - navigating to \"https://luma.com/ipecity\", waiting until \"domcontentloaded\"\u001b[22m\n"
     },
     {
       "handle": "InfinitaCity",
@@ -42,7 +46,8 @@
       "url": "https://luma.com/InfinitaCity",
       "type": "calendar",
       "name": "Infinite Games",
-      "icalUrl": "http://api2.luma.com/ics/get?entity=calendar&id=cal-MMDkW17uzfTQotd"
+      "icalUrl": null,
+      "error": "page.goto: net::ERR_TUNNEL_CONNECTION_FAILED at https://luma.com/InfinitaCity\nCall log:\n\u001b[2m  - navigating to \"https://luma.com/InfinitaCity\", waiting until \"domcontentloaded\"\u001b[22m\n"
     },
     {
       "handle": "4seas",
@@ -50,7 +55,8 @@
       "url": "https://luma.com/4seas",
       "type": "calendar",
       "name": "4Seas",
-      "icalUrl": "http://api2.luma.com/ics/get?entity=calendar&id=cal-qbuRX6xsEwmYRH3"
+      "icalUrl": null,
+      "error": "page.goto: net::ERR_TUNNEL_CONNECTION_FAILED at https://luma.com/4seas\nCall log:\n\u001b[2m  - navigating to \"https://luma.com/4seas\", waiting until \"domcontentloaded\"\u001b[22m\n"
     },
     {
       "handle": "build_republic",
@@ -58,7 +64,8 @@
       "url": "https://luma.com/build_republic",
       "type": "calendar",
       "name": "build_republic",
-      "icalUrl": "http://api2.luma.com/ics/get?entity=calendar&id=cal-tCJv5PEEXc5jw3F"
+      "icalUrl": null,
+      "error": "page.goto: net::ERR_TUNNEL_CONNECTION_FAILED at https://luma.com/build_republic\nCall log:\n\u001b[2m  - navigating to \"https://luma.com/build_republic\", waiting until \"domcontentloaded\"\u001b[22m\n"
     },
     {
       "handle": "usr-bRtyfgATCOX4Ek3",
@@ -66,7 +73,8 @@
       "url": "https://luma.com/user/usr-bRtyfgATCOX4Ek3",
       "type": "user",
       "name": "Liberland.org",
-      "icalUrl": null
+      "icalUrl": null,
+      "error": "page.goto: net::ERR_TUNNEL_CONNECTION_FAILED at https://luma.com/usr-bRtyfgATCOX4Ek3\nCall log:\n\u001b[2m  - navigating to \"https://luma.com/usr-bRtyfgATCOX4Ek3\", waiting until \"domcontentloaded\"\u001b[22m\n"
     },
     {
       "handle": "logos",
@@ -74,7 +82,8 @@
       "url": "https://luma.com/logosevents",
       "type": "calendar",
       "name": "logos",
-      "icalUrl": null
+      "icalUrl": null,
+      "error": "page.goto: net::ERR_TUNNEL_CONNECTION_FAILED at https://luma.com/logos\nCall log:\n\u001b[2m  - navigating to \"https://luma.com/logos\", waiting until \"domcontentloaded\"\u001b[22m\n"
     },
     {
       "handle": "montelibero",
@@ -82,7 +91,8 @@
       "url": "https://luma.com/mtl-fest?k=c",
       "type": "calendar",
       "name": "montelibero",
-      "icalUrl": null
+      "icalUrl": null,
+      "error": "page.goto: net::ERR_TUNNEL_CONNECTION_FAILED at https://luma.com/montelibero\nCall log:\n\u001b[2m  - navigating to \"https://luma.com/montelibero\", waiting until \"domcontentloaded\"\u001b[22m\n"
     },
     {
       "handle": "joinvdao",
@@ -90,7 +100,35 @@
       "url": "https://luma.com/joinvdao",
       "type": "calendar",
       "name": "V DAO",
-      "icalUrl": "http://api2.luma.com/ics/get?entity=calendar&id=cal-58PxDBCmz9qCvSt"
+      "icalUrl": null,
+      "error": "page.goto: net::ERR_TUNNEL_CONNECTION_FAILED at https://luma.com/joinvdao\nCall log:\n\u001b[2m  - navigating to \"https://luma.com/joinvdao\", waiting until \"domcontentloaded\"\u001b[22m\n"
+    },
+    {
+      "handle": "ozcity_patagonia",
+      "slug": "ozcity_patagonia",
+      "url": "https://luma.com/ozcity_patagonia",
+      "type": "calendar",
+      "name": "Oz City",
+      "icalUrl": null,
+      "error": "page.goto: net::ERR_TUNNEL_CONNECTION_FAILED at https://luma.com/ozcity_patagonia\nCall log:\n\u001b[2m  - navigating to \"https://luma.com/ozcity_patagonia\", waiting until \"domcontentloaded\"\u001b[22m\n"
+    },
+    {
+      "handle": "crecimiento",
+      "slug": "crecimiento",
+      "url": "https://luma.com/crecimiento",
+      "type": "calendar",
+      "name": "Crecimiento",
+      "icalUrl": null,
+      "error": "page.goto: net::ERR_TUNNEL_CONNECTION_FAILED at https://luma.com/crecimiento\nCall log:\n\u001b[2m  - navigating to \"https://luma.com/crecimiento\", waiting until \"domcontentloaded\"\u001b[22m\n"
+    },
+    {
+      "handle": "jamesofarc",
+      "slug": "jamesofarc",
+      "url": "https://luma.com/jamesofarc?k=c",
+      "type": "calendar",
+      "name": "Ârc",
+      "icalUrl": null,
+      "error": "page.goto: net::ERR_TUNNEL_CONNECTION_FAILED at https://luma.com/jamesofarc\nCall log:\n\u001b[2m  - navigating to \"https://luma.com/jamesofarc\", waiting until \"domcontentloaded\"\u001b[22m\n"
     }
   ],
   "entityType": "handles"

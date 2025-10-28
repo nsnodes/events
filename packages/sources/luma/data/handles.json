@@ -1,6 +1,6 @@
 {
   "timestamp": "2025-10-14T00:00:00.000Z",
-  "totalHandles": 13,
+  "totalHandles": 14,
   "handles": [
     {
       "handle": "ns",
@@ -92,6 +92,13 @@
       "url": "https://luma.com/crecimiento",
       "type": "calendar",
       "name": "Crecimiento"
+    },
+    {
+      "handle": "jamesofarc",
+      "slug": "jamesofarc",
+      "url": "https://luma.com/jamesofarc?k=c",
+      "type": "calendar",
+      "name": "Ârc"
     }
   ]
 }

@@ -1,12 +1,15 @@
 {
-  "ns": "http://api2.luma.com/ics/get?entity=calendar&id=cal-4dWxlBFjW9Cd6ou",
-  "Prospera-events": "http://api2.luma.com/ics/get?entity=calendar&id=cal-NhvyJaSITZmvThz",
-  "zuzalucity": "http://api2.luma.com/ics/get?entity=calendar&id=cal-S7U4Fqhz1x17KTT",
-  "ipecity": "http://api2.luma.com/ics/get?entity=calendar&id=cal-sKJ3W7xKmrTC9BR",
-  "InfinitaCity": "http://api2.luma.com/ics/get?entity=calendar&id=cal-MMDkW17uzfTQotd",
-  "4seas": "http://api2.luma.com/ics/get?entity=calendar&id=cal-qbuRX6xsEwmYRH3",
-  "build_republic": "http://api2.luma.com/ics/get?entity=calendar&id=cal-tCJv5PEEXc5jw3F",
-  "joinvdao": "http://api2.luma.com/ics/get?entity=calendar&id=cal-58PxDBCmz9qCvSt",
-  "ozcity_patagonia": "http://api2.luma.com/ics/get?entity=calendar&id=cal-TODO",
-  "crecimiento": "http://api2.luma.com/ics/get?entity=calendar&id=cal-TODO"
+  "ns": "https://api2.luma.com/ics/get?entity=calendar&id=cal-4dWxlBFjW9Cd6ou",
+  "Prospera-events": "https://api2.luma.com/ics/get?entity=calendar&id=cal-NhvyJaSITZmvThz",
+  "zuzalucity": "https://api2.luma.com/ics/get?entity=calendar&id=cal-S7U4Fqhz1x17KTT",
+  "ipecity": "https://api2.luma.com/ics/get?entity=calendar&id=cal-sKJ3W7xKmrTC9BR",
+  "InfinitaCity": "https://api2.luma.com/ics/get?entity=calendar&id=cal-MMDkW17uzfTQotd",
+  "4seas": "https://api2.luma.com/ics/get?entity=calendar&id=cal-qbuRX6xsEwmYRH3",
+  "build_republic": "https://api2.luma.com/ics/get?entity=calendar&id=cal-tCJv5PEEXc5jw3F",
+  "logos": "https://api2.luma.com/ics/get?entity=calendar&id=cal-S3pdMJmDQDY9aT4",
+  "montelibero": "https://api2.luma.com/ics/get?entity=calendar&id=cal-74y0phH9iUZwsR2",
+  "joinvdao": "https://api2.luma.com/ics/get?entity=calendar&id=cal-58PxDBCmz9qCvSt",
+  "ozcity_patagonia": "https://api2.luma.com/ics/get?entity=calendar&id=cal-TODO",
+  "crecimiento": "https://api2.luma.com/ics/get?entity=calendar&id=cal-TODO",
+  "jamesofarc": "https://api2.luma.com/ics/get?entity=calendar&id=cal-TODO"
 }
