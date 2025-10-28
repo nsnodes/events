@@ -172,10 +172,23 @@ export async function normalizeEvent(
     }
   }
 
-  // Determine if this is a popup city event (longer than 2 days)
+  // Build tags array
   const tags: string[] = []
+  
+  // Tag popup city events (longer than 2 days)
   if (isPopupCityEvent(startAt, endAt)) {
     tags.push('popup-city')
+  }
+  
+  // Tag commons events for Network School handle
+  if (entitySlug === 'ns' && options.entityType === 'handle') {
+    const title = rawEvent.title?.toLowerCase() || ''
+    const description = rawEvent.description?.toLowerCase() || ''
+    const location = rawEvent.location?.toLowerCase() || ''
+    
+    if (title.includes('commons') || description.includes('commons') || location.includes('commons')) {
+      tags.push('commons')
+    }
   }
 
   const normalized: NormalizedEvent = {
@@ -184,7 +197,7 @@ export async function normalizeEvent(
     fingerprint: generateFingerprint(
       rawEvent.title,
       startAt,
-      city,
+      city || undefined,
       rawEvent.geo?.lat,
       rawEvent.geo?.lon
     ),

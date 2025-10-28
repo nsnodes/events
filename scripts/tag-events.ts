@@ -49,13 +49,13 @@ const TAG_RULES: TagRule[] = [
 async function tagEvents() {
   console.log('Fetching Network School events...')
 
-  // Fetch all Luma events - we'll check them all for Arc/Commons mentions
-  // Since NS events don't have a clear identifier, we'll tag any Luma event
-  // that matches our tag rules
+  // Fetch only Network School (ns handle) events
+  // Filter by source_url containing 'luma.com/ns' or organizer 'Network School'
   const { data: events, error } = await supabase
     .from('events')
     .select('*')
     .eq('source', 'luma')
+    .or('source_url.ilike.%luma.com/ns%,organizers.cs.{"name":"Network School"}')
 
   if (error) {
     console.error('Error fetching events:', error)
