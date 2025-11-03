@@ -1,7 +1,7 @@
 {
   "success": true,
-  "timestamp": "2025-11-02T01:49:29.615Z",
-  "totalCities": 43,
+  "timestamp": "2025-11-03T01:50:29.510Z",
+  "totalCities": 44,
   "cities": [
     {
       "slug": "prospera",
@@ -12,28 +12,20 @@
       "imageUrl": "https://ik.imagekit.io/soladata/dugphxxe_C_tVHAdr-"
     },
     {
-      "slug": "woosingapore",
-      "url": "https://app.sola.day/event/woosingapore",
-      "title": "ShanhaiWoo Singapore",
-      "dates": "Sep 02-Oct 01, 2025",
-      "location": "Singapore",
-      "imageUrl": "https://ik.imagekit.io/soladata/skn8lv86_9x1IMzJdP"
-    },
-    {
-      "slug": "ethsafari",
-      "url": "https://app.sola.day/event/ethsafari",
-      "title": "ETH Safari",
-      "dates": "Sep 07-Sep 14, 2025",
-      "location": "Kenya",
-      "imageUrl": "https://ik.imagekit.io/soladata/2p6lz77k_VN34I97zl"
-    },
-    {
       "slug": "edgepatagonia",
       "url": "https://app.sola.day/event/edgepatagonia",
       "title": "Edge City Patagonia 2025",
       "dates": "Oct 18-Nov 15, 2025",
       "location": "San Martin, Argentina",
       "imageUrl": "https://ik.imagekit.io/soladata/rv2s5yu5_qjNyQUwC5"
+    },
+    {
+      "slug": "fundingthecommons",
+      "url": "https://app.sola.day/event/fundingthecommons",
+      "title": "Funding The Commons Residency Buenos Aires 24 oct - 14 nov 2025",
+      "dates": "Oct 24-Nov 14, 2025",
+      "location": "Buenos Aires",
+      "imageUrl": "https://datastore.sola.day/6f2a80b11c10d730"
     },
     {
       "slug": "invisiblegardenar",
@@ -50,6 +42,22 @@
       "dates": "Apr 10-May 10, 2026",
       "location": "Antalya,Kas",
       "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fdatastore.sola.day%2Fcb02a52f119d4ccd&w=640&q=75&dpl=dpl_Fh4DaxE7rCHPXVMWLA9oU7pMCNKa"
+    },
+    {
+      "slug": "ethsafari",
+      "url": "https://app.sola.day/event/ethsafari",
+      "title": "ETH Safari",
+      "dates": "Sep 07-Sep 14, 2025",
+      "location": "Kenya",
+      "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2F2p6lz77k_VN34I97zl&w=640&q=75&dpl=dpl_Fh4DaxE7rCHPXVMWLA9oU7pMCNKa"
+    },
+    {
+      "slug": "woosingapore",
+      "url": "https://app.sola.day/event/woosingapore",
+      "title": "ShanhaiWoo Singapore",
+      "dates": "Sep 02-Oct 01, 2025",
+      "location": "Singapore",
+      "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2Fskn8lv86_9x1IMzJdP&w=640&q=75&dpl=dpl_Fh4DaxE7rCHPXVMWLA9oU7pMCNKa"
     },
     {
       "slug": "east2046festival",
@@ -188,14 +196,6 @@
       "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2Faukzc8yl_L7YujgoaO&w=640&q=75&dpl=dpl_Fh4DaxE7rCHPXVMWLA9oU7pMCNKa"
     },
     {
-      "slug": "seapunk",
-      "url": "https://app.sola.day/event/seapunk",
-      "title": "Seapunk",
-      "dates": "Nov 01-Nov 03, 2024",
-      "location": "Chiangmai,Thailand",
-      "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2F1u9w3gok_MaFf5Dj-o&w=640&q=75&dpl=dpl_Fh4DaxE7rCHPXVMWLA9oU7pMCNKa"
-    },
-    {
       "slug": "4seas",
       "url": "https://app.sola.day/event/4seas",
       "title": "4Seas",
@@ -212,20 +212,12 @@
       "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2Ftr%3An-ik_ml_thumbnail%2F7ytfj6ip_Qe3oeVgS4&w=640&q=75&dpl=dpl_Fh4DaxE7rCHPXVMWLA9oU7pMCNKa"
     },
     {
-      "slug": "popoutclub",
-      "url": "https://app.sola.day/event/popoutclub",
-      "title": "Pop Out Club",
-      "dates": "Oct 12-Nov 10, 2024",
-      "location": "Chiangmai, Thailand",
-      "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2F4kqmmf48_1FlASFvA3&w=640&q=75&dpl=dpl_Fh4DaxE7rCHPXVMWLA9oU7pMCNKa"
-    },
-    {
-      "slug": "auraverse",
-      "url": "https://app.sola.day/event/auraverse",
-      "title": "AuraVerse Chiang Mai",
-      "dates": "Oct 12-Nov 10, 2024",
-      "location": "Chiang Mai, Thailand",
-      "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2Fsve6danp_wHwddRUUg&w=640&q=75&dpl=dpl_Fh4DaxE7rCHPXVMWLA9oU7pMCNKa"
+      "slug": "seapunk",
+      "url": "https://app.sola.day/event/seapunk",
+      "title": "Seapunk",
+      "dates": "Nov 01-Nov 03, 2024",
+      "location": "Chiangmai,Thailand",
+      "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2F1u9w3gok_MaFf5Dj-o&w=640&q=75&dpl=dpl_Fh4DaxE7rCHPXVMWLA9oU7pMCNKa"
     },
     {
       "slug": "lovepunkschiangmai",
@@ -236,12 +228,20 @@
       "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2Ff1xcvatw_s7-GqLK2W&w=640&q=75&dpl=dpl_Fh4DaxE7rCHPXVMWLA9oU7pMCNKa"
     },
     {
-      "slug": "dhuncollege",
-      "url": "https://app.sola.day/event/dhuncollege",
-      "title": "UnCollege and Cosmo-local Chiang Mai",
-      "dates": "Oct 10-Nov 07, 2024",
+      "slug": "auraverse",
+      "url": "https://app.sola.day/event/auraverse",
+      "title": "AuraVerse Chiang Mai",
+      "dates": "Oct 12-Nov 10, 2024",
       "location": "Chiang Mai, Thailand",
-      "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2Fqjhn2o1m_ZkG_XUAF4K&w=640&q=75&dpl=dpl_Fh4DaxE7rCHPXVMWLA9oU7pMCNKa"
+      "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2Fsve6danp_wHwddRUUg&w=640&q=75&dpl=dpl_Fh4DaxE7rCHPXVMWLA9oU7pMCNKa"
+    },
+    {
+      "slug": "popoutclub",
+      "url": "https://app.sola.day/event/popoutclub",
+      "title": "Pop Out Club",
+      "dates": "Oct 12-Nov 10, 2024",
+      "location": "Chiangmai, Thailand",
+      "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2F4kqmmf48_1FlASFvA3&w=640&q=75&dpl=dpl_Fh4DaxE7rCHPXVMWLA9oU7pMCNKa"
     },
     {
       "slug": "edgecitylanna",
@@ -252,12 +252,28 @@
       "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2Flr41pfh8_FP7pwjaoe%3Ftr%3Dw-624&w=640&q=75&dpl=dpl_Fh4DaxE7rCHPXVMWLA9oU7pMCNKa"
     },
     {
+      "slug": "dhuncollege",
+      "url": "https://app.sola.day/event/dhuncollege",
+      "title": "UnCollege and Cosmo-local Chiang Mai",
+      "dates": "Oct 10-Nov 07, 2024",
+      "location": "Chiang Mai, Thailand",
+      "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2Fqjhn2o1m_ZkG_XUAF4K&w=640&q=75&dpl=dpl_Fh4DaxE7rCHPXVMWLA9oU7pMCNKa"
+    },
+    {
       "slug": "themu",
       "url": "https://app.sola.day/event/themu",
       "title": "MuChiangmai Again!",
       "dates": "Oct 10-Nov 04, 2024",
       "location": "Punspace Tha Phae Gate",
       "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2Fzmeo0ppt_79RQ78mV4&w=640&q=75&dpl=dpl_Fh4DaxE7rCHPXVMWLA9oU7pMCNKa"
+    },
+    {
+      "slug": "ftccnx",
+      "url": "https://app.sola.day/event/ftccnx",
+      "title": "Funding the Commons Builders Residency Chiangmai",
+      "dates": "Oct 07-Oct 31, 2024",
+      "location": "4seas Mountainview, Chiang Mai, Thailand",
+      "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2Fnf8bcfdy_Y2uRVqXKo&w=640&q=75&dpl=dpl_Fh4DaxE7rCHPXVMWLA9oU7pMCNKa"
     },
     {
       "slug": "herdao",
@@ -274,14 +290,6 @@
       "dates": "Oct 07-Nov 07, 2024",
       "location": "Punspace Tha Phae Gate, Chiang Mai, Thailand",
       "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2Fime09n9t_jgmLjAnW_&w=640&q=75&dpl=dpl_Fh4DaxE7rCHPXVMWLA9oU7pMCNKa"
-    },
-    {
-      "slug": "ftccnx",
-      "url": "https://app.sola.day/event/ftccnx",
-      "title": "Funding the Commons Builders Residency Chiangmai",
-      "dates": "Oct 07-Oct 31, 2024",
-      "location": "4seas Mountainview, Chiang Mai, Thailand",
-      "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2Fnf8bcfdy_Y2uRVqXKo&w=640&q=75&dpl=dpl_Fh4DaxE7rCHPXVMWLA9oU7pMCNKa"
     },
     {
       "slug": "zelarcity",
