@@ -174,18 +174,23 @@ export async function normalizeEvent(
 
   // Build tags array
   const tags: string[] = []
-  
+
   // Tag popup city events (longer than 2 days)
   if (isPopupCityEvent(startAt, endAt)) {
     tags.push('popup-city')
   }
-  
-  // Tag commons events for Network School handle
-  if (entitySlug === 'ns' && options.entityType === 'handle') {
+
+  // Tag commons events
+  // 1. All events from commonsmovement handle get 'commons' tag
+  if (entitySlug === 'commonsmovement' && options.entityType === 'handle') {
+    tags.push('commons')
+  }
+  // 2. Tag commons events for Network School handle (keyword-based)
+  else if (entitySlug === 'ns' && options.entityType === 'handle') {
     const title = rawEvent.title?.toLowerCase() || ''
     const description = rawEvent.description?.toLowerCase() || ''
     const location = rawEvent.location?.toLowerCase() || ''
-    
+
     if (title.includes('commons') || description.includes('commons') || location.includes('commons')) {
       tags.push('commons')
     }

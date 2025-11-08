@@ -42,7 +42,8 @@ const config: Config = {
       'joinvdao',
       'ozcity_patagonia',
       'crecimiento',
-      'jamesofarc'
+      'jamesofarc',
+      'commonsmovement'
     ],
 
     // Enable/disable city scraping (disabled by default)
