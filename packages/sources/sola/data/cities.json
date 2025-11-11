@@ -1,7 +1,7 @@
 {
   "success": true,
-  "timestamp": "2025-11-10T01:49:55.418Z",
-  "totalCities": 44,
+  "timestamp": "2025-11-11T01:47:46.984Z",
+  "totalCities": 45,
   "cities": [
     {
       "slug": "prospera",
@@ -34,6 +34,14 @@
       "dates": "Oct 27-Nov 23, 2025",
       "location": "Invisible Garden Argentina",
       "imageUrl": "https://ik.imagekit.io/soladata/5co00orw_n6ztnuUe1"
+    },
+    {
+      "slug": "ethchiangmai2025",
+      "url": "https://app.sola.day/event/ethchiangmai2025",
+      "title": "ETH Chiang Mai",
+      "dates": "Dec 08-Feb 05, 2026",
+      "location": "ETH Chiang Mai",
+      "imageUrl": "https://datastore.sola.day/63c2289092381a46"
     },
     {
       "slug": "zuzalukas",
@@ -204,20 +212,20 @@
       "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2Fvtwl67b4_x3q6PJJ3r&w=640&q=75&dpl=dpl_EtRHuTTdX6WZq6KitkzDrx9DqmTK"
     },
     {
-      "slug": "herstoryweb3",
-      "url": "https://app.sola.day/event/herstoryweb3",
-      "title": "Femitopia",
-      "dates": "Nov 01-Nov 18, 2024",
-      "location": "Bankokk, Thailand",
-      "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2Ftr%3An-ik_ml_thumbnail%2F7ytfj6ip_Qe3oeVgS4&w=640&q=75&dpl=dpl_EtRHuTTdX6WZq6KitkzDrx9DqmTK"
-    },
-    {
       "slug": "seapunk",
       "url": "https://app.sola.day/event/seapunk",
       "title": "Seapunk",
       "dates": "Nov 01-Nov 03, 2024",
       "location": "Chiangmai,Thailand",
       "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2F1u9w3gok_MaFf5Dj-o&w=640&q=75&dpl=dpl_EtRHuTTdX6WZq6KitkzDrx9DqmTK"
+    },
+    {
+      "slug": "herstoryweb3",
+      "url": "https://app.sola.day/event/herstoryweb3",
+      "title": "Femitopia",
+      "dates": "Nov 01-Nov 18, 2024",
+      "location": "Bankokk, Thailand",
+      "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2Ftr%3An-ik_ml_thumbnail%2F7ytfj6ip_Qe3oeVgS4&w=640&q=75&dpl=dpl_EtRHuTTdX6WZq6KitkzDrx9DqmTK"
     },
     {
       "slug": "lovepunkschiangmai",
