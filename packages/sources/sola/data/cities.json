@@ -1,6 +1,6 @@
 {
   "success": true,
-  "timestamp": "2025-11-11T01:47:46.984Z",
+  "timestamp": "2025-11-12T01:45:51.550Z",
   "totalCities": 45,
   "cities": [
     {
@@ -41,7 +41,7 @@
       "title": "ETH Chiang Mai",
       "dates": "Dec 08-Feb 05, 2026",
       "location": "ETH Chiang Mai",
-      "imageUrl": "https://datastore.sola.day/63c2289092381a46"
+      "imageUrl": "https://datastore.sola.day/624f3f05fbf7c6d0"
     },
     {
       "slug": "zuzalukas",

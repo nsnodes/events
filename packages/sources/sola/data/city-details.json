@@ -1,6 +1,6 @@
 {
   "success": true,
-  "timestamp": "2025-11-11T01:47:47.024Z",
+  "timestamp": "2025-11-12T01:45:51.567Z",
   "totalCities": 45,
   "successful": 45,
   "failed": 0,
@@ -69,7 +69,7 @@
       "location": "ETH Chiang Mai",
       "startDate": "2025-12-08",
       "endDate": "2026-02-05",
-      "imageUrl": "https://datastore.sola.day/63c2289092381a46",
+      "imageUrl": "https://datastore.sola.day/624f3f05fbf7c6d0",
       "website": null,
       "description": null,
       "timezone": null,
