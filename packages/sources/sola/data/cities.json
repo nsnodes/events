@@ -1,16 +1,8 @@
 {
   "success": true,
-  "timestamp": "2025-11-17T01:47:08.186Z",
+  "timestamp": "2025-11-18T01:45:07.074Z",
   "totalCities": 45,
   "cities": [
-    {
-      "slug": "prospera",
-      "url": "https://app.sola.day/event/prospera",
-      "title": "Próspera",
-      "dates": "Aug 28-Aug 27, 2028",
-      "location": "Próspera, Roatán",
-      "imageUrl": "https://ik.imagekit.io/soladata/dugphxxe_C_tVHAdr-"
-    },
     {
       "slug": "edgepatagonia",
       "url": "https://app.sola.day/event/edgepatagonia",
@@ -38,8 +30,8 @@
     {
       "slug": "ethchiangmai2025",
       "url": "https://app.sola.day/event/ethchiangmai2025",
-      "title": "ETH Chiang Mai",
-      "dates": "Dec 08-Feb 05, 2026",
+      "title": "ETHChiangmai 2025",
+      "dates": "Dec 08-Feb 03, 2026",
       "location": "ETH Chiang Mai",
       "imageUrl": "https://datastore.sola.day/624f3f05fbf7c6d0"
     },
@@ -66,6 +58,14 @@
       "dates": "Sep 02-Oct 01, 2025",
       "location": "Singapore",
       "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2Fskn8lv86_9x1IMzJdP&w=640&q=75&dpl=dpl_2eLhYTc7BsbjjErYdNkogCC5FmvM"
+    },
+    {
+      "slug": "prospera",
+      "url": "https://app.sola.day/event/prospera",
+      "title": "Próspera",
+      "dates": "Aug 28-Aug 27, 2028",
+      "location": "Próspera, Roatán",
+      "imageUrl": "https://app.sola.day/_next/image?url=https%3A%2F%2Fik.imagekit.io%2Fsoladata%2Fdugphxxe_C_tVHAdr-&w=640&q=75&dpl=dpl_2eLhYTc7BsbjjErYdNkogCC5FmvM"
     },
     {
       "slug": "east2046festival",
