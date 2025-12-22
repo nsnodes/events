@@ -43,7 +43,8 @@ const config: Config = {
       'ozcity_patagonia',
       'crecimiento',
       'jamesofarc',
-      'commonsmovement'
+      'commonsmovement',
+      'themu'
     ],
 
     // Enable/disable city scraping (disabled by default)
