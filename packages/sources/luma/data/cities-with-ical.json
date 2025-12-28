@@ -1,8 +1,8 @@
 {
-  "timestamp": "2025-12-21T02:26:37.647Z",
+  "timestamp": "2025-12-28T02:32:56.562Z",
   "totalEntities": 15,
-  "withIcalUrl": 11,
-  "withoutIcalUrl": 4,
+  "withIcalUrl": 0,
+  "withoutIcalUrl": 15,
   "entities": [
     {
       "handle": "ns",
@@ -10,7 +10,7 @@
       "url": "https://luma.com/ns",
       "type": "user",
       "name": "Network School",
-      "icalUrl": "http://api2.luma.com/ics/get?entity=calendar&id=cal-4dWxlBFjW9Cd6ou"
+      "icalUrl": null
     },
     {
       "handle": "Prospera-events",
@@ -18,7 +18,7 @@
       "url": "https://luma.com/Prospera-events",
       "type": "calendar",
       "name": "Próspera",
-      "icalUrl": "http://api2.luma.com/ics/get?entity=calendar&id=cal-NhvyJaSITZmvThz"
+      "icalUrl": null
     },
     {
       "handle": "zuzalucity",
@@ -26,7 +26,7 @@
       "url": "https://luma.com/zuzalucity",
       "type": "calendar",
       "name": "Zuzalu.City",
-      "icalUrl": "http://api2.luma.com/ics/get?entity=calendar&id=cal-S7U4Fqhz1x17KTT"
+      "icalUrl": null
     },
     {
       "handle": "ipecity",
@@ -34,7 +34,7 @@
       "url": "https://luma.com/ipecity",
       "type": "calendar",
       "name": "Ipê City",
-      "icalUrl": "http://api2.luma.com/ics/get?entity=calendar&id=cal-sKJ3W7xKmrTC9BR"
+      "icalUrl": null
     },
     {
       "handle": "InfinitaCity",
@@ -42,7 +42,7 @@
       "url": "https://luma.com/InfinitaCity",
       "type": "calendar",
       "name": "Infinite Games",
-      "icalUrl": "http://api2.luma.com/ics/get?entity=calendar&id=cal-MMDkW17uzfTQotd"
+      "icalUrl": null
     },
     {
       "handle": "4seas",
@@ -50,7 +50,7 @@
       "url": "https://luma.com/4seas",
       "type": "calendar",
       "name": "4Seas",
-      "icalUrl": "http://api2.luma.com/ics/get?entity=calendar&id=cal-qbuRX6xsEwmYRH3"
+      "icalUrl": null
     },
     {
       "handle": "build_republic",
@@ -58,7 +58,7 @@
       "url": "https://luma.com/build_republic",
       "type": "calendar",
       "name": "build_republic",
-      "icalUrl": "http://api2.luma.com/ics/get?entity=calendar&id=cal-tCJv5PEEXc5jw3F"
+      "icalUrl": null
     },
     {
       "handle": "usr-bRtyfgATCOX4Ek3",
@@ -90,7 +90,7 @@
       "url": "https://luma.com/joinvdao",
       "type": "calendar",
       "name": "V DAO",
-      "icalUrl": "http://api2.luma.com/ics/get?entity=calendar&id=cal-58PxDBCmz9qCvSt"
+      "icalUrl": null
     },
     {
       "handle": "ozcity_patagonia",
@@ -106,7 +106,7 @@
       "url": "https://luma.com/crecimiento",
       "type": "calendar",
       "name": "Crecimiento",
-      "icalUrl": "http://api2.luma.com/ics/get?entity=calendar&id=cal-aJICddsQgBXyl0P"
+      "icalUrl": null
     },
     {
       "handle": "jamesofarc",
@@ -114,7 +114,7 @@
       "url": "https://luma.com/jamesofarc",
       "type": "calendar",
       "name": "Ârc",
-      "icalUrl": "http://api2.luma.com/ics/get?entity=calendar&id=cal-qOFUsx1o0TT2iQk"
+      "icalUrl": null
     },
     {
       "handle": "commonsmovement",
@@ -122,7 +122,7 @@
       "url": "https://luma.com/commonsmovement",
       "type": "calendar",
       "name": "Commons",
-      "icalUrl": "http://api2.luma.com/ics/get?entity=calendar&id=cal-Cjqd7Wzn7UJX9B5"
+      "icalUrl": null
     }
   ],
   "entityType": "handles"
