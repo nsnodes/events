@@ -32,6 +32,7 @@ const RETRY_ATTEMPTS = 2;
 
 interface Entity {
   slug: string;
+  calendarId?: string;  // Pre-known calendar ID (for user pages)
   [key: string]: any;
 }
 
@@ -87,41 +88,54 @@ export async function scrapeIcalUrls(entities: Entity[], options: ScrapeOptions 
   const { headless = true, concurrency = CONCURRENT_BROWSERS } = options;
 
   const results: EntityWithIcal[] = [];
-  const browser: Browser = await chromium.launch({ headless });
 
-  try {
-    // Process entities in batches
-    for (let i = 0; i < entities.length; i += concurrency) {
-      const batch = entities.slice(i, i + concurrency);
-      const batchPromises = batch.map(entity => processEntity(browser, entity));
-      const batchResults = await Promise.allSettled(batchPromises);
+  // Separate entities with pre-known calendar IDs from those that need scraping
+  const entitiesWithKnownIds = entities.filter(e => e.calendarId);
+  const entitiesToScrape = entities.filter(e => !e.calendarId);
 
-      batchResults.forEach((result, idx) => {
-        if (result.status === 'fulfilled') {
-          results.push(result.value);
-        } else {
-          results.push({
-            ...batch[idx],
-            icalUrl: null,
-            error: result.reason.message
-          });
-        }
-      });
-    }
-
-    const output: IcalUrlsData = {
-      timestamp: new Date().toISOString(),
-      totalEntities: entities.length,
-      withIcalUrl: results.filter(r => r.icalUrl).length,
-      withoutIcalUrl: results.filter(r => !r.icalUrl).length,
-      entities: results
-    };
-
-    return output;
-
-  } finally {
-    await browser.close();
+  // Handle entities with pre-known calendar IDs (no scraping needed)
+  for (const entity of entitiesWithKnownIds) {
+    const icalUrl = `http://api2.luma.com/ics/get?entity=calendar&id=${entity.calendarId}`;
+    results.push({ ...entity, icalUrl });
   }
+
+  // Scrape entities that don't have pre-known calendar IDs
+  if (entitiesToScrape.length > 0) {
+    const browser: Browser = await chromium.launch({ headless });
+
+    try {
+      // Process entities in batches
+      for (let i = 0; i < entitiesToScrape.length; i += concurrency) {
+        const batch = entitiesToScrape.slice(i, i + concurrency);
+        const batchPromises = batch.map(entity => processEntity(browser, entity));
+        const batchResults = await Promise.allSettled(batchPromises);
+
+        batchResults.forEach((result, idx) => {
+          if (result.status === 'fulfilled') {
+            results.push(result.value);
+          } else {
+            results.push({
+              ...batch[idx],
+              icalUrl: null,
+              error: result.reason.message
+            });
+          }
+        });
+      }
+    } finally {
+      await browser.close();
+    }
+  }
+
+  const output: IcalUrlsData = {
+    timestamp: new Date().toISOString(),
+    totalEntities: entities.length,
+    withIcalUrl: results.filter(r => r.icalUrl).length,
+    withoutIcalUrl: results.filter(r => !r.icalUrl).length,
+    entities: results
+  };
+
+  return output;
 }
 
 /**
@@ -174,9 +188,16 @@ async function processEntity(browser: Browser, entity: Entity, attempt: number =
  */
 async function findAndExtractIcal(page: Page): Promise<string | null> {
   try {
-    // Click RSS icon button
+    // Click the "Add iCal Subscription" button (new Luma UI as of late 2025)
     const clicked = await page.evaluate(() => {
-      // Look for RSS icon with specific SVG pattern
+      // Primary method: Look for button with aria-label
+      const icalButton = document.querySelector('button[aria-label="Add iCal Subscription"]');
+      if (icalButton) {
+        (icalButton as HTMLButtonElement).click();
+        return true;
+      }
+
+      // Fallback: Look for RSS icon with specific SVG pattern (old UI)
       const svgs = Array.from(document.querySelectorAll('svg'));
 
       for (const svg of svgs) {
@@ -229,13 +250,14 @@ async function findAndExtractIcal(page: Page): Promise<string | null> {
 
     // Extract iCal URL from modal
     return await page.evaluate(() => {
-      const modals = document.querySelectorAll('[role="dialog"], [class*="modal"], [class*="popup"]');
+      // Look for Luma's modal classes (new UI uses lux-modal, lux-overlay)
+      const modals = document.querySelectorAll('[class*="lux-modal"], [class*="modal"], [role="dialog"], [class*="popup"]');
       if (modals.length === 0) return null;
 
       const modal = modals[modals.length - 1];
       const urls: string[] = [];
 
-      // Collect all URLs
+      // Collect all URLs from links
       modal.querySelectorAll('a[href]').forEach(link => {
         const href = link.getAttribute('href');
         if (href) urls.push(href);
@@ -247,38 +269,41 @@ async function findAndExtractIcal(page: Page): Promise<string | null> {
       });
 
       const modalHtml = modal.innerHTML;
-      const matches = modalHtml.match(/(?:https?|webcal):\/\/[^\s"'<>]+ics[^\s"'<>]*/gi);
+      const matches = modalHtml.match(/(?:https?|webcal):\/\/[^\s"'<>]+/gi);
       if (matches) urls.push(...matches);
 
-      // Extract API URL
+      // Extract API URL - check webcal links first (most direct)
       for (const url of urls) {
-        // Direct api2.luma.com
-        if (url.includes('api2.luma.com/ics/get')) {
-          if (url.startsWith('webcal://')) {
-            return 'https://' + url.substring(9);
-          }
-          if (url.startsWith('http')) {
-            return url;
-          }
+        // Direct webcal:// link to api2.luma.com
+        if (url.startsWith('webcal://') && url.includes('api2.luma.com/ics/get')) {
+          return 'http://' + url.substring(9);
         }
 
-        // Decode from wrappers
+        // Direct http/https api2.luma.com link
+        if (url.includes('api2.luma.com/ics/get') && url.startsWith('http')) {
+          return url;
+        }
+      }
+
+      // Decode from Google Calendar wrapper (cid= parameter)
+      for (const url of urls) {
         if (url.includes('cid=')) {
           const match = url.match(/cid=([^&]+)/);
           if (match) {
             const decoded = decodeURIComponent(match[1]);
             if (decoded.includes('api2.luma.com/ics/get')) {
-              return decoded.replace('webcal://', 'https://');
+              return decoded.replace('webcal://', 'http://');
             }
           }
         }
 
+        // Decode from Outlook wrapper (url= parameter)
         if (url.includes('url=')) {
           const match = url.match(/url=([^&]+)/);
           if (match) {
             const decoded = decodeURIComponent(match[1]);
             if (decoded.includes('api2.luma.com/ics/get')) {
-              return decoded.replace('webcal://', 'https://');
+              return decoded.replace('webcal://', 'http://');
             }
           }
         }
@@ -294,12 +319,51 @@ async function findAndExtractIcal(page: Page): Promise<string | null> {
 
 /**
  * Save iCal URLs to disk
+ * Preserves existing URLs when scraping fails (returns null) to prevent data loss
+ *
  * @param icalData - iCal URL data with entities array
  * @param entityType - Type of entities ('cities' or 'handles')
  */
 export function saveIcalUrls(icalData: IcalUrlsData, entityType: string = 'cities'): void {
   if (!fs.existsSync(DATA_DIR)) {
     fs.mkdirSync(DATA_DIR, { recursive: true });
+  }
+
+  // Load existing URLs to preserve them if scraping fails
+  let existingUrls: UrlMap = {};
+  if (fs.existsSync(ICAL_URLS_FILE)) {
+    try {
+      existingUrls = JSON.parse(fs.readFileSync(ICAL_URLS_FILE, 'utf8'));
+    } catch {
+      // File exists but is invalid, start fresh
+    }
+  }
+
+  // Build new URL mapping, preserving existing URLs when scraping returns null
+  const urlMap: UrlMap = {};
+  const preserved: string[] = [];
+  const lost: string[] = [];
+
+  icalData.entities.forEach(entity => {
+    if (entity.icalUrl) {
+      // Scraping succeeded, use new URL
+      urlMap[entity.slug] = entity.icalUrl;
+    } else if (existingUrls[entity.slug]) {
+      // Scraping failed but we have an existing URL - preserve it
+      urlMap[entity.slug] = existingUrls[entity.slug];
+      preserved.push(entity.slug);
+    } else {
+      // No URL from scraping and no existing URL
+      lost.push(entity.slug);
+    }
+  });
+
+  // Log warnings about preserved and lost URLs
+  if (preserved.length > 0) {
+    console.warn(`⚠️  Preserved ${preserved.length} existing iCal URLs (scraping failed): ${preserved.join(', ')}`);
+  }
+  if (lost.length > 0) {
+    console.warn(`❌ No iCal URLs for: ${lost.join(', ')}`);
   }
 
   // Save full data with entity type metadata
@@ -309,14 +373,7 @@ export function saveIcalUrls(icalData: IcalUrlsData, entityType: string = 'citie
   };
   fs.writeFileSync(ICAL_FULL_FILE, JSON.stringify(fullData, null, 2));
 
-  // Save URL mapping (slug -> url) - works for any entity type
-  const urlMap: UrlMap = {};
-  icalData.entities.forEach(entity => {
-    if (entity.icalUrl) {
-      urlMap[entity.slug] = entity.icalUrl;
-    }
-  });
-
+  // Save URL mapping
   fs.writeFileSync(ICAL_URLS_FILE, JSON.stringify(urlMap, null, 2));
 }
 
