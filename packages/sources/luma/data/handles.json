@@ -1,6 +1,6 @@
 {
   "timestamp": "2025-11-08T00:00:00.000Z",
-  "totalHandles": 15,
+  "totalHandles": 16,
   "handles": [
     {
       "handle": "ns",
@@ -52,23 +52,16 @@
       "name": "build_republic"
     },
     {
-      "handle": "usr-bRtyfgATCOX4Ek3",
-      "slug": "usr-bRtyfgATCOX4Ek3",
-      "url": "https://luma.com/user/usr-bRtyfgATCOX4Ek3",
-      "type": "user",
-      "name": "Liberland.org"
-    },
-    {
       "handle": "logos",
-      "slug": "logos",
+      "slug": "logosevents",
       "url": "https://luma.com/logosevents",
       "type": "calendar",
       "name": "logos"
     },
     {
       "handle": "montelibero",
-      "slug": "montelibero",
-      "url": "https://luma.com/mtl-fest?k=c",
+      "slug": "mtl-fest",
+      "url": "https://luma.com/mtl-fest",
       "type": "calendar",
       "name": "montelibero"
     },
@@ -78,13 +71,6 @@
       "url": "https://luma.com/joinvdao",
       "type": "calendar",
       "name": "V DAO"
-    },
-    {
-      "handle": "ozcity_patagonia",
-      "slug": "ozcity_patagonia",
-      "url": "https://luma.com/ozcity_patagonia",
-      "type": "calendar",
-      "name": "Oz City"
     },
     {
       "handle": "crecimiento",
@@ -106,6 +92,28 @@
       "url": "https://luma.com/commonsmovement",
       "type": "calendar",
       "name": "Commons"
+    },
+    {
+      "handle": "themu",
+      "slug": "themu",
+      "url": "https://luma.com/themu",
+      "type": "calendar",
+      "name": "the mu"
+    },
+    {
+      "handle": "liberland",
+      "slug": "user/usr-bRtyfgATCOX4Ek3",
+      "url": "https://luma.com/user/usr-bRtyfgATCOX4Ek3",
+      "type": "user",
+      "name": "Liberland.org",
+      "calendarId": "cal-dGAz0ocxi1mvFdP"
+    },
+    {
+      "handle": "epicweb3calendar",
+      "slug": "epicweb3calendar",
+      "url": "https://luma.com/epicweb3calendar",
+      "type": "calendar",
+      "name": "Epic Web3 / Oz City"
     }
   ]
 }
