@@ -144,6 +144,25 @@ const tasks: Task[] = [
 
       console.log(`[luma:ical-urls] Saved ${data.withIcalUrl} iCal URLs for ${entityType}`)
 
+      // Validate results - fail if success rate is too low
+      const successRate = data.withIcalUrl / data.totalEntities
+      const MIN_SUCCESS_RATE = 0.5
+
+      if (data.withIcalUrl === 0) {
+        throw new Error(
+          `Zero iCal URLs found! Scraping is completely broken. ` +
+          `Existing URLs have been preserved.`
+        )
+      }
+
+      if (successRate < MIN_SUCCESS_RATE) {
+        throw new Error(
+          `Only ${data.withIcalUrl}/${data.totalEntities} iCal URLs found (${Math.round(successRate * 100)}%). ` +
+          `This is below the ${MIN_SUCCESS_RATE * 100}% threshold - Luma may have changed their UI. ` +
+          `Existing URLs have been preserved.`
+        )
+      }
+
       return {
         entityType,
         totalEntities: data.totalEntities,
@@ -177,6 +196,7 @@ const tasks: Task[] = [
       console.log(`[luma:events] Fetching events from ${entityCount} ${icalData.entityType}...`)
 
       let processedEntities = 0
+      let successfulEntities = 0
       let totalEvents = 0
 
       for await (const entityResult of scrapers.fetchAllCityEventsStreaming(icalUrls)) {
@@ -184,6 +204,7 @@ const tasks: Task[] = [
         console.log(`[luma:events] Processing ${entityResult.citySlug}...`)
 
         if (entityResult.success) {
+          successfulEntities++
           console.log(`[luma:events]   Fetched ${entityResult.eventCount} events, normalizing...`)
           const normalized = await normalizeCityEvents(entityResult, db, entityType as 'city' | 'handle')
           totalEvents += normalized.length
@@ -203,6 +224,24 @@ const tasks: Task[] = [
       }
 
       console.log(`[luma:events] Complete: ${totalEvents} events from ${entityCount} ${icalData.entityType}`)
+
+      // Validate results - fail if too many feeds are broken
+      const successRate = successfulEntities / entityCount
+      const MIN_SUCCESS_RATE = 0.5
+
+      if (successfulEntities === 0) {
+        throw new Error(
+          `Zero iCal feeds succeeded! All ${entityCount} feeds failed. ` +
+          `iCal URLs may be stale or Luma API may be down.`
+        )
+      }
+
+      if (successRate < MIN_SUCCESS_RATE) {
+        throw new Error(
+          `Only ${successfulEntities}/${entityCount} iCal feeds succeeded (${Math.round(successRate * 100)}%). ` +
+          `This is below the ${MIN_SUCCESS_RATE * 100}% threshold - iCal URLs may need updating.`
+        )
+      }
     }
   }
 ]
