@@ -1,7 +1,7 @@
 {
   "success": true,
-  "timestamp": "2026-02-26T02:23:16.085Z",
-  "totalCities": 48,
+  "timestamp": "2026-02-27T02:22:09.524Z",
+  "totalCities": 33,
   "cities": [
     {
       "slug": "ethchiangmai2025",
@@ -44,132 +44,12 @@
       "imageUrl": "https://datastore.sola.day/cb02a52f119d4ccd"
     },
     {
-      "slug": "invisiblegardenar",
-      "url": "https://app.sola.day/event/invisiblegardenar",
-      "title": "Invisible Garden Argentina",
-      "dates": "Oct 27-Nov 23, 2025",
-      "location": "Invisible Garden Argentina",
-      "imageUrl": "https://datastore.sola.day/5co00orw_n6ztnuUe1"
-    },
-    {
-      "slug": "fundingthecommons",
-      "url": "https://app.sola.day/event/fundingthecommons",
-      "title": "Funding The Commons Residency Buenos Aires 24 oct - 14 nov 2025",
-      "dates": "Oct 24-Nov 14, 2025",
-      "location": "Buenos Aires",
-      "imageUrl": "https://datastore.sola.day/6f2a80b11c10d730"
-    },
-    {
-      "slug": "edgepatagonia",
-      "url": "https://app.sola.day/event/edgepatagonia",
-      "title": "Edge City Patagonia 2025",
-      "dates": "Oct 18-Nov 15, 2025",
-      "location": "San Martin, Argentina",
-      "imageUrl": "https://datastore.sola.day/rv2s5yu5_qjNyQUwC5"
-    },
-    {
-      "slug": "ethsafari",
-      "url": "https://app.sola.day/event/ethsafari",
-      "title": "ETH Safari",
-      "dates": "Sep 07-Sep 14, 2025",
-      "location": "Kenya",
-      "imageUrl": "https://datastore.sola.day/2p6lz77k_VN34I97zl"
-    },
-    {
-      "slug": "woosingapore",
-      "url": "https://app.sola.day/event/woosingapore",
-      "title": "ShanhaiWoo Singapore",
-      "dates": "Sep 02-Oct 01, 2025",
-      "location": "Singapore",
-      "imageUrl": "https://datastore.sola.day/skn8lv86_9x1IMzJdP"
-    },
-    {
       "slug": "prospera",
       "url": "https://app.sola.day/event/prospera",
       "title": "Próspera",
       "dates": "Aug 28-Aug 27, 2028",
       "location": "Próspera, Roatán",
       "imageUrl": "https://datastore.sola.day/dugphxxe_C_tVHAdr-"
-    },
-    {
-      "slug": "east2046festival",
-      "url": "https://app.sola.day/event/east2046festival",
-      "title": "salmontomato",
-      "dates": "Aug 16-Aug 24, 2025",
-      "location": "EAST2046 Festival I: WE, 2046",
-      "imageUrl": "https://datastore.sola.day/qlktszjx_IXnUBAhfO"
-    },
-    {
-      "slug": "zanzalu",
-      "url": "https://app.sola.day/event/zanzalu",
-      "title": "Zanzalu 2",
-      "dates": "Jul 19-Aug 01, 2025",
-      "location": "Zanzalu",
-      "imageUrl": "https://datastore.sola.day/r8xpmuas_nOkri8XYL"
-    },
-    {
-      "slug": "keymap",
-      "url": "https://app.sola.day/event/keymap",
-      "title": "ETH Huangshan｜infinite Game",
-      "dates": "Jul 07-Jul 13, 2025",
-      "location": "Huangshan",
-      "imageUrl": "https://datastore.sola.day/y4t15yq4_5Y9u_qhC-"
-    },
-    {
-      "slug": "viva-frontier-tower",
-      "url": "https://app.sola.day/event/viva-frontier-tower",
-      "title": "Viva Frontier Tower",
-      "dates": "Jun 20-Aug 03, 2025",
-      "location": "Viva Frontier Tower",
-      "imageUrl": "https://datastore.sola.day/pyfes3r5_fpoxq4w5Eg"
-    },
-    {
-      "slug": "edge-esmeralda-2025",
-      "url": "https://app.sola.day/event/edge-esmeralda-2025",
-      "title": "Edge Esmeralda 2025",
-      "dates": "May 24-Jun 21, 2025",
-      "location": "Edge Esmeralda 2025",
-      "imageUrl": "https://datastore.sola.day/2mo8u09t_y5FBV-b7y"
-    },
-    {
-      "slug": "liberlandspace",
-      "url": "https://app.sola.day/event/liberlandspace",
-      "title": "Liberland deSci & deSpace",
-      "dates": "Apr 14-May 11, 2025",
-      "location": "Liberland",
-      "imageUrl": "https://datastore.sola.day/rztdd29s_FhuFIm3GSn"
-    },
-    {
-      "slug": "vitalistbayca",
-      "url": "https://app.sola.day/event/vitalistbayca",
-      "title": "Vitalist Bay",
-      "dates": "Apr 04-May 29, 2025",
-      "location": "Vitalist Bay",
-      "imageUrl": "https://datastore.sola.day/1gsstbdr_rtfs1adzf"
-    },
-    {
-      "slug": "hangzhou-house",
-      "url": "https://app.sola.day/event/hangzhou-house",
-      "title": "Hangzhou House",
-      "dates": "Mar 26-Apr 25, 2025",
-      "location": "Hangzhou, China",
-      "imageUrl": "https://datastore.sola.day/dybmrdvm_aKKdONrKb"
-    },
-    {
-      "slug": "protopian",
-      "url": "https://app.sola.day/event/protopian",
-      "title": "Protopian Convergence",
-      "dates": "Feb 26-Mar 05, 2025",
-      "location": "Costa Rica",
-      "imageUrl": "https://datastore.sola.day/5wrdgcma_x0R8W93Ih"
-    },
-    {
-      "slug": "ethiopiapopup",
-      "url": "https://app.sola.day/event/ethiopiapopup",
-      "title": "ETHiopia Pop-up",
-      "dates": "Jan 21-Feb 21, 2025",
-      "location": "Addis Ababa",
-      "imageUrl": "https://datastore.sola.day/5qasfbse_tfTbTgZWy?tr=w-624"
     },
     {
       "slug": "infinitacity",
@@ -196,20 +76,20 @@
       "imageUrl": "https://datastore.sola.day/9trl4975_zm8Kw5Fqs?tr=w-600"
     },
     {
-      "slug": "zugarden",
-      "url": "https://app.sola.day/event/zugarden",
-      "title": "ZuGarden",
-      "dates": "Nov 10-Nov 30, 2024",
-      "location": "Bangkok, Thailand",
-      "imageUrl": "https://datastore.sola.day/ty98e1tr_x3DgK5mzz"
-    },
-    {
       "slug": "web3villages",
       "url": "https://app.sola.day/event/web3villages",
       "title": "Web3 Village",
       "dates": "Nov 10-Nov 17, 2024",
       "location": "Chiangmai, Thailand",
       "imageUrl": "https://datastore.sola.day/vcf9imhy_JPqCZILdB"
+    },
+    {
+      "slug": "zugarden",
+      "url": "https://app.sola.day/event/zugarden",
+      "title": "ZuGarden",
+      "dates": "Nov 10-Nov 30, 2024",
+      "location": "Bangkok, Thailand",
+      "imageUrl": "https://datastore.sola.day/ty98e1tr_x3DgK5mzz"
     },
     {
       "slug": "popupfest",
@@ -228,20 +108,20 @@
       "imageUrl": "https://datastore.sola.day/aukzc8yl_L7YujgoaO"
     },
     {
+      "slug": "4seas",
+      "url": "https://app.sola.day/event/4seas",
+      "title": "4Seas",
+      "dates": "Nov 01-Dec 31, 2026",
+      "location": "Chiangmai, Thailand",
+      "imageUrl": "https://datastore.sola.day/vtwl67b4_x3q6PJJ3r"
+    },
+    {
       "slug": "herstoryweb3",
       "url": "https://app.sola.day/event/herstoryweb3",
       "title": "Femitopia",
       "dates": "Nov 01-Nov 18, 2024",
       "location": "Bankokk, Thailand",
       "imageUrl": "https://datastore.sola.day/7ytfj6ip_Qe3oeVgS4"
-    },
-    {
-      "slug": "4seas",
-      "url": "https://app.sola.day/event/4seas",
-      "title": "4Seas",
-      "dates": "Nov 01-Dec 31, 2025",
-      "location": "Chiangmai, Thailand",
-      "imageUrl": "https://datastore.sola.day/vtwl67b4_x3q6PJJ3r"
     },
     {
       "slug": "seapunk",
@@ -260,14 +140,6 @@
       "imageUrl": "https://datastore.sola.day/sve6danp_wHwddRUUg"
     },
     {
-      "slug": "popoutclub",
-      "url": "https://app.sola.day/event/popoutclub",
-      "title": "Pop Out Club",
-      "dates": "Oct 12-Nov 10, 2024",
-      "location": "Chiangmai, Thailand",
-      "imageUrl": "https://datastore.sola.day/4kqmmf48_1FlASFvA3"
-    },
-    {
       "slug": "lovepunkschiangmai",
       "url": "https://app.sola.day/event/lovepunkschiangmai",
       "title": "Lovepunks Chiangmai",
@@ -276,20 +148,12 @@
       "imageUrl": "https://datastore.sola.day/f1xcvatw_s7-GqLK2W"
     },
     {
-      "slug": "dhuncollege",
-      "url": "https://app.sola.day/event/dhuncollege",
-      "title": "UnCollege and Cosmo-local Chiang Mai",
-      "dates": "Oct 10-Nov 07, 2024",
-      "location": "Chiang Mai, Thailand",
-      "imageUrl": "https://datastore.sola.day/qjhn2o1m_ZkG_XUAF4K"
-    },
-    {
-      "slug": "themu",
-      "url": "https://app.sola.day/event/themu",
-      "title": "MuChiangmai Again!",
-      "dates": "Oct 10-Nov 04, 2024",
-      "location": "Punspace Tha Phae Gate",
-      "imageUrl": "https://datastore.sola.day/zmeo0ppt_79RQ78mV4"
+      "slug": "popoutclub",
+      "url": "https://app.sola.day/event/popoutclub",
+      "title": "Pop Out Club",
+      "dates": "Oct 12-Nov 10, 2024",
+      "location": "Chiangmai, Thailand",
+      "imageUrl": "https://datastore.sola.day/4kqmmf48_1FlASFvA3"
     },
     {
       "slug": "edgecitylanna",
@@ -300,20 +164,28 @@
       "imageUrl": "https://datastore.sola.day/lr41pfh8_FP7pwjaoe?tr=w-624"
     },
     {
+      "slug": "themu",
+      "url": "https://app.sola.day/event/themu",
+      "title": "MuChiangmai Again!",
+      "dates": "Oct 10-Nov 04, 2024",
+      "location": "Punspace Tha Phae Gate",
+      "imageUrl": "https://datastore.sola.day/zmeo0ppt_79RQ78mV4"
+    },
+    {
+      "slug": "dhuncollege",
+      "url": "https://app.sola.day/event/dhuncollege",
+      "title": "UnCollege and Cosmo-local Chiang Mai",
+      "dates": "Oct 10-Nov 07, 2024",
+      "location": "Chiang Mai, Thailand",
+      "imageUrl": "https://datastore.sola.day/qjhn2o1m_ZkG_XUAF4K"
+    },
+    {
       "slug": "ftccnx",
       "url": "https://app.sola.day/event/ftccnx",
       "title": "Funding the Commons Builders Residency Chiangmai",
       "dates": "Oct 07-Oct 31, 2024",
       "location": "4seas Mountainview, Chiang Mai, Thailand",
       "imageUrl": "https://datastore.sola.day/nf8bcfdy_Y2uRVqXKo"
-    },
-    {
-      "slug": "megazu",
-      "url": "https://app.sola.day/event/megazu",
-      "title": "Megazu",
-      "dates": "Oct 07-Nov 07, 2024",
-      "location": "Punspace Tha Phae Gate, Chiang Mai, Thailand",
-      "imageUrl": "https://datastore.sola.day/ime09n9t_jgmLjAnW_"
     },
     {
       "slug": "herdao",
@@ -324,12 +196,12 @@
       "imageUrl": "https://datastore.sola.day/cw8mzo1m_zF3aEWV79"
     },
     {
-      "slug": "zelarcity",
-      "url": "https://app.sola.day/event/zelarcity",
-      "title": "Zelar City",
-      "dates": "Oct 05-Nov 17, 2024",
-      "location": "Berlin, Germany",
-      "imageUrl": "https://datastore.sola.day/iy4ez48n_G34fOs4a_"
+      "slug": "megazu",
+      "url": "https://app.sola.day/event/megazu",
+      "title": "Megazu",
+      "dates": "Oct 07-Nov 07, 2024",
+      "location": "Punspace Tha Phae Gate, Chiang Mai, Thailand",
+      "imageUrl": "https://datastore.sola.day/ime09n9t_jgmLjAnW_"
     },
     {
       "slug": "invisiblegarden",
@@ -386,6 +258,14 @@
       "dates": "Jun 02-Jun 29, 2024",
       "location": "Healdsburg, California, United States",
       "imageUrl": "https://datastore.sola.day/se6oymdh_nd-ema6R6"
+    },
+    {
+      "slug": "zanzalu",
+      "url": "https://app.sola.day/event/zanzalu",
+      "title": "Zanzalu",
+      "dates": "May 15-Jun 21, 2024",
+      "location": "Zanzibar, Tanzania",
+      "imageUrl": "https://datastore.sola.day/0isr7f8p_IU5RoQ5vR"
     }
   ]
 }
