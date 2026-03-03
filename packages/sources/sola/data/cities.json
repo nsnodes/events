@@ -1,6 +1,6 @@
 {
   "success": true,
-  "timestamp": "2026-03-02T02:25:12.706Z",
+  "timestamp": "2026-03-03T02:27:02.427Z",
   "totalCities": 33,
   "cities": [
     {
@@ -44,6 +44,14 @@
       "imageUrl": "https://datastore.sola.day/cb02a52f119d4ccd"
     },
     {
+      "slug": "4seas",
+      "url": "https://app.sola.day/event/4seas",
+      "title": "4Seas",
+      "dates": "Mar 01-Jun 01, 2026",
+      "location": "Chiangmai, Thailand",
+      "imageUrl": "https://datastore.sola.day/vtwl67b4_x3q6PJJ3r"
+    },
+    {
       "slug": "prospera",
       "url": "https://app.sola.day/event/prospera",
       "title": "Próspera",
@@ -76,20 +84,20 @@
       "imageUrl": "https://datastore.sola.day/9trl4975_zm8Kw5Fqs?tr=w-600"
     },
     {
-      "slug": "web3villages",
-      "url": "https://app.sola.day/event/web3villages",
-      "title": "Web3 Village",
-      "dates": "Nov 10-Nov 17, 2024",
-      "location": "Chiangmai, Thailand",
-      "imageUrl": "https://datastore.sola.day/vcf9imhy_JPqCZILdB"
-    },
-    {
       "slug": "zugarden",
       "url": "https://app.sola.day/event/zugarden",
       "title": "ZuGarden",
       "dates": "Nov 10-Nov 30, 2024",
       "location": "Bangkok, Thailand",
       "imageUrl": "https://datastore.sola.day/ty98e1tr_x3DgK5mzz"
+    },
+    {
+      "slug": "web3villages",
+      "url": "https://app.sola.day/event/web3villages",
+      "title": "Web3 Village",
+      "dates": "Nov 10-Nov 17, 2024",
+      "location": "Chiangmai, Thailand",
+      "imageUrl": "https://datastore.sola.day/vcf9imhy_JPqCZILdB"
     },
     {
       "slug": "popupfest",
@@ -108,12 +116,12 @@
       "imageUrl": "https://datastore.sola.day/aukzc8yl_L7YujgoaO"
     },
     {
-      "slug": "4seas",
-      "url": "https://app.sola.day/event/4seas",
-      "title": "4Seas",
-      "dates": "Nov 01-Dec 31, 2026",
-      "location": "Chiangmai, Thailand",
-      "imageUrl": "https://datastore.sola.day/vtwl67b4_x3q6PJJ3r"
+      "slug": "seapunk",
+      "url": "https://app.sola.day/event/seapunk",
+      "title": "Seapunk",
+      "dates": "Nov 01-Nov 03, 2024",
+      "location": "Chiangmai,Thailand",
+      "imageUrl": "https://datastore.sola.day/1u9w3gok_MaFf5Dj-o"
     },
     {
       "slug": "herstoryweb3",
@@ -124,20 +132,12 @@
       "imageUrl": "https://datastore.sola.day/7ytfj6ip_Qe3oeVgS4"
     },
     {
-      "slug": "seapunk",
-      "url": "https://app.sola.day/event/seapunk",
-      "title": "Seapunk",
-      "dates": "Nov 01-Nov 03, 2024",
-      "location": "Chiangmai,Thailand",
-      "imageUrl": "https://datastore.sola.day/1u9w3gok_MaFf5Dj-o"
-    },
-    {
-      "slug": "auraverse",
-      "url": "https://app.sola.day/event/auraverse",
-      "title": "AuraVerse Chiang Mai",
+      "slug": "popoutclub",
+      "url": "https://app.sola.day/event/popoutclub",
+      "title": "Pop Out Club",
       "dates": "Oct 12-Nov 10, 2024",
-      "location": "Chiang Mai, Thailand",
-      "imageUrl": "https://datastore.sola.day/sve6danp_wHwddRUUg"
+      "location": "Chiangmai, Thailand",
+      "imageUrl": "https://datastore.sola.day/4kqmmf48_1FlASFvA3"
     },
     {
       "slug": "lovepunkschiangmai",
@@ -148,20 +148,20 @@
       "imageUrl": "https://datastore.sola.day/f1xcvatw_s7-GqLK2W"
     },
     {
-      "slug": "popoutclub",
-      "url": "https://app.sola.day/event/popoutclub",
-      "title": "Pop Out Club",
+      "slug": "auraverse",
+      "url": "https://app.sola.day/event/auraverse",
+      "title": "AuraVerse Chiang Mai",
       "dates": "Oct 12-Nov 10, 2024",
-      "location": "Chiangmai, Thailand",
-      "imageUrl": "https://datastore.sola.day/4kqmmf48_1FlASFvA3"
+      "location": "Chiang Mai, Thailand",
+      "imageUrl": "https://datastore.sola.day/sve6danp_wHwddRUUg"
     },
     {
-      "slug": "edgecitylanna",
-      "url": "https://app.sola.day/event/edgecitylanna",
-      "title": "Edge City Lanna",
-      "dates": "Oct 10-Nov 10, 2024",
+      "slug": "dhuncollege",
+      "url": "https://app.sola.day/event/dhuncollege",
+      "title": "UnCollege and Cosmo-local Chiang Mai",
+      "dates": "Oct 10-Nov 07, 2024",
       "location": "Chiang Mai, Thailand",
-      "imageUrl": "https://datastore.sola.day/lr41pfh8_FP7pwjaoe?tr=w-624"
+      "imageUrl": "https://datastore.sola.day/qjhn2o1m_ZkG_XUAF4K"
     },
     {
       "slug": "themu",
@@ -172,12 +172,20 @@
       "imageUrl": "https://datastore.sola.day/zmeo0ppt_79RQ78mV4"
     },
     {
-      "slug": "dhuncollege",
-      "url": "https://app.sola.day/event/dhuncollege",
-      "title": "UnCollege and Cosmo-local Chiang Mai",
-      "dates": "Oct 10-Nov 07, 2024",
+      "slug": "edgecitylanna",
+      "url": "https://app.sola.day/event/edgecitylanna",
+      "title": "Edge City Lanna",
+      "dates": "Oct 10-Nov 10, 2024",
       "location": "Chiang Mai, Thailand",
-      "imageUrl": "https://datastore.sola.day/qjhn2o1m_ZkG_XUAF4K"
+      "imageUrl": "https://datastore.sola.day/lr41pfh8_FP7pwjaoe?tr=w-624"
+    },
+    {
+      "slug": "megazu",
+      "url": "https://app.sola.day/event/megazu",
+      "title": "Megazu",
+      "dates": "Oct 07-Nov 07, 2024",
+      "location": "Punspace Tha Phae Gate, Chiang Mai, Thailand",
+      "imageUrl": "https://datastore.sola.day/ime09n9t_jgmLjAnW_"
     },
     {
       "slug": "ftccnx",
@@ -194,14 +202,6 @@
       "dates": "Oct 07-Nov 04, 2024",
       "location": "Chiang Mai, Thailand",
       "imageUrl": "https://datastore.sola.day/cw8mzo1m_zF3aEWV79"
-    },
-    {
-      "slug": "megazu",
-      "url": "https://app.sola.day/event/megazu",
-      "title": "Megazu",
-      "dates": "Oct 07-Nov 07, 2024",
-      "location": "Punspace Tha Phae Gate, Chiang Mai, Thailand",
-      "imageUrl": "https://datastore.sola.day/ime09n9t_jgmLjAnW_"
     },
     {
       "slug": "invisiblegarden",
