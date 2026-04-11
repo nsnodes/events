@@ -1,39 +1,15 @@
 {
   "success": true,
-  "timestamp": "2026-04-10T02:46:49.146Z",
-  "totalCities": 33,
+  "timestamp": "2026-04-11T02:31:13.481Z",
+  "totalCities": 36,
   "cities": [
     {
-      "slug": "ethchiangmai2025",
-      "url": "https://app.sola.day/event/ethchiangmai2025",
-      "title": "ETHChiangmai 2025",
-      "dates": "Dec 08-Feb 03, 2026",
-      "location": "ETH Chiang Mai",
-      "imageUrl": "https://datastore.sola.day/624f3f05fbf7c6d0"
-    },
-    {
-      "slug": "wamo2026",
-      "url": "https://app.sola.day/event/wamo2026",
-      "title": "Wamotopia2026",
-      "dates": "Jan 21-Feb 04, 2026",
-      "location": "Chiang Mai, Thailand",
-      "imageUrl": "https://datastore.sola.day/89b1c7e98c65b215"
-    },
-    {
-      "slug": "chinanomadconfrence",
-      "url": "https://app.sola.day/event/chinanomadconfrence",
-      "title": "Digital Nomad Caravan: Chiang Mai Pop-up Tribe",
-      "dates": "Jan 30-Feb 01, 2026",
-      "location": "Digital Nomad Caravan: Chiang Mai Pop-up Tribe",
-      "imageUrl": "https://datastore.sola.day/1ab97b98b32bd8d1"
-    },
-    {
-      "slug": "burncity",
-      "url": "https://app.sola.day/event/burncity",
-      "title": "Burn.City by Cyberia",
-      "dates": "Feb 17-Mar 20, 2026",
-      "location": "Burn.City by Cyberia",
-      "imageUrl": "https://datastore.sola.day/c8346a2095b02a2d"
+      "slug": "4seas",
+      "url": "https://app.sola.day/event/4seas",
+      "title": "4Seas",
+      "dates": "Mar 01-Jun 01, 2026",
+      "location": "Chiangmai, Thailand",
+      "imageUrl": "https://datastore.sola.day/vtwl67b4_x3q6PJJ3r"
     },
     {
       "slug": "zuzalukas",
@@ -44,12 +20,52 @@
       "imageUrl": "https://datastore.sola.day/cb02a52f119d4ccd"
     },
     {
-      "slug": "4seas",
-      "url": "https://app.sola.day/event/4seas",
-      "title": "4Seas",
-      "dates": "Mar 01-Jun 01, 2026",
-      "location": "Chiangmai, Thailand",
-      "imageUrl": "https://datastore.sola.day/vtwl67b4_x3q6PJJ3r"
+      "slug": "edge-esmeralda-2026",
+      "url": "https://app.sola.day/event/edge-esmeralda-2026",
+      "title": "Edge Esmeralda 2026",
+      "dates": "May 30-Jun 27, 2026",
+      "location": "Healdsburg, CA",
+      "imageUrl": "https://datastore.sola.day/2bb57443a7a0cd78"
+    },
+    {
+      "slug": "burncity",
+      "url": "https://app.sola.day/event/burncity",
+      "title": "Burn.City by Cyberia",
+      "dates": "Feb 17-Mar 20, 2026",
+      "location": "Burn.City",
+      "imageUrl": "https://datastore.sola.day/c8346a2095b02a2d"
+    },
+    {
+      "slug": "chinanomadconfrence",
+      "url": "https://app.sola.day/event/chinanomadconfrence",
+      "title": "Digital Nomad Caravan: Chiang Mai Pop-up Tribe",
+      "dates": "Jan 30-Feb 01, 2026",
+      "location": "Digital Nomad Caravan: Chiang Mai Pop-up Tribe",
+      "imageUrl": "https://datastore.sola.day/1ab97b98b32bd8d1"
+    },
+    {
+      "slug": "wamo2026",
+      "url": "https://app.sola.day/event/wamo2026",
+      "title": "Wamotopia2026",
+      "dates": "Jan 21-Feb 04, 2026",
+      "location": "Chiang Mai, Thailand",
+      "imageUrl": "https://datastore.sola.day/89b1c7e98c65b215"
+    },
+    {
+      "slug": "ethchiangmai2025",
+      "url": "https://app.sola.day/event/ethchiangmai2025",
+      "title": "ETHChiangmai 2025",
+      "dates": "Dec 08-Feb 03, 2026",
+      "location": "ETH Chiang Mai",
+      "imageUrl": "https://datastore.sola.day/624f3f05fbf7c6d0"
+    },
+    {
+      "slug": "edgepatagonia",
+      "url": "https://app.sola.day/event/edgepatagonia",
+      "title": "Edge City Patagonia 2025",
+      "dates": "Oct 18-Nov 15, 2025",
+      "location": "San Martin, Argentina",
+      "imageUrl": "https://datastore.sola.day/rv2s5yu5_qjNyQUwC5"
     },
     {
       "slug": "prospera",
@@ -58,6 +74,14 @@
       "dates": "Aug 28-Aug 27, 2028",
       "location": "Próspera, Roatán",
       "imageUrl": "https://datastore.sola.day/dugphxxe_C_tVHAdr-"
+    },
+    {
+      "slug": "edge-esmeralda-2025",
+      "url": "https://app.sola.day/event/edge-esmeralda-2025",
+      "title": "Edge Esmeralda 2025",
+      "dates": "May 24-Jun 21, 2025",
+      "location": "Edge Esmeralda 2025",
+      "imageUrl": "https://datastore.sola.day/2mo8u09t_y5FBV-b7y"
     },
     {
       "slug": "infinitacity",
@@ -156,14 +180,6 @@
       "imageUrl": "https://datastore.sola.day/sve6danp_wHwddRUUg"
     },
     {
-      "slug": "dhuncollege",
-      "url": "https://app.sola.day/event/dhuncollege",
-      "title": "UnCollege and Cosmo-local Chiang Mai",
-      "dates": "Oct 10-Nov 07, 2024",
-      "location": "Chiang Mai, Thailand",
-      "imageUrl": "https://datastore.sola.day/qjhn2o1m_ZkG_XUAF4K"
-    },
-    {
       "slug": "themu",
       "url": "https://app.sola.day/event/themu",
       "title": "MuChiangmai Again!",
@@ -180,6 +196,14 @@
       "imageUrl": "https://datastore.sola.day/lr41pfh8_FP7pwjaoe?tr=w-624"
     },
     {
+      "slug": "dhuncollege",
+      "url": "https://app.sola.day/event/dhuncollege",
+      "title": "UnCollege and Cosmo-local Chiang Mai",
+      "dates": "Oct 10-Nov 07, 2024",
+      "location": "Chiang Mai, Thailand",
+      "imageUrl": "https://datastore.sola.day/qjhn2o1m_ZkG_XUAF4K"
+    },
+    {
       "slug": "megazu",
       "url": "https://app.sola.day/event/megazu",
       "title": "Megazu",
@@ -188,20 +212,20 @@
       "imageUrl": "https://datastore.sola.day/ime09n9t_jgmLjAnW_"
     },
     {
-      "slug": "ftccnx",
-      "url": "https://app.sola.day/event/ftccnx",
-      "title": "Funding the Commons Builders Residency Chiangmai",
-      "dates": "Oct 07-Oct 31, 2024",
-      "location": "4seas Mountainview, Chiang Mai, Thailand",
-      "imageUrl": "https://datastore.sola.day/nf8bcfdy_Y2uRVqXKo"
-    },
-    {
       "slug": "herdao",
       "url": "https://app.sola.day/event/herdao",
       "title": "H.E.R. DAO Coworking Space",
       "dates": "Oct 07-Nov 04, 2024",
       "location": "Chiang Mai, Thailand",
       "imageUrl": "https://datastore.sola.day/cw8mzo1m_zF3aEWV79"
+    },
+    {
+      "slug": "ftccnx",
+      "url": "https://app.sola.day/event/ftccnx",
+      "title": "Funding the Commons Builders Residency Chiangmai",
+      "dates": "Oct 07-Oct 31, 2024",
+      "location": "4seas Mountainview, Chiang Mai, Thailand",
+      "imageUrl": "https://datastore.sola.day/nf8bcfdy_Y2uRVqXKo"
     },
     {
       "slug": "invisiblegarden",
