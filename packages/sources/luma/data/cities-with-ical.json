@@ -1,8 +1,8 @@
 {
-  "timestamp": "2026-04-12T03:37:31.037Z",
+  "timestamp": "2026-04-19T03:42:16.634Z",
   "totalEntities": 16,
-  "withIcalUrl": 16,
-  "withoutIcalUrl": 0,
+  "withIcalUrl": 15,
+  "withoutIcalUrl": 1,
   "entities": [
     {
       "handle": "liberland",
@@ -131,7 +131,7 @@
       "url": "https://luma.com/epicweb3calendar",
       "type": "calendar",
       "name": "Epic Web3 / Oz City",
-      "icalUrl": "http://api2.luma.com/ics/get?entity=calendar&id=cal-v7Zqk62aCqmu3nH"
+      "icalUrl": null
     }
   ],
   "entityType": "handles"
