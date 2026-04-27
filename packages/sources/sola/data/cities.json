@@ -1,15 +1,15 @@
 {
   "success": true,
-  "timestamp": "2026-04-26T02:57:23.544Z",
+  "timestamp": "2026-04-27T03:22:21.353Z",
   "totalCities": 36,
   "cities": [
     {
-      "slug": "4seas",
-      "url": "https://app.sola.day/event/4seas",
-      "title": "4Seas",
-      "dates": "Mar 01-Jun 01, 2026",
-      "location": "Chiangmai, Thailand",
-      "imageUrl": "https://datastore.sola.day/vtwl67b4_x3q6PJJ3r"
+      "slug": "edge-esmeralda-2026",
+      "url": "https://app.sola.day/event/edge-esmeralda-2026",
+      "title": "Edge Esmeralda 2026",
+      "dates": "May 30-Jun 27, 2026",
+      "location": "Healdsburg, CA",
+      "imageUrl": "https://datastore.sola.day/2bb57443a7a0cd78"
     },
     {
       "slug": "zuzalukas",
@@ -20,12 +20,12 @@
       "imageUrl": "https://datastore.sola.day/cb02a52f119d4ccd"
     },
     {
-      "slug": "edge-esmeralda-2026",
-      "url": "https://app.sola.day/event/edge-esmeralda-2026",
-      "title": "Edge Esmeralda 2026",
-      "dates": "May 30-Jun 27, 2026",
-      "location": "Healdsburg, CA",
-      "imageUrl": "https://datastore.sola.day/2bb57443a7a0cd78"
+      "slug": "4seas",
+      "url": "https://app.sola.day/event/4seas",
+      "title": "4Seas",
+      "dates": "Mar 01-Jun 01, 2026",
+      "location": "Chiangmai, Thailand",
+      "imageUrl": "https://datastore.sola.day/vtwl67b4_x3q6PJJ3r"
     },
     {
       "slug": "burncity",
@@ -164,14 +164,6 @@
       "imageUrl": "https://datastore.sola.day/4kqmmf48_1FlASFvA3"
     },
     {
-      "slug": "lovepunkschiangmai",
-      "url": "https://app.sola.day/event/lovepunkschiangmai",
-      "title": "Lovepunks Chiangmai",
-      "dates": "Oct 12-Nov 10, 2024",
-      "location": "Chiangmai, Thailand",
-      "imageUrl": "https://datastore.sola.day/f1xcvatw_s7-GqLK2W"
-    },
-    {
       "slug": "auraverse",
       "url": "https://app.sola.day/event/auraverse",
       "title": "AuraVerse Chiang Mai",
@@ -180,12 +172,12 @@
       "imageUrl": "https://datastore.sola.day/sve6danp_wHwddRUUg"
     },
     {
-      "slug": "themu",
-      "url": "https://app.sola.day/event/themu",
-      "title": "MuChiangmai Again!",
-      "dates": "Oct 10-Nov 04, 2024",
-      "location": "Punspace Tha Phae Gate",
-      "imageUrl": "https://datastore.sola.day/zmeo0ppt_79RQ78mV4"
+      "slug": "lovepunkschiangmai",
+      "url": "https://app.sola.day/event/lovepunkschiangmai",
+      "title": "Lovepunks Chiangmai",
+      "dates": "Oct 12-Nov 10, 2024",
+      "location": "Chiangmai, Thailand",
+      "imageUrl": "https://datastore.sola.day/f1xcvatw_s7-GqLK2W"
     },
     {
       "slug": "edgecitylanna",
@@ -202,6 +194,14 @@
       "dates": "Oct 10-Nov 07, 2024",
       "location": "Chiang Mai, Thailand",
       "imageUrl": "https://datastore.sola.day/qjhn2o1m_ZkG_XUAF4K"
+    },
+    {
+      "slug": "themu",
+      "url": "https://app.sola.day/event/themu",
+      "title": "MuChiangmai Again!",
+      "dates": "Oct 10-Nov 04, 2024",
+      "location": "Punspace Tha Phae Gate",
+      "imageUrl": "https://datastore.sola.day/zmeo0ppt_79RQ78mV4"
     },
     {
       "slug": "megazu",
