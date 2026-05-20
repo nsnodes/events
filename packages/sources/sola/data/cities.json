@@ -1,6 +1,183 @@
 {
   "success": true,
-  "timestamp": "2026-05-19T03:49:37.338Z",
-  "totalCities": 0,
-  "cities": []
+  "timestamp": "2026-05-20T03:49:19.613Z",
+  "totalCities": 22,
+  "cities": [
+    {
+      "slug": "mushanghai",
+      "url": "https://app.sola.day/event/mushanghai",
+      "title": "",
+      "dates": "May 10-Jun 06, 2026",
+      "location": "mushanghai｜科技火人节",
+      "imageUrl": "https://datastore.sola.day/cdn-cgi/image/format=auto,quality=85,width=900,fit=scale-down/49bb61eb30fb5c6d"
+    },
+    {
+      "slug": "zanzalu",
+      "url": "https://app.sola.day/event/zanzalu",
+      "title": "",
+      "dates": "Jul 25-Aug 14, 2026",
+      "location": "Zanzalu 2026",
+      "imageUrl": "https://datastore.sola.day/cdn-cgi/image/format=auto,quality=85,width=454,height=296,fit=cover/0isr7f8p_IU5RoQ5vR"
+    },
+    {
+      "slug": "edge-esmeralda-2026",
+      "url": "https://app.sola.day/event/edge-esmeralda-2026",
+      "title": "Edge Esmeralda 2026",
+      "dates": "May 30-Jun 27, 2026",
+      "location": "Healdsburg, CA",
+      "imageUrl": "https://datastore.sola.day/cdn-cgi/image/format=auto,quality=85,width=454,height=296,fit=cover/2bb57443a7a0cd78"
+    },
+    {
+      "slug": "zuzalukas",
+      "url": "https://app.sola.day/event/zuzalukas",
+      "title": "ZuKas",
+      "dates": "Apr 10-May 10, 2026",
+      "location": "Kas,Turkey",
+      "imageUrl": "https://datastore.sola.day/cdn-cgi/image/format=auto,quality=85,width=454,height=296,fit=cover/cb02a52f119d4ccd"
+    },
+    {
+      "slug": "4seas",
+      "url": "https://app.sola.day/event/4seas",
+      "title": "4Seas Community",
+      "dates": "Mar 01-Jun 01, 2026",
+      "location": "Zuzalu",
+      "imageUrl": "https://datastore.sola.day/cdn-cgi/image/format=auto,quality=85,width=454,height=296,fit=cover/vtwl67b4_x3q6PJJ3r"
+    },
+    {
+      "slug": "burncity",
+      "url": "https://app.sola.day/event/burncity",
+      "title": "burn.city by Cyberia",
+      "dates": "Feb 17-Mar 20, 2026",
+      "location": "Cyber Valley, Bali",
+      "imageUrl": "https://datastore.sola.day/cdn-cgi/image/format=auto,quality=85,width=454,height=296,fit=cover/c8346a2095b02a2d"
+    },
+    {
+      "slug": "wamo2026",
+      "url": "https://app.sola.day/event/wamo2026",
+      "title": "",
+      "dates": "Jan 21-Feb 04, 2026",
+      "location": "Chiang Mai, Thailand",
+      "imageUrl": "https://datastore.sola.day/cdn-cgi/image/format=auto,quality=85,width=454,height=296,fit=cover/89b1c7e98c65b215"
+    },
+    {
+      "slug": "ethchiangmai2025",
+      "url": "https://app.sola.day/event/ethchiangmai2025",
+      "title": "",
+      "dates": "Dec 08-Feb 03, 2026",
+      "location": "ETH Chiang Mai",
+      "imageUrl": "https://datastore.sola.day/cdn-cgi/image/format=auto,quality=85,width=454,height=296,fit=cover/624f3f05fbf7c6d0"
+    },
+    {
+      "slug": "ethsafari",
+      "url": "https://app.sola.day/event/ethsafari",
+      "title": "ETH Safari",
+      "dates": "Sep 07-Sep 14, 2025",
+      "location": "Nairobi/Kilifi, Kenya",
+      "imageUrl": "https://datastore.sola.day/cdn-cgi/image/format=auto,quality=85,width=454,height=296,fit=cover/pjh78xxm_iXIg4ByBI"
+    },
+    {
+      "slug": "prospera",
+      "url": "https://app.sola.day/event/prospera",
+      "title": "Próspera",
+      "dates": "Aug 28-Aug 27, 2028",
+      "location": "Próspera, Roatán",
+      "imageUrl": "https://datastore.sola.day/cdn-cgi/image/format=auto,quality=85,width=454,height=296,fit=cover/dugphxxe_C_tVHAdr-"
+    },
+    {
+      "slug": "edge-esmeralda-2025",
+      "url": "https://app.sola.day/event/edge-esmeralda-2025",
+      "title": "Edge Esmeralda 2025",
+      "dates": "May 24-Jun 21, 2025",
+      "location": "Edge Esmeralda 2025",
+      "imageUrl": "https://datastore.sola.day/cdn-cgi/image/format=auto,quality=85,width=454,height=296,fit=cover/2mo8u09t_y5FBV-b7y"
+    },
+    {
+      "slug": "infinitacity",
+      "url": "https://app.sola.day/event/infinitacity",
+      "title": "Infinita City Calendar",
+      "dates": "Jan 09-Dec 31, 2025",
+      "location": "Próspera, Roatán, Honduras",
+      "imageUrl": "https://datastore.sola.day/cdn-cgi/image/format=auto,quality=85,width=454,height=296,fit=cover/eo3xff8m_hoP8ZIwK_v?tr=w-624"
+    },
+    {
+      "slug": "auraverse",
+      "url": "https://app.sola.day/event/auraverse",
+      "title": "Auraverse",
+      "dates": "Oct 12-Nov 10, 2024",
+      "location": "Denver",
+      "imageUrl": "https://datastore.sola.day/cdn-cgi/image/format=auto,quality=85,width=454,height=296,fit=cover/sve6danp_wHwddRUUg"
+    },
+    {
+      "slug": "edgecitylanna",
+      "url": "https://app.sola.day/event/edgecitylanna",
+      "title": "Edge City Lanna",
+      "dates": "Oct 10-Nov 10, 2024",
+      "location": "Chiangmai",
+      "imageUrl": "https://datastore.sola.day/cdn-cgi/image/format=auto,quality=85,width=454,height=296,fit=cover/lr41pfh8_FP7pwjaoe?tr=w-624"
+    },
+    {
+      "slug": "ftccnx",
+      "url": "https://app.sola.day/event/ftccnx",
+      "title": "FtC Builders Residency Chiangmai",
+      "dates": "Oct 07-Oct 31, 2024",
+      "location": "Chiangmai",
+      "imageUrl": "https://datastore.sola.day/cdn-cgi/image/format=auto,quality=85,width=454,height=296,fit=cover/nf8bcfdy_Y2uRVqXKo"
+    },
+    {
+      "slug": "zelarcity",
+      "url": "https://app.sola.day/event/zelarcity",
+      "title": "Zelar City",
+      "dates": "Oct 05-Nov 17, 2024",
+      "location": "Berlin",
+      "imageUrl": "https://datastore.sola.day/cdn-cgi/image/format=auto,quality=85,width=454,height=296,fit=cover/r53pzf3a_lDogNxTeW"
+    },
+    {
+      "slug": "woochiangmai",
+      "url": "https://app.sola.day/event/woochiangmai",
+      "title": "ShanhaiWoo · Chiangmai 山海坞·清迈",
+      "dates": "Sep 30-Nov 10, 2024",
+      "location": "Chiangmai",
+      "imageUrl": "https://datastore.sola.day/cdn-cgi/image/format=auto,quality=85,width=454,height=296,fit=cover/te1oj5mn_DIUAoBlmq?tr=w-624"
+    },
+    {
+      "slug": "sopsymposium",
+      "url": "https://app.sola.day/event/sopsymposium",
+      "title": "Protocol Symposium",
+      "dates": "Sep 17-Sep 28, 2024",
+      "location": "Online",
+      "imageUrl": "https://datastore.sola.day/cdn-cgi/image/format=auto,quality=85,width=454,height=296,fit=cover/icpdinri_nsuB2RYl1"
+    },
+    {
+      "slug": "buildermonastery",
+      "url": "https://app.sola.day/event/buildermonastery",
+      "title": "Builder Monastery",
+      "dates": "Sep 16-Oct 07, 2024",
+      "location": "Ericeira, Portugal",
+      "imageUrl": "https://datastore.sola.day/cdn-cgi/image/format=auto,quality=85,width=454,height=296,fit=cover/8gubx5kc__DyD1B55v?tr=w-624"
+    },
+    {
+      "slug": "aleph",
+      "url": "https://app.sola.day/event/aleph",
+      "title": "Aleph",
+      "dates": "Aug 05-Sep 01, 2024",
+      "location": "Argentina",
+      "imageUrl": "https://datastore.sola.day/cdn-cgi/image/format=auto,quality=85,width=454,height=296,fit=cover/9ubqv0yq_oEW7NL9GWr"
+    },
+    {
+      "slug": "edgeesmeralda",
+      "url": "https://app.sola.day/event/edgeesmeralda",
+      "title": "Edge Esmeralda",
+      "dates": "Jun 02-Jun 29, 2024",
+      "location": "Healdsburg",
+      "imageUrl": "https://datastore.sola.day/cdn-cgi/image/format=auto,quality=85,width=454,height=296,fit=cover/se6oymdh_nd-ema6R6"
+    },
+    {
+      "slug": "wamotopia",
+      "url": "https://app.sola.day/event/wamotopia",
+      "title": "WAMOTOPIA",
+      "dates": "Dec 16-Jan 01, 2024",
+      "location": "Chiangmai",
+      "imageUrl": "https://datastore.sola.day/cdn-cgi/image/format=auto,quality=85,width=454,height=296,fit=cover/ee3ukzbu_YV1-vZWtF"
+    }
+  ]
 }
