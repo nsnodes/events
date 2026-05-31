@@ -1,8 +1,8 @@
 {
-  "timestamp": "2026-05-24T04:21:36.819Z",
+  "timestamp": "2026-05-31T04:44:40.190Z",
   "totalEntities": 16,
-  "withIcalUrl": 15,
-  "withoutIcalUrl": 1,
+  "withIcalUrl": 1,
+  "withoutIcalUrl": 15,
   "entities": [
     {
       "handle": "liberland",
@@ -19,7 +19,7 @@
       "url": "https://luma.com/ns",
       "type": "user",
       "name": "Network School",
-      "icalUrl": "http://api2.luma.com/ics/get?entity=calendar&id=cal-4dWxlBFjW9Cd6ou"
+      "icalUrl": null
     },
     {
       "handle": "Prospera-events",
@@ -27,7 +27,7 @@
       "url": "https://luma.com/Prospera-events",
       "type": "calendar",
       "name": "Próspera",
-      "icalUrl": "http://api2.luma.com/ics/get?entity=calendar&id=cal-NhvyJaSITZmvThz"
+      "icalUrl": null
     },
     {
       "handle": "zuzalucity",
@@ -35,7 +35,7 @@
       "url": "https://luma.com/zuzalucity",
       "type": "calendar",
       "name": "Zuzalu.City",
-      "icalUrl": "http://api2.luma.com/ics/get?entity=calendar&id=cal-S7U4Fqhz1x17KTT"
+      "icalUrl": null
     },
     {
       "handle": "ipecity",
@@ -43,7 +43,7 @@
       "url": "https://luma.com/ipecity",
       "type": "calendar",
       "name": "Ipê City",
-      "icalUrl": "http://api2.luma.com/ics/get?entity=calendar&id=cal-sKJ3W7xKmrTC9BR"
+      "icalUrl": null
     },
     {
       "handle": "InfinitaCity",
@@ -51,7 +51,7 @@
       "url": "https://luma.com/InfinitaCity",
       "type": "calendar",
       "name": "Infinite Games",
-      "icalUrl": "http://api2.luma.com/ics/get?entity=calendar&id=cal-MMDkW17uzfTQotd"
+      "icalUrl": null
     },
     {
       "handle": "4seas",
@@ -59,7 +59,7 @@
       "url": "https://luma.com/4seas",
       "type": "calendar",
       "name": "4Seas",
-      "icalUrl": "http://api2.luma.com/ics/get?entity=calendar&id=cal-qbuRX6xsEwmYRH3"
+      "icalUrl": null
     },
     {
       "handle": "build_republic",
@@ -67,7 +67,7 @@
       "url": "https://luma.com/build_republic",
       "type": "calendar",
       "name": "build_republic",
-      "icalUrl": "http://api2.luma.com/ics/get?entity=calendar&id=cal-tCJv5PEEXc5jw3F"
+      "icalUrl": null
     },
     {
       "handle": "logos",
@@ -75,7 +75,7 @@
       "url": "https://luma.com/logosevents",
       "type": "calendar",
       "name": "logos",
-      "icalUrl": "http://api2.luma.com/ics/get?entity=calendar&id=cal-S3pdMJmDQDY9aT4"
+      "icalUrl": null
     },
     {
       "handle": "montelibero",
@@ -83,7 +83,7 @@
       "url": "https://luma.com/mtl-fest",
       "type": "calendar",
       "name": "montelibero",
-      "icalUrl": "http://api2.luma.com/ics/get?entity=calendar&id=cal-74y0phH9iUZwsR2"
+      "icalUrl": null
     },
     {
       "handle": "joinvdao",
@@ -91,7 +91,7 @@
       "url": "https://luma.com/joinvdao",
       "type": "calendar",
       "name": "V DAO",
-      "icalUrl": "http://api2.luma.com/ics/get?entity=calendar&id=cal-58PxDBCmz9qCvSt"
+      "icalUrl": null
     },
     {
       "handle": "crecimiento",
@@ -99,7 +99,7 @@
       "url": "https://luma.com/crecimiento",
       "type": "calendar",
       "name": "Crecimiento",
-      "icalUrl": "http://api2.luma.com/ics/get?entity=calendar&id=cal-aJICddsQgBXyl0P"
+      "icalUrl": null
     },
     {
       "handle": "jamesofarc",
@@ -107,7 +107,7 @@
       "url": "https://luma.com/jamesofarc",
       "type": "calendar",
       "name": "Ârc",
-      "icalUrl": "http://api2.luma.com/ics/get?entity=calendar&id=cal-qOFUsx1o0TT2iQk"
+      "icalUrl": null
     },
     {
       "handle": "commonsmovement",
@@ -115,7 +115,7 @@
       "url": "https://luma.com/commonsmovement",
       "type": "calendar",
       "name": "Commons",
-      "icalUrl": "http://api2.luma.com/ics/get?entity=calendar&id=cal-Cjqd7Wzn7UJX9B5"
+      "icalUrl": null
     },
     {
       "handle": "themu",
@@ -123,7 +123,7 @@
       "url": "https://luma.com/themu",
       "type": "calendar",
       "name": "the mu",
-      "icalUrl": "http://api2.luma.com/ics/get?entity=calendar&id=cal-fMu65ALHgQ3FJGe"
+      "icalUrl": null
     },
     {
       "handle": "epicweb3calendar",
