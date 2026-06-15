@@ -1,8 +1,8 @@
 {
   "success": true,
-  "timestamp": "2026-06-14T04:19:07.333Z",
-  "totalCities": 22,
-  "successful": 22,
+  "timestamp": "2026-06-15T04:42:22.556Z",
+  "totalCities": 21,
+  "successful": 21,
   "failed": 0,
   "cities": [
     {
@@ -70,20 +70,6 @@
       "startDate": "2026-03-01",
       "endDate": "2026-06-01",
       "imageUrl": "https://datastore.sola.day/cdn-cgi/image/format=auto,quality=85,width=454,height=296,fit=cover/vtwl67b4_x3q6PJJ3r",
-      "website": null,
-      "description": null,
-      "timezone": null,
-      "tags": []
-    },
-    {
-      "success": true,
-      "citySlug": "burncity",
-      "id": null,
-      "title": "burn.city by Cyberia",
-      "location": "Cyber Valley, Bali",
-      "startDate": "2026-02-17",
-      "endDate": "2026-03-20",
-      "imageUrl": "https://datastore.sola.day/cdn-cgi/image/format=auto,quality=85,width=454,height=296,fit=cover/c8346a2095b02a2d",
       "website": null,
       "description": null,
       "timezone": null,
