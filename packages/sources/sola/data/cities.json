@@ -1,8 +1,16 @@
 {
   "success": true,
-  "timestamp": "2026-07-30T02:32:38.190Z",
+  "timestamp": "2026-07-31T02:57:49.816Z",
   "totalCities": 21,
   "cities": [
+    {
+      "slug": "zanzalu",
+      "url": "https://app.sola.day/event/zanzalu",
+      "title": "zanzalu",
+      "dates": "Jul 25-Aug 14, 2026",
+      "location": "Zanzalu 2026",
+      "imageUrl": "https://datastore.sola.day/cdn-cgi/image/format=auto,quality=85,width=900,fit=scale-down/0isr7f8p_IU5RoQ5vR"
+    },
     {
       "slug": "mushanghai",
       "url": "https://app.sola.day/event/mushanghai",
@@ -12,12 +20,20 @@
       "imageUrl": "https://datastore.sola.day/cdn-cgi/image/format=auto,quality=85,width=900,fit=scale-down/49bb61eb30fb5c6d"
     },
     {
-      "slug": "zanzalu",
-      "url": "https://app.sola.day/event/zanzalu",
-      "title": "zanzalu",
-      "dates": "Jul 25-Aug 14, 2026",
-      "location": "Zanzalu 2026",
-      "imageUrl": "https://datastore.sola.day/cdn-cgi/image/format=auto,quality=85,width=454,height=296,fit=cover/0isr7f8p_IU5RoQ5vR"
+      "slug": "ethchiangmai2025",
+      "url": "https://app.sola.day/event/ethchiangmai2025",
+      "title": "ethchiangmai2025",
+      "dates": "Nov 11-Jan 03, 2027",
+      "location": "ETH Chiang Mai",
+      "imageUrl": "https://datastore.sola.day/cdn-cgi/image/format=auto,quality=85,width=454,height=296,fit=cover/cdn-cgi/imagedelivery/oUsq7wyyFRq-3eP23JhEgw/daa65b9f-8c3a-4a02-6b92-51f326c55d00/public"
+    },
+    {
+      "slug": "4seas",
+      "url": "https://app.sola.day/event/4seas",
+      "title": "4Seas Community",
+      "dates": "Aug 01-Jan 05, 2027",
+      "location": "Zuzalu",
+      "imageUrl": "https://datastore.sola.day/cdn-cgi/image/format=auto,quality=85,width=454,height=296,fit=cover/vtwl67b4_x3q6PJJ3r"
     },
     {
       "slug": "edge-esmeralda-2026",
@@ -36,28 +52,12 @@
       "imageUrl": "https://datastore.sola.day/cdn-cgi/image/format=auto,quality=85,width=454,height=296,fit=cover/cb02a52f119d4ccd"
     },
     {
-      "slug": "4seas",
-      "url": "https://app.sola.day/event/4seas",
-      "title": "4Seas Community",
-      "dates": "Mar 01-Jun 01, 2026",
-      "location": "Zuzalu",
-      "imageUrl": "https://datastore.sola.day/cdn-cgi/image/format=auto,quality=85,width=454,height=296,fit=cover/vtwl67b4_x3q6PJJ3r"
-    },
-    {
       "slug": "wamo2026",
       "url": "https://app.sola.day/event/wamo2026",
       "title": "wamo2026",
       "dates": "Jan 21-Feb 04, 2026",
       "location": "Chiang Mai, Thailand",
       "imageUrl": "https://datastore.sola.day/cdn-cgi/image/format=auto,quality=85,width=454,height=296,fit=cover/89b1c7e98c65b215"
-    },
-    {
-      "slug": "ethchiangmai2025",
-      "url": "https://app.sola.day/event/ethchiangmai2025",
-      "title": "ethchiangmai2025",
-      "dates": "Dec 08-Feb 03, 2026",
-      "location": "ETH Chiang Mai",
-      "imageUrl": "https://datastore.sola.day/cdn-cgi/image/format=auto,quality=85,width=454,height=296,fit=cover/624f3f05fbf7c6d0"
     },
     {
       "slug": "ethsafari",
