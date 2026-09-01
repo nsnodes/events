@@ -4,7 +4,8 @@
   "description": "Event aggregation platform - scraping and normalizing events from multiple sources",
   "type": "module",
   "scripts": {
-    "test": "echo 'No tests configured'",
+    "test": "node --import tsx --test tests/core.test.ts",
+    "typecheck": "tsc --noEmit",
     "probe:luma": "npx tsx tools/probes/luma-probe.js",
     "probe:sola": "npx tsx tools/probes/sola-probe.js",
     "luma:cities": "npx tsx packages/sources/luma/scripts/run-cities.ts",
@@ -42,9 +43,11 @@
     "puppeteer-extra-plugin-stealth": "^2.11.2"
   },
   "devDependencies": {
+    "@types/node": "^24.13.3",
     "dotenv": "^17.2.3",
     "supabase": "^1.226.4",
-    "tsx": "^4.20.6"
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3"
   },
   "scripts-notes": {
     "db:migrate": "Run after 'supabase link': supabase db push"
