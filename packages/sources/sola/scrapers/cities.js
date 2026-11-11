@@ -6,6 +6,17 @@ import { fileURLToPath } from 'url';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const DATA_DIR = join(__dirname, '../data');
 
+// The discover page we request; the final page URL must match it after navigation
+const DISCOVER_URL = 'https://app.sola.day/';
+
+// Markers rendered by sola.day's Next.js error boundary when the page crashes
+// (observed 2026-11-11: "Something went wrong!" on https://sola.day/)
+const ERROR_BOUNDARY_MARKERS = [
+  'Something went wrong',
+  'Application error',
+  'client-side exception'
+];
+
 /**
  * Sola.day Popup Cities Scraper
  *
@@ -19,6 +30,43 @@ const DATA_DIR = join(__dirname, '../data');
  *   const cities = await scrapePopupCities({ headless: true })
  *   saveCities(cities)
  */
+
+/**
+ * Detect anomaly conditions that make a discover result untrustworthy.
+ *
+ * A silent redirect (e.g. 308 app.sola.day -> sola.day), a rendered error
+ * boundary, or an empty city list all mean the page we loaded is not the
+ * real discover page - returning such a result as success would overwrite
+ * the retained dataset with an empty one.
+ *
+ * @param {Object} observation - What the scrape actually observed
+ * @param {string} observation.requestedUrl - URL the scraper navigated to
+ * @param {string} observation.finalUrl - page.url() after navigation
+ * @param {Array} observation.cities - City cards extracted from the page
+ * @param {string} observation.pageText - Rendered body text of the page
+ * @returns {string|null} Anomaly description, or null when the result is healthy
+ */
+export function detectDiscoveryAnomaly({ requestedUrl, finalUrl, cities, pageText }) {
+  if (finalUrl) {
+    const requested = new URL(requestedUrl);
+    const final = new URL(finalUrl);
+    const normalizePath = (p) => p.replace(/\/+$/, '') || '/';
+
+    if (final.origin !== requested.origin || normalizePath(final.pathname) !== normalizePath(requested.pathname)) {
+      return `Redirected from ${requestedUrl} to ${finalUrl} - refusing to trust redirected page`;
+    }
+  }
+
+  if (pageText && ERROR_BOUNDARY_MARKERS.some(marker => pageText.includes(marker))) {
+    return `Source rendered an error boundary instead of the city list`;
+  }
+
+  if (cities && cities.length === 0) {
+    return `Discovery found no popup cities (expected a non-empty list)`;
+  }
+
+  return null;
+}
 
 /**
  * Scrape popup city list and extract basic info
@@ -35,7 +83,7 @@ export async function scrapePopupCities(options = {}) {
   try {
     console.log('Loading popup city list...');
     // Use main page instead of /popup-city because it includes years in dates
-    await page.goto('https://app.sola.day/', { waitUntil: 'networkidle', timeout: 30000 });
+    await page.goto(DISCOVER_URL, { waitUntil: 'networkidle', timeout: 30000 });
     await page.waitForTimeout(2000);
 
     const cities = await page.evaluate(() => {
@@ -124,7 +172,26 @@ export async function scrapePopupCities(options = {}) {
       return citiesData;
     });
 
+    const pageText = await page.evaluate(() => document.body ? document.body.innerText.slice(0, 5000) : '');
+
+    const anomaly = detectDiscoveryAnomaly({
+      requestedUrl: DISCOVER_URL,
+      finalUrl: page.url(),
+      cities,
+      pageText
+    });
+
     await browser.close();
+
+    if (anomaly) {
+      console.error(`Popup city discovery anomaly: ${anomaly}`);
+      return {
+        success: false,
+        timestamp: new Date().toISOString(),
+        error: anomaly,
+        cities: []
+      };
+    }
 
     return {
       success: true,
@@ -146,11 +213,24 @@ export async function scrapePopupCities(options = {}) {
 
 /**
  * Save cities data to disk
+ *
+ * Refuses to save failed or empty results so a scraping anomaly can never
+ * overwrite the retained dataset; the caller sees the throw and the previous
+ * data files stay intact.
+ *
  * @param {Object} citiesData - Cities data from scrapePopupCities()
+ * @param {string} [dataDir] - Override target directory (used by tests)
  */
-export function saveCities(citiesData) {
-  const citiesPath = join(DATA_DIR, 'cities.json');
-  const slugsPath = join(DATA_DIR, 'city-slugs.json');
+export function saveCities(citiesData, dataDir = DATA_DIR) {
+  const citiesPath = join(dataDir, 'cities.json');
+  const slugsPath = join(dataDir, 'city-slugs.json');
+
+  if (!citiesData || citiesData.success === false) {
+    throw new Error(`Refusing to save cities data: ${citiesData ? citiesData.error : 'no data'} - keeping previous data files`);
+  }
+  if (!Array.isArray(citiesData.cities) || citiesData.cities.length === 0) {
+    throw new Error('Refusing to save cities data: empty city list - keeping previous data files');
+  }
 
   // Save full data
   writeFileSync(citiesPath, JSON.stringify(citiesData, null, 2));

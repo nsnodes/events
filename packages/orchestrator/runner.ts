@@ -145,6 +145,15 @@ export async function runSchedule(schedule: string): Promise<ScheduleResult> {
   console.log(`   Tasks run: ${matchingTasks.length}`)
   console.log(`   Events processed: ${totalEventsProcessed}`)
 
+  // A failed task must fail the whole schedule so callers (CLI, CI) exit
+  // non-zero instead of treating a partially broken run as a green success
+  const failedTasks = taskResults.filter(result => !result.success)
+  if (failedTasks.length > 0) {
+    throw new Error(
+      `Schedule ${schedule} failed: ${failedTasks.map(t => `${t.taskId}: ${t.error}`).join('; ')}`
+    )
+  }
+
   return {
     schedule,
     tasksRun: matchingTasks.length,

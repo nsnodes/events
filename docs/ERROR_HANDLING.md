@@ -136,6 +136,33 @@ await db.upsertEvents(1500 events)  // Split into 3 batches of 500
   - Schema mismatches
   - Invalid data
 
+### 4. Source Anomaly Protection (`packages/sources/sola/scrapers/cities.js`)
+
+A source that silently degrades must fail the beat instead of publishing an
+empty dataset. On 2026-11-11 `app.sola.day` began 308-redirecting to
+`sola.day`, which rendered a Next.js error boundary with zero `/event/`
+links; the daily beat committed an empty dataset over a month-long 21-city
+one, green.
+
+City discovery now rejects anomalous results (`detectDiscoveryAnomaly`) when
+any of these hold after navigation:
+
+- The final page URL differs from the requested URL (silent redirect)
+- The rendered page contains an error boundary marker
+- The extracted city list is empty
+
+#### Behavior
+
+```
+scrapePopupCities()  ->  { success: false, error: '<anomaly>', cities: [] }
+saveCities()         ->  throws, previous data files stay intact
+sola:cities task     ->  throws, so runSchedule() exits non-zero
+```
+
+The daily workflow therefore skips its commit step and runs red instead of
+publishing `totalCities: 0`. Consumers (digest, nsnodes-interface) keep
+reading the last healthy dataset from Git history's most recent good commit.
+
 ## Testing
 
 ### Run Tests

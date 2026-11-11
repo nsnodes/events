@@ -4,7 +4,7 @@
   "description": "Event aggregation platform - scraping and normalizing events from multiple sources",
   "type": "module",
   "scripts": {
-    "test": "node --import tsx --test tests/core.test.ts",
+    "test": "node --import tsx --test tests/*.test.ts",
     "typecheck": "tsc --noEmit",
     "probe:luma": "npx tsx tools/probes/luma-probe.js",
     "probe:sola": "npx tsx tools/probes/sola-probe.js",

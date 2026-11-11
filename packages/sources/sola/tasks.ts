@@ -39,6 +39,12 @@ const tasks: Task[] = [
 
       const data = await scrapers.scrapePopupCities({ headless: true })
 
+      // An anomalous discovery (redirect, error boundary, empty list) must fail
+      // the task instead of overwriting the retained dataset with nothing
+      if (!data.success) {
+        throw new Error(`City discovery failed: ${data.error} - previous data preserved`)
+      }
+
       // Check for changes
       try {
         const oldData = scrapers.getCities()
