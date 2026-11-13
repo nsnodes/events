@@ -99,11 +99,18 @@ function rowToEvent(row: any): Event {
   }
 }
 
+/**
+ * Max uids per SELECT request. PostgREST rejects oversized query strings, so
+ * large `.in('uid', ...)` filters must be split into chunks (mirrors the
+ * write-path batch limit in upsertEvents).
+ */
+const SELECT_CHUNK_SIZE = 500
+
 export class SupabaseDatabase implements Database {
   private client: SupabaseClient
 
-  constructor(url: string, key: string) {
-    this.client = createClient(url, key)
+  constructor(url: string, key: string, client?: SupabaseClient) {
+    this.client = client ?? createClient(url, key)
   }
 
   async upsertEvent(event: Event): Promise<void> {
@@ -160,23 +167,29 @@ export class SupabaseDatabase implements Database {
 
     const rows = events.map(eventToRow)
 
-    // Get existing events to preserve first_seen timestamps
+    // Get existing events to preserve first_seen timestamps.
+    // Chunk the uid filter so no single request URL grows unbounded.
     const uids = events.map(e => e.uid)
-    const { data: existingRows } = await retry(
-      async () => {
-        const result = await this.client
-          .from('events')
-          .select('uid, first_seen')
-          .in('uid', uids)
+    const existingRows: Array<{ uid: string, first_seen: string }> = []
+    for (let i = 0; i < uids.length; i += SELECT_CHUNK_SIZE) {
+      const uidChunk = uids.slice(i, i + SELECT_CHUNK_SIZE)
+      const result = await retry(
+        async () => {
+          const result = await this.client
+            .from('events')
+            .select('uid, first_seen')
+            .in('uid', uidChunk)
 
-        if (result.error) {
-          throw new TransientError(`Failed to fetch existing events: ${result.error.message}`, result.error)
-        }
+          if (result.error) {
+            throw new TransientError(`Failed to fetch existing events: ${result.error.message}`, result.error)
+          }
 
-        return result
-      },
-      { maxAttempts: 3, initialDelay: 500 }
-    )
+          return result
+        },
+        { maxAttempts: 3, initialDelay: 500 }
+      )
+      existingRows.push(...(result.data || []))
+    }
 
     const existingMap = new Map(
       (existingRows || []).map(row => [row.uid, row.first_seen])
@@ -270,18 +283,25 @@ export class SupabaseDatabase implements Database {
       return []
     }
 
-    // Fetch only uid, fingerprint, city, country, timezone for optimization
-    const { data, error } = await this.client
-      .from('events')
-      .select('uid, fingerprint, city, country, timezone')
-      .in('uid', uids)
+    // Fetch only uid, fingerprint, city, country, timezone for optimization.
+    // Chunk the uid filter so no single request URL grows unbounded.
+    const rows: any[] = []
+    for (let i = 0; i < uids.length; i += SELECT_CHUNK_SIZE) {
+      const uidChunk = uids.slice(i, i + SELECT_CHUNK_SIZE)
+      const { data, error } = await this.client
+        .from('events')
+        .select('uid, fingerprint, city, country, timezone')
+        .in('uid', uidChunk)
 
-    if (error) {
-      throw new Error(`Failed to fetch events: ${error.message}`)
+      if (error) {
+        throw new Error(`Failed to fetch events: ${error.message}`)
+      }
+
+      rows.push(...(data || []))
     }
 
     // Return partial Event objects (only fields needed for optimization)
-    return (data || []).map(row => ({
+    return rows.map(row => ({
       uid: row.uid,
       fingerprint: row.fingerprint,
       city: row.city,
