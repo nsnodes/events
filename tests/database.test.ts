@@ -6,7 +6,8 @@ import { SupabaseDatabase } from '../packages/core/database.js'
 import type { Event } from '../packages/core/types.js'
 
 // Mirrors SELECT_CHUNK_SIZE / write-path BATCH_SIZE in packages/core/database.ts
-const CHUNK_SIZE = 500
+const SELECT_CHUNK_SIZE = 100
+const BATCH_SIZE = 500
 
 function makeEvent(uid: string): Event {
   const now = new Date('2026-11-13T00:00:00.000Z')
@@ -68,7 +69,7 @@ function createFakeClient(existing: Map<string, FakeRow>) {
 }
 
 test('upsertEvents chunks the existing-events uid SELECT and preserves first_seen', async () => {
-  // 1203 events: three SELECT chunks (500/500/203) and three upsert batches
+  // 1203 events: thirteen SELECT chunks (100×12 + 3) and three upsert batches
   const events = Array.from({ length: 1203 }, (_, i) => makeEvent(`event-${i}@app.sola.day`))
   const preservedSeen = '2026-01-01T00:00:00.000Z'
   const existing = new Map(
@@ -85,10 +86,10 @@ test('upsertEvents chunks the existing-events uid SELECT and preserves first_see
 
   await db.upsertEvents(events)
 
-  // SELECT ran in chunks of at most CHUNK_SIZE, covering every uid exactly once
-  assert.equal(selectCalls.length, Math.ceil(events.length / CHUNK_SIZE))
+  // SELECT ran in chunks of at most SELECT_CHUNK_SIZE, covering every uid exactly once
+  assert.equal(selectCalls.length, Math.ceil(events.length / SELECT_CHUNK_SIZE))
   for (const call of selectCalls) {
-    assert.ok(call.uids.length <= CHUNK_SIZE, `SELECT chunk of ${call.uids.length} exceeds ${CHUNK_SIZE}`)
+    assert.ok(call.uids.length <= SELECT_CHUNK_SIZE, `SELECT chunk of ${call.uids.length} exceeds ${SELECT_CHUNK_SIZE}`)
     assert.equal(call.columns, 'uid, first_seen')
   }
   assert.deepEqual(
@@ -96,10 +97,10 @@ test('upsertEvents chunks the existing-events uid SELECT and preserves first_see
     events.map(e => e.uid).sort()
   )
 
-  // Write path still chunks at the same limit
-  assert.equal(upsertCalls.length, Math.ceil(events.length / CHUNK_SIZE))
+  // Write path still chunks at its own (larger) limit
+  assert.equal(upsertCalls.length, Math.ceil(events.length / BATCH_SIZE))
   for (const batch of upsertCalls) {
-    assert.ok(batch.length <= CHUNK_SIZE, `upsert batch of ${batch.length} exceeds ${CHUNK_SIZE}`)
+    assert.ok(batch.length <= BATCH_SIZE, `upsert batch of ${batch.length} exceeds ${BATCH_SIZE}`)
   }
 
   // first_seen preserved for existing rows, fresh for new ones
@@ -114,7 +115,7 @@ test('upsertEvents chunks the existing-events uid SELECT and preserves first_see
 })
 
 test('getEventsByUids chunks the uid SELECT and merges chunk results', async () => {
-  // 1002 uids: three chunks (500/500/2)
+  // 1002 uids: eleven chunks (100×10 + 2)
   const uids = Array.from({ length: 1002 }, (_, i) => `event-${i}@app.sola.day`)
   const existing = new Map(
     uids.map(uid => [uid, {
@@ -130,9 +131,9 @@ test('getEventsByUids chunks the uid SELECT and merges chunk results', async () 
 
   const events = await db.getEventsByUids(uids)
 
-  assert.equal(selectCalls.length, Math.ceil(uids.length / CHUNK_SIZE))
+  assert.equal(selectCalls.length, Math.ceil(uids.length / SELECT_CHUNK_SIZE))
   for (const call of selectCalls) {
-    assert.ok(call.uids.length <= CHUNK_SIZE, `SELECT chunk of ${call.uids.length} exceeds ${CHUNK_SIZE}`)
+    assert.ok(call.uids.length <= SELECT_CHUNK_SIZE, `SELECT chunk of ${call.uids.length} exceeds ${SELECT_CHUNK_SIZE}`)
     assert.equal(call.columns, 'uid, fingerprint, city, country, timezone')
   }
 

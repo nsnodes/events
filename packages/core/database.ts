@@ -101,10 +101,14 @@ function rowToEvent(row: any): Event {
 
 /**
  * Max uids per SELECT request. PostgREST rejects oversized query strings, so
- * large `.in('uid', ...)` filters must be split into chunks (mirrors the
- * write-path batch limit in upsertEvents).
+ * large `.in('uid', ...)` filters must be split into chunks. Uids are ~38
+ * chars, so the `.in()` filter alone costs ~40 bytes per uid: 500-uid chunks
+ * still built ~20KB GET URLs that the gateway refused with "fetch failed",
+ * while observed ~262-uid (~10KB) requests succeed. 100 uids (~4KB) stays
+ * safely inside that boundary. Unrelated to the write-path BATCH_SIZE, which
+ * POSTs its rows in a body.
  */
-const SELECT_CHUNK_SIZE = 500
+const SELECT_CHUNK_SIZE = 100
 
 export class SupabaseDatabase implements Database {
   private client: SupabaseClient
@@ -171,8 +175,12 @@ export class SupabaseDatabase implements Database {
     // Chunk the uid filter so no single request URL grows unbounded.
     const uids = events.map(e => e.uid)
     const existingRows: Array<{ uid: string, first_seen: string }> = []
+    const chunkCount = Math.ceil(uids.length / SELECT_CHUNK_SIZE)
     for (let i = 0; i < uids.length; i += SELECT_CHUNK_SIZE) {
       const uidChunk = uids.slice(i, i + SELECT_CHUNK_SIZE)
+      if (chunkCount > 1) {
+        console.log(`[database] existing-events SELECT chunk ${i / SELECT_CHUNK_SIZE + 1}/${chunkCount}: ${uidChunk.length} uids`)
+      }
       const result = await retry(
         async () => {
           const result = await this.client
@@ -286,8 +294,12 @@ export class SupabaseDatabase implements Database {
     // Fetch only uid, fingerprint, city, country, timezone for optimization.
     // Chunk the uid filter so no single request URL grows unbounded.
     const rows: any[] = []
+    const chunkCount = Math.ceil(uids.length / SELECT_CHUNK_SIZE)
     for (let i = 0; i < uids.length; i += SELECT_CHUNK_SIZE) {
       const uidChunk = uids.slice(i, i + SELECT_CHUNK_SIZE)
+      if (chunkCount > 1) {
+        console.log(`[database] uid SELECT chunk ${i / SELECT_CHUNK_SIZE + 1}/${chunkCount}: ${uidChunk.length} uids`)
+      }
       const { data, error } = await this.client
         .from('events')
         .select('uid, fingerprint, city, country, timezone')
